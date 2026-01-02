@@ -48,23 +48,6 @@
       font-size: 0.875rem;
     }
 
-    .settings-link {
-      position: absolute;
-      top: var(--spacing-md);
-      right: var(--spacing-md);
-      color: var(--text-gray);
-      text-decoration: none;
-      font-size: 1.5rem;
-      transition: color var(--transition-fast);
-    }
-
-    .settings-link:hover {
-      color: var(--accent-yellow);
-    }
-
-    .header {
-      position: relative;
-    }
 
     /* Todo Pages Container */
     .todo-container {
@@ -368,14 +351,6 @@
 <body>
   <div class="app-container">
     <div class="page-content">
-      <header class="header">
-        <button class="settings-link btn-ghost" onclick="openSettings()" aria-label="Settings">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="3"/>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-          </svg>
-        </button>
-      </header>
 
       <section class="hero animate-fade-in">
         <p class="date-display" id="currentDate"></p>
@@ -518,32 +493,6 @@
   </div>
 
 
-  <!-- Settings Modal -->
-  <div id="settingsModal" class="modal hidden" onclick="closeSettings(event)">
-    <div class="modal-content card" onclick="event.stopPropagation()">
-      <h2 class="text-title mb-lg">Settings</h2>
-
-      <div class="setting-item mb-lg">
-        <h3 class="text-body mb-sm">Data Backup</h3>
-        <div class="flex gap-sm">
-          <button class="btn btn-secondary btn-sm" onclick="Memory.downloadBackup()">
-            Export Data
-          </button>
-          <label class="btn btn-secondary btn-sm">
-            Import Data
-            <input type="file" accept=".json" onchange="handleImport(event)" style="display:none">
-          </label>
-        </div>
-      </div>
-
-      <div class="setting-item mb-lg">
-        <h3 class="text-body mb-sm">Storage Used</h3>
-        <p class="text-caption" id="storageInfo">Calculating...</p>
-      </div>
-
-      <button class="btn btn-ghost btn-block" onclick="closeSettings()">Close</button>
-    </div>
-  </div>
 
   <style>
     .modal {
@@ -568,11 +517,6 @@
       width: 100%;
       max-width: 360px;
     }
-
-    .setting-item {
-      padding-bottom: var(--spacing-md);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
   </style>
 
   <script src="scripts/memory.js"></script>
@@ -584,41 +528,6 @@
       month: 'long',
       day: 'numeric'
     });
-
-    // Settings modal
-    function openSettings() {
-      document.getElementById('settingsModal').classList.remove('hidden');
-      updateStorageInfo();
-    }
-
-    function closeSettings(event) {
-      if (!event || event.target === event.currentTarget) {
-        document.getElementById('settingsModal').classList.add('hidden');
-      }
-    }
-
-    function updateStorageInfo() {
-      const info = Memory.getStorageInfo();
-      const breakdown = Object.entries(info.breakdownFormatted)
-        .map(([ns, size]) => `${ns}: ${size}`)
-        .join(', ');
-      document.getElementById('storageInfo').textContent = `Total: ${info.totalFormatted} (${breakdown})`;
-    }
-
-    function handleImport(event) {
-      const file = event.target.files[0];
-      if (file) {
-        Memory.restoreFromFile(file)
-          .then(() => {
-            alert('Data imported successfully!');
-            loadStats();
-            updateStorageInfo();
-          })
-          .catch(err => {
-            alert('Error importing data: ' + err.message);
-          });
-      }
-    }
 
     // Track home visit
     Memory.setLastVisited('home');
