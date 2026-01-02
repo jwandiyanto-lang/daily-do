@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dailydo-v7';
+const CACHE_NAME = 'dailydo-v8';
 const STATIC_ASSETS = [
   './',
   './index.html',
