@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dailydo-v9';
+const CACHE_NAME = 'dailydo-v10';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -11,6 +11,7 @@ const STATIC_ASSETS = [
   './fitness/legs.html',
   './finance/summary.html',
   './linkedin/index.html',
+  './research/index.html',
   './icons/icon-192.png',
   './icons/icon-512.png'
 ];
