@@ -1144,7 +1144,21 @@
 
         const RSS_API = 'https://api.rss2json.com/v1/api.json?rss_url=';
 
-        async function fetchNews() {
+        // Fetch with timeout helper
+        async function fetchWithTimeout(url, timeout = 5000) {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), timeout);
+            try {
+                const response = await fetch(url, { signal: controller.signal });
+                clearTimeout(timeoutId);
+                return response;
+            } catch (e) {
+                clearTimeout(timeoutId);
+                throw e;
+            }
+        }
+
+        async function fetchNews(forceRefresh = false) {
             const feedEl = document.getElementById('news-feed');
             const lastUpdatedEl = document.getElementById('last-updated');
             const refreshBtn = document.getElementById('refresh-btn');
@@ -1155,32 +1169,39 @@
             const now = Date.now();
             const ONE_HOUR = 60 * 60 * 1000;
 
-            if (cached && cacheTime && (now - cacheTime < ONE_HOUR)) {
+            // Show cached content immediately (stale-while-revalidate)
+            if (cached && cached.length > 0 && !forceRefresh) {
                 renderNews(cached);
                 lastUpdatedEl.textContent = `Last updated: ${new Date(cacheTime).toLocaleTimeString()}`;
-                return;
+                generateSuggestions(cached);
+
+                // If cache is fresh, don't refetch
+                if (cacheTime && (now - cacheTime < ONE_HOUR)) {
+                    return;
+                }
+                // Otherwise, refresh in background
             }
 
-            // Show loading
+            // Show loading only if no cached content
             refreshBtn.classList.add('loading');
-            feedEl.innerHTML = `
-                <div class="loading-state">
-                    <div class="loading-spinner"></div>
-                    <p>Fetching your daily briefing...</p>
-                </div>
-            `;
+            if (!cached || cached.length === 0 || forceRefresh) {
+                feedEl.innerHTML = `
+                    <div class="loading-state">
+                        <div class="loading-spinner"></div>
+                        <p>Fetching your daily briefing...</p>
+                    </div>
+                `;
+            }
 
             try {
-                const allItems = [];
-
-                // Fetch from multiple RSS feeds
-                for (const feed of RSS_FEEDS) {
+                // Fetch ALL feeds in PARALLEL with timeout
+                const feedPromises = RSS_FEEDS.map(async (feed) => {
                     try {
-                        const response = await fetch(RSS_API + encodeURIComponent(feed.url));
+                        const response = await fetchWithTimeout(RSS_API + encodeURIComponent(feed.url), 5000);
                         const data = await response.json();
 
                         if (data.status === 'ok' && data.items) {
-                            const items = data.items.slice(0, 3).map(item => ({
+                            return data.items.slice(0, 3).map(item => ({
                                 title: item.title,
                                 link: item.link,
                                 pubDate: item.pubDate,
@@ -1189,12 +1210,17 @@
                                 badge: feed.badge,
                                 category: feed.category
                             }));
-                            allItems.push(...items);
                         }
+                        return [];
                     } catch (e) {
-                        console.warn(`Failed to fetch ${feed.name}:`, e);
+                        console.warn(`Failed to fetch ${feed.name}:`, e.message);
+                        return [];
                     }
-                }
+                });
+
+                // Wait for all feeds (with individual timeouts)
+                const results = await Promise.all(feedPromises);
+                const allItems = results.flat();
 
                 // Sort by date (newest first)
                 allItems.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
@@ -1212,7 +1238,7 @@
 
                     // Generate content suggestions
                     generateSuggestions(topItems);
-                } else {
+                } else if (!cached || cached.length === 0) {
                     feedEl.innerHTML = `
                         <div class="error-state">
                             <p>Couldn't fetch news. Check your connection and try again.</p>
@@ -1221,11 +1247,13 @@
                 }
             } catch (error) {
                 console.error('News fetch error:', error);
-                feedEl.innerHTML = `
-                    <div class="error-state">
-                        <p>Error loading news. Try refreshing.</p>
-                    </div>
-                `;
+                if (!cached || cached.length === 0) {
+                    feedEl.innerHTML = `
+                        <div class="error-state">
+                            <p>Error loading news. Try refreshing.</p>
+                        </div>
+                    `;
+                }
             } finally {
                 refreshBtn.classList.remove('loading');
             }
@@ -1391,10 +1419,8 @@
         }
 
         function refreshNews() {
-            // Clear cache to force refresh
-            Memory.remove('linkedin', 'cachedNews');
-            Memory.remove('linkedin', 'newsCacheTime');
-            fetchNews();
+            // Force refresh (bypasses cache)
+            fetchNews(true);
         }
 
         // Load news on page load
