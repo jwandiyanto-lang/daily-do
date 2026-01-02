@@ -73,60 +73,79 @@
       overflow: hidden;
     }
 
-    /* Page Indicators */
-    .page-indicators {
+    /* Tab Navigation */
+    .page-tabs {
       display: flex;
-      justify-content: center;
       gap: 8px;
       margin-bottom: var(--spacing-md);
+      padding: 4px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
     }
 
-    .page-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.2);
+    .page-tab {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 12px 8px;
+      background: transparent;
+      border: none;
+      border-radius: 10px;
       cursor: pointer;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+
+    .page-tab .tab-icon {
+      font-size: 1.2rem;
+      opacity: 0.5;
       transition: all 0.3s;
     }
 
-    .page-dot.active {
-      background: var(--accent-yellow);
-      width: 24px;
-      border-radius: 4px;
-    }
-
-    .page-dot.pending { background: rgba(247, 200, 70, 0.3); }
-    .page-dot.pending.active { background: var(--accent-yellow); }
-    .page-dot.current { background: rgba(255,255,255,0.3); }
-    .page-dot.current.active { background: var(--text-white); }
-    .page-dot.done { background: rgba(138, 233, 141, 0.3); }
-    .page-dot.done.active { background: var(--accent-mint); }
-
-    /* Page Labels */
-    .page-labels {
-      display: flex;
-      justify-content: space-between;
-      padding: 0 var(--spacing-sm);
-      margin-bottom: var(--spacing-sm);
-    }
-
-    .page-label {
+    .page-tab .tab-label {
       font-size: 0.7rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      opacity: 0.4;
+      opacity: 0.5;
       transition: all 0.3s;
     }
 
-    .page-label.active {
+    .page-tab.pending .tab-label { color: var(--accent-yellow); }
+    .page-tab.current .tab-label { color: var(--text-white); }
+    .page-tab.done .tab-label { color: var(--accent-mint); }
+
+    .page-tab:hover {
+      background: rgba(255,255,255,0.05);
+    }
+
+    .page-tab:hover .tab-icon,
+    .page-tab:hover .tab-label {
+      opacity: 0.8;
+    }
+
+    .page-tab.active {
+      background: rgba(255,255,255,0.1);
+    }
+
+    .page-tab.active .tab-icon,
+    .page-tab.active .tab-label {
       opacity: 1;
     }
 
-    .page-label.pending { color: var(--accent-yellow); }
-    .page-label.current { color: var(--text-white); }
-    .page-label.done { color: var(--accent-mint); }
+    .page-tab.pending.active {
+      background: rgba(247, 200, 70, 0.15);
+    }
+
+    .page-tab.current.active {
+      background: rgba(255,255,255,0.1);
+    }
+
+    .page-tab.done.active {
+      background: rgba(138, 233, 141, 0.15);
+    }
 
     /* Horizontal Scroll Container */
     .pages-wrapper {
@@ -405,18 +424,20 @@
 
       <!-- Todo Pages Container -->
       <section class="todo-container animate-slide-up">
-        <!-- Page Indicators -->
-        <div class="page-indicators">
-          <div class="page-dot pending" data-page="0" onclick="goToPage(0)"></div>
-          <div class="page-dot current active" data-page="1" onclick="goToPage(1)"></div>
-          <div class="page-dot done" data-page="2" onclick="goToPage(2)"></div>
-        </div>
-
-        <!-- Page Labels -->
-        <div class="page-labels">
-          <span class="page-label pending">Pending</span>
-          <span class="page-label current active">Current</span>
-          <span class="page-label done">Done</span>
+        <!-- Tab Navigation (clickable) -->
+        <div class="page-tabs">
+          <button class="page-tab pending" data-page="0" onclick="goToPage(0)">
+            <span class="tab-icon">⏰</span>
+            <span class="tab-label">Pending</span>
+          </button>
+          <button class="page-tab current active" data-page="1" onclick="goToPage(1)">
+            <span class="tab-icon">📋</span>
+            <span class="tab-label">Current</span>
+          </button>
+          <button class="page-tab done" data-page="2" onclick="goToPage(2)">
+            <span class="tab-icon">✓</span>
+            <span class="tab-label">Done</span>
+          </button>
         </div>
 
         <!-- Swipeable Pages -->
@@ -851,15 +872,10 @@
 
     function updatePageIndicators(pageIndex) {
       currentPage = pageIndex;
-      const dots = document.querySelectorAll('.page-dot');
-      const labels = document.querySelectorAll('.page-label');
+      const tabs = document.querySelectorAll('.page-tab');
 
-      dots.forEach((dot, i) => {
-        dot.classList.toggle('active', i === pageIndex);
-      });
-
-      labels.forEach((label, i) => {
-        label.classList.toggle('active', i === pageIndex);
+      tabs.forEach((tab, i) => {
+        tab.classList.toggle('active', i === pageIndex);
       });
     }
 
