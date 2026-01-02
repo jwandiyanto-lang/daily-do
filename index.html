@@ -41,6 +41,37 @@
       font-size: 1rem;
     }
 
+    /* Theme Toggle */
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.1);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      transition: all 0.3s;
+    }
+
+    .theme-toggle:hover {
+      background: rgba(255,255,255,0.2);
+      transform: scale(1.1);
+    }
+
+    body.light-theme .theme-toggle {
+      background: rgba(0,0,0,0.08);
+    }
+
+    body.light-theme .theme-toggle:hover {
+      background: rgba(0,0,0,0.15);
+    }
+
     .date-display {
       text-align: center;
       margin-bottom: var(--spacing-md);
@@ -350,6 +381,9 @@
 </head>
 <body>
   <div class="app-container">
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">🌙</button>
+
     <div class="page-content">
 
       <section class="hero animate-fade-in">
@@ -543,6 +577,30 @@
 
     // Track home visit
     Memory.setLastVisited('home');
+
+    // Theme toggle
+    function toggleTheme() {
+      const body = document.body;
+      const btn = document.getElementById('themeToggle');
+      const isLight = body.classList.toggle('light-theme');
+      btn.textContent = isLight ? '☀️' : '🌙';
+      Memory.set('settings', 'theme', isLight ? 'light' : 'dark');
+
+      // Update meta theme color
+      document.querySelector('meta[name="theme-color"]').content = isLight ? '#F5F5F7' : '#0E121A';
+    }
+
+    // Load saved theme
+    function loadTheme() {
+      const savedTheme = Memory.get('settings', 'theme');
+      const btn = document.getElementById('themeToggle');
+      if (savedTheme === 'light') {
+        document.body.classList.add('light-theme');
+        btn.textContent = '☀️';
+        document.querySelector('meta[name="theme-color"]').content = '#F5F5F7';
+      }
+    }
+    loadTheme();
 
     // ========================================
     // Todo List with 3 Pages

@@ -68,9 +68,59 @@ body {
   line-height: 1.5;
 }
 
+/* Light Theme */
 body.light-theme {
-  background-color: var(--bg-light);
+  background-color: #F5F5F7;
   color: var(--text-dark);
+}
+
+body.light-theme .card,
+body.light-theme .stat-card,
+body.light-theme .list-item,
+body.light-theme .form-input {
+  background-color: #FFFFFF;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+
+body.light-theme .bottom-nav {
+  background-color: #FFFFFF;
+  border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+body.light-theme .nav-link {
+  color: #666;
+}
+
+body.light-theme .nav-link:hover,
+body.light-theme .nav-link.active {
+  color: var(--accent-yellow);
+}
+
+body.light-theme .text-gray,
+body.light-theme .text-caption {
+  color: #666;
+}
+
+body.light-theme .btn-secondary {
+  background-color: #EBEBEB;
+  color: var(--text-dark);
+}
+
+body.light-theme .btn-ghost {
+  color: var(--text-dark);
+}
+
+body.light-theme .btn-ghost:hover {
+  background-color: rgba(0,0,0,0.05);
+}
+
+body.light-theme .form-input {
+  color: var(--text-dark);
+  border-color: rgba(0,0,0,0.15);
+}
+
+body.light-theme .form-input::placeholder {
+  color: #999;
 }
 
 /* ========================================
