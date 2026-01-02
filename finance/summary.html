@@ -1,466 +1,976 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finance Tracker - Cashflow</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-sankey"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: #f5f7fa;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .header h1 {
-            color: #1a1a2e;
-            font-size: 28px;
-            margin-bottom: 8px;
-        }
-        .header p {
-            color: #666;
-            font-size: 14px;
-        }
-        .card {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-            padding: 24px;
-            margin-bottom: 24px;
-        }
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .card-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #1a1a2e;
-        }
-        .period-badge {
-            background: #e8f5e9;
-            color: #2e7d32;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-        .summary-item {
-            background: #f8f9fa;
-            padding: 16px;
-            border-radius: 12px;
-        }
-        .summary-label {
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 4px;
-        }
-        .summary-value {
-            font-size: 24px;
-            font-weight: 700;
-        }
-        .summary-value.income { color: #2e7d32; }
-        .summary-value.expense { color: #c62828; }
-        .summary-value.balance { color: #1565c0; }
-        .chart-container {
-            position: relative;
-            height: 500px;
-            width: 100%;
-        }
-        .category-breakdown {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 16px;
-        }
-        .category-card {
-            background: #f8f9fa;
-            padding: 16px;
-            border-radius: 12px;
-        }
-        .category-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-        .category-name {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-            color: #1a1a2e;
-        }
-        .category-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-        .category-amount {
-            font-weight: 700;
-            color: #c62828;
-        }
-        .category-bar {
-            height: 6px;
-            background: #e0e0e0;
-            border-radius: 3px;
-            overflow: hidden;
-        }
-        .category-bar-fill {
-            height: 100%;
-            border-radius: 3px;
-            transition: width 0.3s ease;
-        }
-        .transactions-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .transactions-table th,
-        .transactions-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-        .transactions-table th {
-            font-weight: 600;
-            color: #666;
-            font-size: 12px;
-            text-transform: uppercase;
-        }
-        .transactions-table td {
-            font-size: 14px;
-        }
-        .amount-credit {
-            color: #2e7d32;
-            font-weight: 600;
-        }
-        .amount-debit {
-            color: #c62828;
-            font-weight: 600;
-        }
-        .category-tag {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 500;
-        }
-        .legend {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin-top: 20px;
-            justify-content: center;
-        }
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 12px;
-            color: #666;
-        }
-        .legend-color {
-            width: 16px;
-            height: 16px;
-            border-radius: 4px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0E121A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Finance - Daily Do</title>
+  <link rel="stylesheet" href="../styles/app.css">
+  <style>
+    .finance-container {
+      padding-bottom: 100px;
+    }
+
+    .finance-header {
+      text-align: center;
+      padding: var(--spacing-lg) 0 var(--spacing-md);
+    }
+
+    .finance-header h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .finance-header .subtitle {
+      color: var(--text-gray);
+      font-size: 0.85rem;
+    }
+
+    /* Summary Cards */
+    .summary-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .summary-card {
+      background: var(--card-bg);
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .summary-card.income {
+      border-left: 3px solid var(--accent-mint);
+    }
+
+    .summary-card.expense {
+      border-left: 3px solid #E74C3C;
+    }
+
+    .summary-card.balance {
+      grid-column: span 2;
+      border-left: 3px solid var(--accent-yellow);
+    }
+
+    .summary-label {
+      font-size: 0.7rem;
+      color: var(--text-gray);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .summary-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .summary-value.green { color: var(--accent-mint); }
+    .summary-value.red { color: #E74C3C; }
+    .summary-value.yellow { color: var(--accent-yellow); }
+
+    /* Category Filter Pills */
+    .category-filter {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 12px;
+      margin-bottom: var(--spacing-md);
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .category-filter::-webkit-scrollbar {
+      display: none;
+    }
+
+    .filter-pill {
+      flex-shrink: 0;
+      padding: 8px 14px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      font-size: 0.8rem;
+      color: var(--text-gray);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .filter-pill:hover {
+      background: rgba(255,255,255,0.1);
+    }
+
+    .filter-pill.active {
+      background: var(--accent-yellow);
+      border-color: var(--accent-yellow);
+      color: var(--bg-dark);
+      font-weight: 600;
+    }
+
+    /* Transactions List */
+    .transactions-section {
+      margin-bottom: var(--spacing-md);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .section-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-gray);
+    }
+
+    .transaction-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .transaction-item {
+      position: relative;
+      background: var(--card-bg);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .transaction-inner {
+      position: relative;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--card-bg);
+      transition: transform 0.15s ease-out;
+      z-index: 2;
+    }
+
+    .swipe-delete {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      background: #E74C3C;
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 0.15s ease-out;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 20px;
+      color: white;
+      font-weight: 600;
+    }
+
+    .transaction-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .transaction-details {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .transaction-desc {
+      font-size: 0.9rem;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 2px;
+    }
+
+    .transaction-meta {
+      font-size: 0.75rem;
+      color: var(--text-gray);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .transaction-category {
+      padding: 2px 6px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px;
+    }
+
+    .transaction-amount {
+      font-size: 1rem;
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .transaction-amount.income { color: var(--accent-mint); }
+    .transaction-amount.expense { color: #E74C3C; }
+
+    .empty-state {
+      text-align: center;
+      padding: var(--spacing-xl);
+      color: var(--text-gray);
+    }
+
+    .empty-icon {
+      font-size: 3rem;
+      margin-bottom: 12px;
+      opacity: 0.5;
+    }
+
+    /* FAB */
+    .fab {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--accent-yellow);
+      color: var(--bg-dark);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(247, 200, 70, 0.4);
+      transition: all 0.2s;
+      z-index: 100;
+    }
+
+    .fab:hover {
+      transform: scale(1.1);
+    }
+
+    .fab:active {
+      transform: scale(0.95);
+    }
+
+    /* Modal Styles */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.85);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 200;
+      padding: 0;
+    }
+
+    .modal.hidden {
+      display: none;
+    }
+
+    .modal-content {
+      width: 100%;
+      max-width: 500px;
+      background: var(--card-bg);
+      border-radius: 20px 20px 0 0;
+      padding: var(--spacing-lg);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .modal-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text-gray);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    /* Type Toggle */
+    .type-toggle {
+      display: flex;
+      gap: 8px;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .type-btn {
+      flex: 1;
+      padding: 12px;
+      border: 2px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      background: transparent;
+      color: var(--text-gray);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .type-btn.expense.active {
+      border-color: #E74C3C;
+      background: rgba(231, 76, 60, 0.15);
+      color: #E74C3C;
+    }
+
+    .type-btn.income.active {
+      border-color: var(--accent-mint);
+      background: rgba(138, 233, 141, 0.15);
+      color: var(--accent-mint);
+    }
+
+    /* Form Inputs */
+    .form-group {
+      margin-bottom: var(--spacing-md);
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--text-gray);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      color: var(--text-white);
+      font-size: 1rem;
+      font-family: inherit;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--accent-yellow);
+    }
+
+    .form-input::placeholder {
+      color: var(--text-gray);
+    }
+
+    /* Category Grid */
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .category-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 12px 8px;
+      background: rgba(255,255,255,0.05);
+      border: 2px solid transparent;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .category-btn:hover {
+      background: rgba(255,255,255,0.1);
+    }
+
+    .category-btn.active {
+      border-color: var(--accent-yellow);
+      background: rgba(247, 200, 70, 0.15);
+    }
+
+    .category-btn .emoji {
+      font-size: 1.4rem;
+    }
+
+    .category-btn .label {
+      font-size: 0.65rem;
+      color: var(--text-gray);
+      text-align: center;
+    }
+
+    .category-btn.active .label {
+      color: var(--accent-yellow);
+    }
+
+    /* Submit Button */
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--accent-yellow);
+      border: none;
+      border-radius: 12px;
+      color: var(--bg-dark);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+      margin-top: var(--spacing-md);
+    }
+
+    .submit-btn:hover {
+      opacity: 0.9;
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Date group header */
+    .date-header {
+      font-size: 0.75rem;
+      color: var(--text-gray);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: var(--spacing-md) 0 var(--spacing-sm);
+      padding-left: 4px;
+    }
+
+    .date-header:first-child {
+      margin-top: 0;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <a href="../index.html" style="display: inline-flex; align-items: center; gap: 8px; color: #666; text-decoration: none; font-size: 14px; margin-bottom: 20px; transition: color 0.2s;">
-            <span>←</span> Back to Daily Do
-        </a>
-        <div class="header">
-            <h1>Cashflow Overview</h1>
-            <p>Emirates NBD Credit Card Statement Analysis</p>
-        </div>
+  <div class="app-container">
+    <div class="page-content finance-container">
 
-        <div class="card">
-            <div class="card-header">
-                <span class="card-title">Summary</span>
-                <span class="period-badge">11 Nov - 10 Dec 2025</span>
-            </div>
-            <div class="summary-grid">
-                <div class="summary-item">
-                    <div class="summary-label">Total Income/Credits</div>
-                    <div class="summary-value income">AED 5,825.47</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-label">Total Expenses</div>
-                    <div class="summary-value expense">AED 3,355.32</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-label">Net Cash Flow</div>
-                    <div class="summary-value balance">AED 2,470.15</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-label">Current Balance</div>
-                    <div class="summary-value">AED 857.49</div>
-                </div>
-            </div>
-        </div>
+      <a href="../index.html" style="display: inline-flex; align-items: center; gap: 8px; color: var(--text-gray); text-decoration: none; font-size: 0.9rem;">
+        <span>←</span> Back
+      </a>
 
-        <div class="card">
-            <div class="card-header">
-                <span class="card-title">Cashflow</span>
-            </div>
-            <div class="chart-container">
-                <canvas id="sankeyChart"></canvas>
-            </div>
-            <div class="legend">
-                <div class="legend-item"><div class="legend-color" style="background: #4caf50"></div> Income</div>
-                <div class="legend-item"><div class="legend-color" style="background: #66bb6a"></div> Cash Flow</div>
-                <div class="legend-item"><div class="legend-color" style="background: #ef5350"></div> Food & Dining</div>
-                <div class="legend-item"><div class="legend-color" style="background: #ff7043"></div> Transportation</div>
-                <div class="legend-item"><div class="legend-color" style="background: #42a5f5"></div> Utilities</div>
-                <div class="legend-item"><div class="legend-color" style="background: #ab47bc"></div> Shopping</div>
-                <div class="legend-item"><div class="legend-color" style="background: #26a69a"></div> Groceries</div>
-                <div class="legend-item"><div class="legend-color" style="background: #ffa726"></div> Installments</div>
-                <div class="legend-item"><div class="legend-color" style="background: #78909c"></div> Other</div>
-                <div class="legend-item"><div class="legend-color" style="background: #8bc34a"></div> Surplus</div>
-            </div>
-        </div>
+      <div class="finance-header">
+        <h1>Finance</h1>
+        <p class="subtitle">Track your income & expenses</p>
+      </div>
 
-        <div class="card">
-            <div class="card-header">
-                <span class="card-title">Expense Breakdown by Category</span>
-            </div>
-            <div class="category-breakdown" id="categoryBreakdown"></div>
+      <!-- Summary Cards -->
+      <div class="summary-row">
+        <div class="summary-card income">
+          <div class="summary-label">Income</div>
+          <div class="summary-value green" id="totalIncome">0</div>
         </div>
+        <div class="summary-card expense">
+          <div class="summary-label">Expenses</div>
+          <div class="summary-value red" id="totalExpense">0</div>
+        </div>
+        <div class="summary-card balance">
+          <div class="summary-label">Balance</div>
+          <div class="summary-value yellow" id="totalBalance">0</div>
+        </div>
+      </div>
 
-        <div class="card">
-            <div class="card-header">
-                <span class="card-title">All Transactions</span>
-            </div>
-            <div style="overflow-x: auto;">
-                <table class="transactions-table" id="transactionsTable">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Description</th>
-                            <th>Category</th>
-                            <th>Amount (AED)</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
+      <!-- Category Filter -->
+      <div class="category-filter" id="categoryFilter">
+        <button class="filter-pill active" data-filter="all">All</button>
+      </div>
+
+      <!-- Transactions -->
+      <div class="transactions-section">
+        <div class="section-header">
+          <span class="section-title">Transactions</span>
+          <span class="section-title" id="transactionCount">0 items</span>
         </div>
+        <div class="transaction-list" id="transactionList">
+          <div class="empty-state">
+            <div class="empty-icon">💰</div>
+            <p>No transactions yet</p>
+            <p style="font-size: 0.8rem; margin-top: 4px;">Tap + to add your first one</p>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <script>
-        // Transaction data from the credit card statement
-        const transactions = [
-            { date: '11/11/2025', description: 'CONNECTECH L.L.C', amount: 50.00, category: 'Shopping', type: 'debit' },
-            { date: '12/11/2025', description: 'EMIRATES FLIGHT CATERING', amount: 12.00, category: 'Food & Dining', type: 'debit' },
-            { date: '13/11/2025', description: 'CAREEM HALA', amount: 34.00, category: 'Transportation', type: 'debit' },
-            { date: '14/11/2025', description: 'NATIONAL TAXI', amount: 38.50, category: 'Transportation', type: 'debit' },
-            { date: '13/11/2025', description: 'EMIRATES FLIGHT CATERING', amount: 5.00, category: 'Food & Dining', type: 'debit' },
-            { date: '14/11/2025', description: 'EMIRATES FLIGHT CATERING', amount: 2.50, category: 'Food & Dining', type: 'debit' },
-            { date: '14/11/2025', description: 'THE COFFEE LA QLUB', amount: 62.00, category: 'Food & Dining', type: 'debit' },
-            { date: '14/11/2025', description: 'TRENDYOL', amount: 173.05, category: 'Shopping', type: 'debit' },
-            { date: '15/11/2025', description: 'FEELS MARSA AL ARAB', amount: 20.00, category: 'Food & Dining', type: 'debit' },
-            { date: '15/11/2025', description: 'CARS TAXI SERVICES', amount: 15.50, category: 'Transportation', type: 'debit' },
-            { date: '15/11/2025', description: 'NATIONAL TAXI', amount: 22.00, category: 'Transportation', type: 'debit' },
-            { date: '15/11/2025', description: 'MOSHI RESTAURANT', amount: 222.75, category: 'Food & Dining', type: 'debit' },
-            { date: '16/11/2025', description: 'NESTO HYPERMARKET', amount: 85.13, category: 'Groceries', type: 'debit' },
-            { date: '17/11/2025', description: 'NOON.COM', amount: 56.00, category: 'Shopping', type: 'debit' },
-            { date: '18/11/2025', description: 'NATIONAL TAXI', amount: 44.00, category: 'Transportation', type: 'debit' },
-            { date: '25/11/2025', description: 'DUBAI ELECTRICITY', amount: 472.06, category: 'Utilities', type: 'debit' },
-            { date: '25/11/2025', description: 'CAREEM', amount: 56.67, category: 'Transportation', type: 'debit' },
-            { date: '28/11/2025', description: 'TRANSFER PAYMENT RECEIVED', amount: 5652.42, category: 'Payment', type: 'credit' },
-            { date: '27/11/2025', description: 'DUBAI TAXI', amount: 60.50, category: 'Transportation', type: 'debit' },
-            { date: '27/11/2025', description: 'ETISALAT TELECOM', amount: 450.45, category: 'Utilities', type: 'debit' },
-            { date: '28/11/2025', description: 'NESTO HYPERMARKET', amount: 92.59, category: 'Groceries', type: 'debit' },
-            { date: '28/11/2025', description: 'EMIRATES FLIGHT CATERING', amount: 14.00, category: 'Food & Dining', type: 'debit' },
-            { date: '28/11/2025', description: 'E& DIGITAL APP', amount: 50.00, category: 'Utilities', type: 'debit' },
-            { date: '29/11/2025', description: 'REWE DUESSELDORF (Germany)', amount: 173.21, category: 'Groceries', type: 'debit' },
-            { date: '29/11/2025', description: 'DM-DROGERIE MARKT (Germany)', amount: 69.65, category: 'Personal Care', type: 'debit' },
-            { date: '29/11/2025', description: 'ZEIT FUER BROT (Germany)', amount: 61.25, category: 'Food & Dining', type: 'debit' },
-            { date: '29/11/2025', description: 'SUMUP DITMAR', amount: 19.40, category: 'Other', type: 'debit' },
-            { date: '01/12/2025', description: 'CAREEM QUIK', amount: 42.19, category: 'Transportation', type: 'debit' },
-            { date: '30/11/2025', description: 'REWE DUESSELDORF (Germany)', amount: 12.89, category: 'Groceries', type: 'debit' },
-            { date: '01/12/2025', description: 'NOON MINUTES', amount: 28.85, category: 'Groceries', type: 'debit' },
-            { date: '03/12/2025', description: 'TRENDYOL REFUND', amount: 173.05, category: 'Refund', type: 'credit' },
-            { date: '03/12/2025', description: 'JAYA GROCER (Malaysia)', amount: 65.52, category: 'Groceries', type: 'debit' },
-            { date: '03/12/2025', description: 'JAYA GROCER (Malaysia)', amount: 3.15, category: 'Groceries', type: 'debit' },
-            { date: '03/12/2025', description: "NATURE'S VEGETARIAN (Malaysia)", amount: 43.17, category: 'Food & Dining', type: 'debit' },
-            { date: '06/12/2025', description: 'COMMON GROUNDS CAFE', amount: 17.00, category: 'Food & Dining', type: 'debit' },
-            { date: '05/12/2025', description: 'TAP*KEETA', amount: 45.60, category: 'Food & Dining', type: 'debit' },
-            { date: '06/12/2025', description: 'CARREFOUR', amount: 34.76, category: 'Groceries', type: 'debit' },
-            { date: '06/12/2025', description: 'NESTO HYPERMARKET', amount: 40.94, category: 'Groceries', type: 'debit' },
-            { date: '06/12/2025', description: 'TAP*KEETA', amount: 59.50, category: 'Food & Dining', type: 'debit' },
-            { date: '06/12/2025', description: 'AL FUTTAIM TRADING', amount: 27.00, category: 'Shopping', type: 'debit' },
-            { date: '08/12/2025', description: 'NOON.COM', amount: 74.75, category: 'Shopping', type: 'debit' },
-            { date: '07/12/2025', description: 'NESTO HYPERMARKET', amount: 91.45, category: 'Groceries', type: 'debit' },
-            { date: '07/12/2025', description: 'E S B E RESTAURANT', amount: 42.00, category: 'Food & Dining', type: 'debit' },
-            { date: '07/12/2025', description: 'E S B E RESTAURANT', amount: 39.00, category: 'Food & Dining', type: 'debit' },
-            { date: '07/12/2025', description: 'GRANDIOSE SUPERMARKET', amount: 15.00, category: 'Groceries', type: 'debit' },
-            { date: '10/12/2025', description: 'SPOTIFY', amount: 24.26, category: 'Entertainment', type: 'debit' },
-            { date: '15/03/2025', description: 'INSTALLMENT - JUMBO ELECTRONICS (9/12)', amount: 286.08, category: 'Installments', type: 'debit' }
-        ];
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+      <ul class="nav-items">
+        <li class="nav-item">
+          <a href="../index.html" class="nav-link">
+            <span class="nav-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9,22 9,12 15,12 15,22"/>
+              </svg>
+            </span>
+            <span class="nav-label">Home</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="summary.html" class="nav-link active">
+            <span class="nav-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="1" x2="12" y2="23"/>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              </svg>
+            </span>
+            <span class="nav-label">Finance</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="../fitness/index.html" class="nav-link">
+            <span class="nav-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6.5 6.5m-2.5 0a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0 -5 0"/>
+                <path d="M3 12h4l3 8 4-16 3 8h4"/>
+              </svg>
+            </span>
+            <span class="nav-label">Fitness</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="../research/index.html" class="nav-link">
+            <span class="nav-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="M21 21l-4.35-4.35"/>
+              </svg>
+            </span>
+            <span class="nav-label">Research</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
 
-        // Category colors
-        const categoryColors = {
-            'Food & Dining': '#ef5350',
-            'Transportation': '#ff7043',
-            'Utilities': '#42a5f5',
-            'Shopping': '#ab47bc',
-            'Groceries': '#26a69a',
-            'Entertainment': '#5c6bc0',
-            'Personal Care': '#ec407a',
-            'Installments': '#ffa726',
-            'Other': '#78909c',
-            'Payment': '#4caf50',
-            'Refund': '#66bb6a'
-        };
+  <!-- FAB Button -->
+  <button class="fab" onclick="openModal()">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+      <line x1="12" y1="5" x2="12" y2="19"/>
+      <line x1="5" y1="12" x2="19" y2="12"/>
+    </svg>
+  </button>
 
-        // Calculate totals by category
-        function calculateCategoryTotals() {
-            const totals = {};
-            transactions.forEach(t => {
-                if (t.type === 'debit') {
-                    totals[t.category] = (totals[t.category] || 0) + t.amount;
-                }
-            });
-            return totals;
-        }
+  <!-- Add Transaction Modal -->
+  <div id="addModal" class="modal hidden" onclick="closeModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <span class="modal-title">Add Transaction</span>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+      </div>
 
-        // Create Sankey chart
-        function createSankeyChart() {
-            const ctx = document.getElementById('sankeyChart').getContext('2d');
+      <!-- Type Toggle -->
+      <div class="type-toggle">
+        <button class="type-btn expense active" onclick="setType('expense')">
+          Expense
+        </button>
+        <button class="type-btn income" onclick="setType('income')">
+          Income
+        </button>
+      </div>
 
-            const categoryTotals = calculateCategoryTotals();
-            const totalExpenses = Object.values(categoryTotals).reduce((a, b) => a + b, 0);
-            const totalIncome = 5825.47; // Payment received + refund
-            const surplus = totalIncome - totalExpenses;
+      <!-- Amount -->
+      <div class="form-group">
+        <label class="form-label">Amount</label>
+        <input type="number" id="amountInput" class="form-input" placeholder="0.00" step="0.01" inputmode="decimal">
+      </div>
 
-            // Sankey data
-            const data = [
-                { from: 'Payment', to: 'Cash Flow', flow: 5652.42 },
-                { from: 'Refund', to: 'Cash Flow', flow: 173.05 },
-            ];
+      <!-- Description -->
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <input type="text" id="descInput" class="form-input" placeholder="What was this for?">
+      </div>
 
-            // Add expense flows
-            Object.entries(categoryTotals).forEach(([category, amount]) => {
-                data.push({ from: 'Cash Flow', to: category, flow: amount });
-            });
+      <!-- Category -->
+      <div class="form-group">
+        <label class="form-label">Category</label>
+        <div class="category-grid" id="categoryGrid">
+          <!-- Categories will be rendered here -->
+        </div>
+      </div>
 
-            // Add surplus
-            if (surplus > 0) {
-                data.push({ from: 'Cash Flow', to: 'Surplus', flow: surplus });
-            }
+      <button class="submit-btn" onclick="addTransaction()">Add Transaction</button>
+    </div>
+  </div>
 
-            const colors = {
-                'Payment': '#4caf50',
-                'Refund': '#66bb6a',
-                'Cash Flow': '#66bb6a',
-                'Food & Dining': '#ef5350',
-                'Transportation': '#ff7043',
-                'Utilities': '#42a5f5',
-                'Shopping': '#ab47bc',
-                'Groceries': '#26a69a',
-                'Entertainment': '#5c6bc0',
-                'Personal Care': '#ec407a',
-                'Installments': '#ffa726',
-                'Other': '#78909c',
-                'Surplus': '#8bc34a'
-            };
+  <script src="../scripts/memory.js"></script>
+  <script>
+    // Categories with emojis and colors
+    const categories = {
+      expense: [
+        { id: 'food', emoji: '🍔', label: 'Food', color: '#ef5350' },
+        { id: 'transport', emoji: '🚗', label: 'Transport', color: '#ff7043' },
+        { id: 'shopping', emoji: '🛍️', label: 'Shopping', color: '#ab47bc' },
+        { id: 'utilities', emoji: '💡', label: 'Utilities', color: '#42a5f5' },
+        { id: 'groceries', emoji: '🛒', label: 'Groceries', color: '#26a69a' },
+        { id: 'entertainment', emoji: '🎬', label: 'Fun', color: '#5c6bc0' },
+        { id: 'health', emoji: '💊', label: 'Health', color: '#ec407a' },
+        { id: 'other', emoji: '📦', label: 'Other', color: '#78909c' }
+      ],
+      income: [
+        { id: 'salary', emoji: '💵', label: 'Salary', color: '#4caf50' },
+        { id: 'freelance', emoji: '💻', label: 'Freelance', color: '#66bb6a' },
+        { id: 'investment', emoji: '📈', label: 'Investment', color: '#43a047' },
+        { id: 'gift', emoji: '🎁', label: 'Gift', color: '#81c784' },
+        { id: 'refund', emoji: '↩️', label: 'Refund', color: '#a5d6a7' },
+        { id: 'bonus', emoji: '🏆', label: 'Bonus', color: '#2e7d32' },
+        { id: 'rental', emoji: '🏠', label: 'Rental', color: '#388e3c' },
+        { id: 'other', emoji: '📦', label: 'Other', color: '#78909c' }
+      ]
+    };
 
-            new Chart(ctx, {
-                type: 'sankey',
-                data: {
-                    datasets: [{
-                        label: 'Cashflow',
-                        data: data,
-                        colorFrom: (c) => colors[c.dataset.data[c.dataIndex].from],
-                        colorTo: (c) => colors[c.dataset.data[c.dataIndex].to],
-                        colorMode: 'gradient',
-                        size: 'max',
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return `${context.raw.from} → ${context.raw.to}: AED ${context.raw.flow.toFixed(2)}`;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
+    let currentType = 'expense';
+    let selectedCategory = null;
+    let currentFilter = 'all';
 
-        // Render category breakdown
-        function renderCategoryBreakdown() {
-            const container = document.getElementById('categoryBreakdown');
-            const totals = calculateCategoryTotals();
-            const maxAmount = Math.max(...Object.values(totals));
+    // Get transactions from memory
+    function getTransactions() {
+      return Memory.get('finance', 'transactions') || [];
+    }
 
-            const sortedCategories = Object.entries(totals).sort((a, b) => b[1] - a[1]);
+    function saveTransactions(transactions) {
+      Memory.set('finance', 'transactions', transactions);
+    }
 
-            container.innerHTML = sortedCategories.map(([category, amount]) => `
-                <div class="category-card">
-                    <div class="category-header">
-                        <span class="category-name">
-                            <span class="category-dot" style="background: ${categoryColors[category] || '#78909c'}"></span>
-                            ${category}
-                        </span>
-                        <span class="category-amount">AED ${amount.toFixed(2)}</span>
-                    </div>
-                    <div class="category-bar">
-                        <div class="category-bar-fill" style="width: ${(amount / maxAmount) * 100}%; background: ${categoryColors[category] || '#78909c'}"></div>
-                    </div>
+    // Format currency
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(amount);
+    }
+
+    // Format date
+    function formatDate(dateStr) {
+      const date = new Date(dateStr);
+      const today = new Date();
+      const yesterday = new Date(today);
+      yesterday.setDate(yesterday.getDate() - 1);
+
+      if (date.toDateString() === today.toDateString()) return 'Today';
+      if (date.toDateString() === yesterday.toDateString()) return 'Yesterday';
+
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    }
+
+    // Get category info
+    function getCategoryInfo(type, categoryId) {
+      const cats = categories[type] || categories.expense;
+      return cats.find(c => c.id === categoryId) || cats.find(c => c.id === 'other');
+    }
+
+    // Calculate totals
+    function calculateTotals() {
+      const transactions = getTransactions();
+      let income = 0, expense = 0;
+
+      transactions.forEach(t => {
+        if (t.type === 'income') income += t.amount;
+        else expense += t.amount;
+      });
+
+      document.getElementById('totalIncome').textContent = formatCurrency(income);
+      document.getElementById('totalExpense').textContent = formatCurrency(expense);
+      document.getElementById('totalBalance').textContent = formatCurrency(income - expense);
+    }
+
+    // Render category filters
+    function renderCategoryFilters() {
+      const container = document.getElementById('categoryFilter');
+      const transactions = getTransactions();
+
+      // Get unique categories
+      const usedCategories = new Set();
+      transactions.forEach(t => {
+        const cat = getCategoryInfo(t.type, t.category);
+        usedCategories.add(JSON.stringify({ id: t.category, type: t.type, emoji: cat.emoji, label: cat.label }));
+      });
+
+      let html = '<button class="filter-pill ' + (currentFilter === 'all' ? 'active' : '') + '" data-filter="all" onclick="setFilter(\'all\')">All</button>';
+
+      usedCategories.forEach(catStr => {
+        const cat = JSON.parse(catStr);
+        html += `<button class="filter-pill ${currentFilter === cat.id ? 'active' : ''}" data-filter="${cat.id}" onclick="setFilter('${cat.id}')">${cat.emoji} ${cat.label}</button>`;
+      });
+
+      container.innerHTML = html;
+    }
+
+    // Set filter
+    function setFilter(filter) {
+      currentFilter = filter;
+      renderCategoryFilters();
+      renderTransactions();
+    }
+
+    // Render transactions
+    function renderTransactions() {
+      const container = document.getElementById('transactionList');
+      let transactions = getTransactions();
+
+      // Apply filter
+      if (currentFilter !== 'all') {
+        transactions = transactions.filter(t => t.category === currentFilter);
+      }
+
+      // Sort by date (newest first)
+      transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      document.getElementById('transactionCount').textContent = `${transactions.length} item${transactions.length !== 1 ? 's' : ''}`;
+
+      if (transactions.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">💰</div>
+            <p>No transactions yet</p>
+            <p style="font-size: 0.8rem; margin-top: 4px;">Tap + to add your first one</p>
+          </div>
+        `;
+        return;
+      }
+
+      // Group by date
+      const grouped = {};
+      transactions.forEach(t => {
+        const dateKey = formatDate(t.date);
+        if (!grouped[dateKey]) grouped[dateKey] = [];
+        grouped[dateKey].push(t);
+      });
+
+      let html = '';
+      Object.entries(grouped).forEach(([date, items]) => {
+        html += `<div class="date-header">${date}</div>`;
+        items.forEach(t => {
+          const cat = getCategoryInfo(t.type, t.category);
+          html += `
+            <div class="transaction-item" data-id="${t.id}">
+              <div class="swipe-delete">Delete</div>
+              <div class="transaction-inner"
+                   ontouchstart="handleSwipeStart(event)"
+                   ontouchmove="handleSwipeMove(event)"
+                   ontouchend="handleSwipeEnd(event)">
+                <div class="transaction-icon" style="background: ${cat.color}20;">
+                  ${cat.emoji}
                 </div>
-            `).join('');
-        }
-
-        // Render transactions table
-        function renderTransactionsTable() {
-            const tbody = document.querySelector('#transactionsTable tbody');
-
-            tbody.innerHTML = transactions.map(t => `
-                <tr>
-                    <td>${t.date}</td>
-                    <td>${t.description}</td>
-                    <td><span class="category-tag" style="background: ${categoryColors[t.category] || '#e0e0e0'}20; color: ${categoryColors[t.category] || '#666'}">${t.category}</span></td>
-                    <td class="${t.type === 'credit' ? 'amount-credit' : 'amount-debit'}">${t.type === 'credit' ? '+' : '-'} ${t.amount.toFixed(2)}</td>
-                </tr>
-            `).join('');
-        }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            createSankeyChart();
-            renderCategoryBreakdown();
-            renderTransactionsTable();
+                <div class="transaction-details">
+                  <div class="transaction-desc">${escapeHtml(t.description)}</div>
+                  <div class="transaction-meta">
+                    <span class="transaction-category">${cat.label}</span>
+                  </div>
+                </div>
+                <div class="transaction-amount ${t.type}">
+                  ${t.type === 'income' ? '+' : '-'}${formatCurrency(t.amount)}
+                </div>
+              </div>
+            </div>
+          `;
         });
-    </script>
+      });
+
+      container.innerHTML = html;
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Swipe handling
+    let swipeStartX = 0;
+    let swipeCurrentX = 0;
+    let swipingItem = null;
+    let swipingInner = null;
+
+    function handleSwipeStart(e) {
+      swipeStartX = e.touches[0].clientX;
+      swipeCurrentX = swipeStartX;
+      swipingInner = e.currentTarget;
+      swipingItem = swipingInner.closest('.transaction-item');
+    }
+
+    function handleSwipeMove(e) {
+      if (!swipingInner || !swipingItem) return;
+
+      swipeCurrentX = e.touches[0].clientX;
+      const diff = swipeCurrentX - swipeStartX;
+
+      // Only allow left swipe (negative diff)
+      if (diff < 0) {
+        const maxSwipe = 100;
+        let clampedDiff = Math.max(diff, -maxSwipe);
+
+        swipingInner.style.transform = `translateX(${clampedDiff}px)`;
+
+        const deleteBg = swipingItem.querySelector('.swipe-delete');
+        deleteBg.style.opacity = Math.min(1, Math.abs(diff) / 60);
+      }
+    }
+
+    function handleSwipeEnd(e) {
+      if (!swipingInner || !swipingItem) return;
+
+      const diff = swipeCurrentX - swipeStartX;
+      const threshold = 80;
+
+      if (diff < -threshold) {
+        // Delete action
+        swipingItem.style.transition = 'transform 0.3s, opacity 0.3s';
+        swipingItem.style.transform = 'translateX(-100%)';
+        swipingItem.style.opacity = '0';
+
+        const id = swipingItem.dataset.id;
+        setTimeout(() => {
+          deleteTransaction(id);
+        }, 300);
+      } else {
+        // Reset
+        swipingInner.style.transition = 'transform 0.2s ease-out';
+        swipingInner.style.transform = 'translateX(0)';
+
+        const deleteBg = swipingItem.querySelector('.swipe-delete');
+        deleteBg.style.opacity = 0;
+
+        setTimeout(() => {
+          if (swipingInner) swipingInner.style.transition = '';
+        }, 200);
+      }
+
+      swipingItem = null;
+      swipingInner = null;
+    }
+
+    // Delete transaction
+    function deleteTransaction(id) {
+      const transactions = getTransactions();
+      const index = transactions.findIndex(t => t.id === id);
+      if (index !== -1) {
+        transactions.splice(index, 1);
+        saveTransactions(transactions);
+        renderAll();
+      }
+    }
+
+    // Modal functions
+    function openModal() {
+      document.getElementById('addModal').classList.remove('hidden');
+      renderCategoryGrid();
+      document.getElementById('amountInput').focus();
+    }
+
+    function closeModal(e) {
+      if (!e || e.target === e.currentTarget) {
+        document.getElementById('addModal').classList.add('hidden');
+        resetForm();
+      }
+    }
+
+    function resetForm() {
+      document.getElementById('amountInput').value = '';
+      document.getElementById('descInput').value = '';
+      selectedCategory = null;
+      setType('expense');
+    }
+
+    function setType(type) {
+      currentType = type;
+      selectedCategory = null;
+
+      document.querySelectorAll('.type-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.classList.contains(type)) {
+          btn.classList.add('active');
+        }
+      });
+
+      renderCategoryGrid();
+    }
+
+    function renderCategoryGrid() {
+      const container = document.getElementById('categoryGrid');
+      const cats = categories[currentType];
+
+      container.innerHTML = cats.map(cat => `
+        <button class="category-btn ${selectedCategory === cat.id ? 'active' : ''}" onclick="selectCategory('${cat.id}')">
+          <span class="emoji">${cat.emoji}</span>
+          <span class="label">${cat.label}</span>
+        </button>
+      `).join('');
+    }
+
+    function selectCategory(id) {
+      selectedCategory = id;
+      renderCategoryGrid();
+    }
+
+    function addTransaction() {
+      const amount = parseFloat(document.getElementById('amountInput').value);
+      const description = document.getElementById('descInput').value.trim();
+
+      if (!amount || amount <= 0) {
+        document.getElementById('amountInput').focus();
+        return;
+      }
+
+      if (!description) {
+        document.getElementById('descInput').focus();
+        return;
+      }
+
+      if (!selectedCategory) {
+        selectedCategory = 'other';
+      }
+
+      const transactions = getTransactions();
+      transactions.push({
+        id: Date.now().toString(),
+        type: currentType,
+        amount: amount,
+        description: description,
+        category: selectedCategory,
+        date: new Date().toISOString()
+      });
+
+      saveTransactions(transactions);
+      closeModal();
+      renderAll();
+    }
+
+    function renderAll() {
+      calculateTotals();
+      renderCategoryFilters();
+      renderTransactions();
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      Memory.setLastVisited('finance');
+      renderAll();
+
+      // Enter key to submit
+      document.getElementById('descInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') addTransaction();
+      });
+    });
+  </script>
 </body>
 </html>

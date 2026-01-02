@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0E121A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Research - Daily Do</title>
+  <link rel="stylesheet" href="../styles/app.css">
+  <style>
+    .research-container {
+      padding-bottom: 100px;
+    }
+
+    .research-header {
+      text-align: center;
+      padding: var(--spacing-lg) 0;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .research-header h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .research-header .subtitle {
+      color: var(--text-gray);
+      font-size: 0.9rem;
+    }
+
+    .verdict-card {
+      background: linear-gradient(135deg, rgba(138, 233, 141, 0.15), rgba(138, 233, 141, 0.05));
+      border: 1px solid rgba(138, 233, 141, 0.3);
+      border-radius: 16px;
+      padding: var(--spacing-lg);
+      margin-bottom: var(--spacing-lg);
+      text-align: center;
+    }
+
+    .verdict-badge {
+      display: inline-block;
+      background: var(--accent-mint);
+      color: var(--bg-dark);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+    }
+
+    .verdict-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .verdict-price {
+      color: var(--accent-yellow);
+      font-size: 2rem;
+      font-weight: 800;
+    }
+
+    .verdict-note {
+      color: var(--text-gray);
+      font-size: 0.85rem;
+      margin-top: 8px;
+    }
+
+    .section-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: var(--spacing-md);
+      margin-bottom: var(--spacing-md);
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: var(--spacing-md);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title .icon {
+      font-size: 1.2rem;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .stat-item {
+      background: rgba(255,255,255,0.05);
+      padding: 12px;
+      border-radius: 10px;
+    }
+
+    .stat-value {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--accent-yellow);
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-gray);
+      margin-top: 4px;
+    }
+
+    .progress-bar {
+      background: rgba(255,255,255,0.1);
+      border-radius: 8px;
+      height: 8px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 8px;
+      transition: width 0.5s ease;
+    }
+
+    .progress-fill.green { background: var(--accent-mint); }
+    .progress-fill.yellow { background: var(--accent-yellow); }
+    .progress-fill.blue { background: #4A90D9; }
+    .progress-fill.purple { background: #9B59B6; }
+
+    .comparison-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .comparison-item:last-child {
+      border-bottom: none;
+    }
+
+    .comparison-label {
+      font-size: 0.9rem;
+    }
+
+    .comparison-value {
+      font-weight: 600;
+    }
+
+    .comparison-value.highlight {
+      color: var(--accent-mint);
+    }
+
+    .segment-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .segment-item {
+      background: rgba(255,255,255,0.05);
+      padding: 12px 14px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .segment-name {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+    }
+
+    .segment-emoji {
+      font-size: 1.2rem;
+    }
+
+    .segment-percent {
+      font-weight: 600;
+      color: var(--accent-yellow);
+    }
+
+    .player-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .player-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px;
+    }
+
+    .player-rank {
+      background: var(--accent-yellow);
+      color: var(--bg-dark);
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .player-info {
+      flex: 1;
+    }
+
+    .player-name {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .player-detail {
+      font-size: 0.75rem;
+      color: var(--text-gray);
+    }
+
+    .gap-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .gap-item {
+      padding: 12px;
+      background: rgba(247, 200, 70, 0.1);
+      border-left: 3px solid var(--accent-yellow);
+      border-radius: 0 8px 8px 0;
+    }
+
+    .gap-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .gap-desc {
+      font-size: 0.8rem;
+      color: var(--text-gray);
+    }
+
+    .rec-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .rec-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .rec-number {
+      background: var(--accent-mint);
+      color: var(--bg-dark);
+      min-width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .rec-text {
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .swot-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .swot-item {
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 0.8rem;
+    }
+
+    .swot-item.strength {
+      background: rgba(138, 233, 141, 0.15);
+      border: 1px solid rgba(138, 233, 141, 0.3);
+    }
+
+    .swot-item.weakness {
+      background: rgba(231, 76, 60, 0.15);
+      border: 1px solid rgba(231, 76, 60, 0.3);
+    }
+
+    .swot-item.opportunity {
+      background: rgba(74, 144, 217, 0.15);
+      border: 1px solid rgba(74, 144, 217, 0.3);
+    }
+
+    .swot-item.threat {
+      background: rgba(247, 200, 70, 0.15);
+      border: 1px solid rgba(247, 200, 70, 0.3);
+    }
+
+    .swot-label {
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .swot-item.strength .swot-label { color: var(--accent-mint); }
+    .swot-item.weakness .swot-label { color: #E74C3C; }
+    .swot-item.opportunity .swot-label { color: #4A90D9; }
+    .swot-item.threat .swot-label { color: var(--accent-yellow); }
+
+    .swot-points {
+      color: var(--text-gray);
+      line-height: 1.6;
+    }
+
+    .last-updated {
+      text-align: center;
+      color: var(--text-gray);
+      font-size: 0.75rem;
+      padding: var(--spacing-md);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="page-content research-container">
+
+      <a href="../index.html" style="display: inline-flex; align-items: center; gap: 8px; color: var(--text-gray); text-decoration: none; font-size: 0.9rem; margin-bottom: 12px;">
+        <span>←</span> Back to Daily Do
+      </a>
+
+      <div class="research-header">
+        <h1>Indonesian Study Abroad</h1>
+        <p class="subtitle">UK Master's Program Market Analysis</p>
+      </div>
+
+      <!-- Verdict Card -->
+      <div class="verdict-card animate-fade-in">
+        <span class="verdict-badge">STRONG VIABILITY</span>
+        <div class="verdict-title">UK Master's Program</div>
+        <div class="verdict-price">£10,950 GBP</div>
+        <div class="verdict-note">36% below UK average (£17,109)</div>
+      </div>
+
+      <!-- Market Overview -->
+      <div class="section-card animate-slide-up">
+        <div class="section-title">
+          <span class="icon">📊</span>
+          Market Overview
+        </div>
+        <div class="stat-grid">
+          <div class="stat-item">
+            <div class="stat-value">62,800+</div>
+            <div class="stat-label">Students Abroad</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">~3,000</div>
+            <div class="stat-label">Choose UK/Year</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">21%</div>
+            <div class="stat-label">Growth Since 2014</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">45%</div>
+            <div class="stat-label">Need Scholarships</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Price Position -->
+      <div class="section-card animate-slide-up">
+        <div class="section-title">
+          <span class="icon">💰</span>
+          Price Positioning
+        </div>
+
+        <div class="comparison-item">
+          <span class="comparison-label">Your Program</span>
+          <span class="comparison-value highlight">£10,950</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill green" style="width: 35%"></div>
+        </div>
+
+        <div class="comparison-item">
+          <span class="comparison-label">UK Average</span>
+          <span class="comparison-value">£17,109</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill yellow" style="width: 55%"></div>
+        </div>
+
+        <div class="comparison-item">
+          <span class="comparison-label">Premium UK</span>
+          <span class="comparison-value">£25,000+</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill purple" style="width: 80%"></div>
+        </div>
+
+        <div class="comparison-item">
+          <span class="comparison-label">In IDR (~21,629/GBP)</span>
+          <span class="comparison-value highlight">IDR 236.8M</span>
+        </div>
+      </div>
+
+      <!-- Customer Segments -->
+      <div class="section-card animate-slide-up">
+        <div class="section-title">
+          <span class="icon">👥</span>
+          Customer Segments
+        </div>
+        <div class="segment-list">
+          <div class="segment-item">
+            <span class="segment-name">
+              <span class="segment-emoji">💼</span>
+              Ambitious Professional
+            </span>
+            <span class="segment-percent">30%</span>
+          </div>
+          <div class="segment-item">
+            <span class="segment-name">
+              <span class="segment-emoji">🎓</span>
+              Scholarship Seeker
+            </span>
+            <span class="segment-percent">25%</span>
+          </div>
+          <div class="segment-item">
+            <span class="segment-name">
+              <span class="segment-emoji">👨‍👩‍👧</span>
+              Family-Funded
+            </span>
+            <span class="segment-percent">25%</span>
+          </div>
+          <div class="segment-item">
+            <span class="segment-name">
+              <span class="segment-emoji">🌟</span>
+              Budget Achiever
+            </span>
+            <span class="segment-percent">15%</span>
+          </div>
+          <div class="segment-item">
+            <span class="segment-name">
+              <span class="segment-emoji">💻</span>
+              Digital Native
+            </span>
+            <span class="segment-percent">5%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Destinations -->
+      <div class="section-card animate-slide-up">
+        <div class="section-title">
+          <span class="icon">🌏</span>
+          Top Destinations
+        </div>
+        <div class="player-list">
+          <div class="player-item">
+            <span class="player-rank">1</span>
+            <div class="player-info">
+              <div class="player-name">Australia</div>
+              <div class="player-detail">23,326 students • +41% growth</div>
+            </div>
+          </div>
+          <div class="player-item">
+            <span class="player-rank">2</span>
+            <div class="player-info">
+              <div class="player-name">Malaysia</div>
+              <div class="player-detail">9,862 students • Proximity advantage</div>
+            </div>
+          </div>
+          <div class="player-item">
+            <span class="player-rank">3</span>
+            <div class="player-info">
+              <div class="player-name">USA</div>
+              <div class="player-detail">Strong brand recognition</div>
+            </div>
+          </div>
+          <div class="player-item">
+            <span class="player-rank">4</span>
+            <div class="player-info">
+              <div class="player-name">Japan</div>
+              <div class="player-detail">5,095 students • Cultural affinity</div>
+            </div>
+          </div>
+          <div class="player-item">
+            <span class="player-rank">5</span>
+            <div class="player-info">
+              <div class="player-name">United Kingdom</div>
+              <div class="player-detail">~3,000/year • Quality perception</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Key Agents -->
+      <div class="section-card animate-slide-up">
+        <div class="section-title">
+          <span class="icon">🤝</span>
+          Key Education Agents
+        </div>
+        <div class="player-list">
+          <div class="player-item">
+            <span class="player-rank">1</span>
+            <div class="player-info">
+              <div class="player-name">SUN Education</div>
+              <div class="player-detail">12 cities • Local market leader</div>
+            </div>
+          </div>
+          <div class="player-item">
+            <span class="player-rank">2</span>
+            <div class="player-info">
+              <div class="player-name">IDP Education</div>
+              <div class="player-detail">210+ offices • 113K students/year</div>
+            </div>
+          </div>
+          <div class="player-item">
+            <span class="player-rank">3</span>
+            <div class="player-info">
+              <div class="player-name">HOPE Education</div>
+              <div class="player-detail">Since 1991 • IKPII founder</div>
+            </div>
+          </div>
+          <div class="player-item">
+            <span class="player-rank">4</span>
+            <div class="player-info">
+              <div class="player-name">AECC Global</div>
+              <div class="player-detail">750+ partner institutions</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Market Gaps -->
+      <div class="section-card animate-slide-up">
+        <div class="section-title">
+          <span class="icon">🎯</span>
+          Market Gaps & Opportunities
+        </div>
+        <div class="gap-list">
+          <div class="gap-item">
+            <div class="gap-title">Affordable Quality UK Programs</div>
+            <div class="gap-desc">Most UK programs £17,000+; few sub-£12,000 options exist</div>
+          </div>
+          <div class="gap-item">
+            <div class="gap-title">Working Professional Options</div>
+            <div class="gap-desc">Limited part-time/hybrid UK master's for employed students</div>
+          </div>
+          <div class="gap-item">
+            <div class="gap-title">Tier-2 City Access</div>
+            <div class="gap-desc">Surabaya, Medan, Makassar underserved by agents</div>
+          </div>
+          <div class="gap-item">
+            <div class="gap-title">LPDP-Listed Universities</div>
+            <div class="gap-desc">Only 69 UK universities on scholarship list; demand growing</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SWOT Analysis -->
+      <div class="section-card animate-slide-up">
+        <div class="section-title">
+          <span class="icon">⚖️</span>
+          SWOT Analysis
+        </div>
+        <div class="swot-grid">
+          <div class="swot-item strength">
+            <div class="swot-label">Strengths</div>
+            <div class="swot-points">
+              • 36% below UK average<br>
+              • UK degree prestige<br>
+              • 1-year duration
+            </div>
+          </div>
+          <div class="swot-item weakness">
+            <div class="swot-label">Weaknesses</div>
+            <div class="swot-points">
+              • Quality perception risk<br>
+              • Brand unknown<br>
+              • Needs LPDP listing
+            </div>
+          </div>
+          <div class="swot-item opportunity">
+            <div class="swot-label">Opportunities</div>
+            <div class="swot-points">
+              • AU/CA restrictions<br>
+              • Partner with agents<br>
+              • Target professionals
+            </div>
+          </div>
+          <div class="swot-item threat">
+            <div class="swot-label">Threats</div>
+            <div class="swot-points">
+              • Currency volatility<br>
+              • UK visa costs rising<br>
+              • Germany (free tuition)
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recommendations -->
+      <div class="section-card animate-slide-up">
+        <div class="section-title">
+          <span class="icon">✅</span>
+          Top Recommendations
+        </div>
+        <div class="rec-list">
+          <div class="rec-item">
+            <span class="rec-number">1</span>
+            <span class="rec-text"><strong>Get LPDP accreditation</strong> - 30% of students rely on this government scholarship</span>
+          </div>
+          <div class="rec-item">
+            <span class="rec-number">2</span>
+            <span class="rec-text"><strong>Partner with SUN & HOPE</strong> - Dominant local education agents</span>
+          </div>
+          <div class="rec-item">
+            <span class="rec-number">3</span>
+            <span class="rec-text"><strong>Focus on Business & Tech</strong> - Highest demand fields (35% choose business)</span>
+          </div>
+          <div class="rec-item">
+            <span class="rec-number">4</span>
+            <span class="rec-text"><strong>Target working professionals</strong> - Underserved segment seeking flexibility</span>
+          </div>
+          <div class="rec-item">
+            <span class="rec-number">5</span>
+            <span class="rec-text"><strong>Emphasize value + quality</strong> - UK prestige at accessible price wins</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Revenue Projection -->
+      <div class="section-card animate-slide-up">
+        <div class="section-title">
+          <span class="icon">📈</span>
+          Revenue Projection
+        </div>
+        <div class="comparison-item">
+          <span class="comparison-label">Year 1 (50 students)</span>
+          <span class="comparison-value">£547,500</span>
+        </div>
+        <div class="comparison-item">
+          <span class="comparison-label">Year 2 (100 students)</span>
+          <span class="comparison-value">£1,095,000</span>
+        </div>
+        <div class="comparison-item">
+          <span class="comparison-label">Year 3 (150 students)</span>
+          <span class="comparison-value highlight">£1,642,500</span>
+        </div>
+      </div>
+
+      <!-- Sources -->
+      <div class="section-card animate-slide-up">
+        <div class="section-title">
+          <span class="icon">📚</span>
+          Sources & References
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <a href="https://monitor.icef.com/category/regions/asia/indonesia/" target="_blank" style="color: var(--accent-yellow); font-size: 0.85rem; text-decoration: none;">
+            ICEF Monitor - Indonesia Market →
+          </a>
+          <a href="https://gslglobal.com/2025/01/31/inbound-insight-indonesia/" target="_blank" style="color: var(--accent-yellow); font-size: 0.85rem; text-decoration: none;">
+            Global Student Living - Indonesia Insight →
+          </a>
+          <a href="https://jakartaglobe.id/lifestyle/more-than-3000-indonesian-students-enroll-in-uk-universities-every-year" target="_blank" style="color: var(--accent-yellow); font-size: 0.85rem; text-decoration: none;">
+            Jakarta Globe - Indonesian Students in UK →
+          </a>
+          <a href="https://education-services.britishcouncil.org/insights-blog/notes-field-tips-recruiting-success-indonesias-growing-undergrad-market" target="_blank" style="color: var(--accent-yellow); font-size: 0.85rem; text-decoration: none;">
+            British Council - Indonesia Market →
+          </a>
+          <a href="https://www.findamasters.com/guides/masters-study-in-uk/international-fees" target="_blank" style="color: var(--accent-yellow); font-size: 0.85rem; text-decoration: none;">
+            FindAMasters - UK Fees Guide →
+          </a>
+          <a href="https://www.idp.com/indonesia/blog/lpdp-scholarship/?lang=en" target="_blank" style="color: var(--accent-yellow); font-size: 0.85rem; text-decoration: none;">
+            IDP - LPDP Scholarship Guide →
+          </a>
+          <a href="https://opendoorsdata.org/wp-content/uploads/2024/11/OpenDoors_FactSheet_Indonesia_2024.pdf" target="_blank" style="color: var(--accent-yellow); font-size: 0.85rem; text-decoration: none;">
+            Open Doors Data - Indonesia (PDF) →
+          </a>
+          <a href="https://www.statista.com/statistics/1272467/indonesia-tertiary-level-students-by-country-of-destination/" target="_blank" style="color: var(--accent-yellow); font-size: 0.85rem; text-decoration: none;">
+            Statista - Indonesian Students Abroad →
+          </a>
+          <a href="https://www.trade.gov/country-commercial-guides/indonesia-education-and-training" target="_blank" style="color: var(--accent-yellow); font-size: 0.85rem; text-decoration: none;">
+            U.S. Trade - Indonesia Education →
+          </a>
+          <a href="https://carnegieendowment.org/research/2025/10/indonesias-fragile-middle-class" target="_blank" style="color: var(--accent-yellow); font-size: 0.85rem; text-decoration: none;">
+            Carnegie - Indonesia's Middle Class →
+          </a>
+        </div>
+      </div>
+
+      <div class="last-updated">
+        Last Updated: January 2026
+      </div>
+
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+      <ul class="nav-items">
+        <li class="nav-item">
+          <a href="../index.html" class="nav-link">
+            <span class="nav-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9,22 9,12 15,12 15,22"/>
+              </svg>
+            </span>
+            <span class="nav-label">Home</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="../finance/summary.html" class="nav-link">
+            <span class="nav-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="1" x2="12" y2="23"/>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              </svg>
+            </span>
+            <span class="nav-label">Finance</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="../fitness/index.html" class="nav-link">
+            <span class="nav-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6.5 6.5m-2.5 0a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0 -5 0"/>
+                <path d="M3 12h4l3 8 4-16 3 8h4"/>
+              </svg>
+            </span>
+            <span class="nav-label">Fitness</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="index.html" class="nav-link active">
+            <span class="nav-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="M21 21l-4.35-4.35"/>
+              </svg>
+            </span>
+            <span class="nav-label">Research</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <script src="../scripts/memory.js"></script>
+  <script>
+    Memory.setLastVisited('research');
+  </script>
+</body>
+</html>
