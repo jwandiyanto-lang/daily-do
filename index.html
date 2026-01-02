@@ -228,32 +228,25 @@
       z-index: 2;
     }
 
-    /* Swipe backgrounds */
+    /* Swipe backgrounds - hidden by default */
     .swipe-bg {
       position: absolute;
       top: 0;
       bottom: 0;
       width: 100%;
-      display: flex;
-      align-items: center;
-      padding: 0 20px;
-      font-weight: 600;
-      font-size: 0.85rem;
       z-index: 1;
+      opacity: 0;
+      transition: opacity 0.15s ease-out;
     }
 
     .swipe-bg.left {
       left: 0;
       background: var(--accent-mint);
-      color: #0E121A;
-      justify-content: flex-start;
     }
 
     .swipe-bg.right {
       right: 0;
       background: var(--accent-yellow);
-      color: #0E121A;
-      justify-content: flex-end;
     }
 
     .todo-text {
@@ -273,19 +266,6 @@
       opacity: 0.7;
     }
 
-    /* Snoozed item styling */
-    .todo-item.snoozed {
-      border-left: 3px solid var(--accent-yellow);
-    }
-
-    .snooze-badge {
-      font-size: 0.7rem;
-      color: var(--accent-yellow);
-      background: rgba(247, 200, 70, 0.15);
-      padding: 4px 8px;
-      border-radius: 4px;
-      white-space: nowrap;
-    }
 
     /* FAB */
     .fab {
@@ -751,7 +731,6 @@
       }
 
       listEl.innerHTML = pending.map(todo => {
-        const timeLeft = getSnoozeTimeLeft(todo.snoozedUntil);
         return `
           <div class="todo-item snoozed" data-id="${todo.id}" data-page="pending">
             <div class="swipe-bg left"></div>
@@ -761,7 +740,6 @@
                  ontouchmove="handleSwipeMove(event)"
                  ontouchend="handleSwipeEnd(event, 'pending')">
               <span class="todo-text">${escapeHtml(todo.text)}</span>
-              ${timeLeft ? `<span class="snooze-badge">${timeLeft}</span>` : ''}
             </div>
           </div>
         `;
