@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dailydo-v12';
+const CACHE_NAME = 'dailydo-v13';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -6,9 +6,6 @@ const STATIC_ASSETS = [
   './scripts/memory.js',
   './manifest.json',
   './fitness/index.html',
-  './fitness/vertical.html',
-  './fitness/horizontal.html',
-  './fitness/legs.html',
   './finance/summary.html',
   './linkedin/index.html',
   './research/index.html',

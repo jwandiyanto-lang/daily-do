@@ -3,458 +3,322 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fitness - January 2026</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>Fitness - Daily Do</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
             font-family: 'Inter', -apple-system, sans-serif;
-            background: linear-gradient(135deg, #fdfcfb 0%, #f5f3f0 50%, #e8e4df 100%);
+            background: #0E121A;
             min-height: 100vh;
-            color: #2d2d2d;
-            padding: 30px 20px;
-            font-weight: 400;
-            line-height: 1.6;
+            color: #fff;
+            padding: 20px;
+            padding-bottom: 100px;
         }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .tag {
-            display: inline-block;
-            background: rgba(45, 45, 45, 0.08);
-            color: #666;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.75em;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            margin-bottom: 12px;
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #888;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
         }
 
         h1 {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: 2.5em;
-            font-weight: 500;
+            font-size: 2rem;
+            font-weight: 700;
             margin-bottom: 8px;
-            letter-spacing: -0.5px;
-            color: #1a1a1a;
         }
 
         .subtitle {
             color: #888;
-            margin-bottom: 40px;
-            font-size: 1em;
-            font-weight: 300;
-        }
-
-        /* Calendar */
-        .calendar {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 25px;
             margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
         }
 
-        .calendar-header {
+        /* Tabs */
+        .tabs {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 24px;
         }
 
-        .calendar-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.3em;
-            font-weight: 500;
-        }
-
-        .calendar-nav {
-            display: flex;
-            gap: 10px;
-        }
-
-        .calendar-nav button {
-            background: rgba(45, 45, 45, 0.06);
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: rgba(255,255,255,0.05);
             border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1em;
-            transition: all 0.2s;
-            color: #555;
-        }
-
-        .calendar-nav button:hover {
-            background: #2d2d2d;
-            color: #fff;
-        }
-
-        .weekdays {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-
-        .weekday {
-            text-align: center;
-            font-size: 0.75em;
+            border-radius: 10px;
+            color: #888;
+            font-size: 0.9rem;
             font-weight: 500;
-            color: #999;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 8px;
-        }
-
-        .days {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
-        }
-
-        .day {
-            aspect-ratio: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
             cursor: pointer;
             transition: all 0.2s;
-            background: rgba(255,255,255,0.5);
-            position: relative;
-            font-size: 0.95em;
-            color: #444;
+            font-family: inherit;
         }
 
-        .day:hover {
-            background: rgba(45, 45, 45, 0.1);
+        .tab-btn.active {
+            background: #F7C846;
+            color: #0E121A;
         }
 
-        .day.empty {
-            background: transparent;
-            cursor: default;
-        }
-
-        .day.today {
-            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
-            color: #fff;
-        }
-
-        .day.has-workout::after {
-            content: '';
-            position: absolute;
-            bottom: 6px;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #2d2d2d;
-        }
-
-        .day.today.has-workout::after {
-            background: #fff;
-        }
-
-        .day.completed::after {
-            background: #4ade80 !important;
-        }
-
-        .day.selected {
-            box-shadow: 0 0 0 2px #2d2d2d;
-        }
-
-        /* Day Detail */
-        .day-detail {
+        .tab-content {
             display: none;
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
         }
 
-        .day-detail.show {
+        .tab-content.active {
             display: block;
         }
 
-        .day-detail-header {
+        /* Today's Mix */
+        .today-mix {
+            background: linear-gradient(135deg, #1a1f2e 0%, #0E121A 100%);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .mix-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
         }
 
-        .day-detail h3 {
-            font-family: 'Playfair Display', serif;
-            font-weight: 500;
+        .mix-title {
+            font-size: 1.1rem;
+            font-weight: 600;
         }
 
-        .day-workout {
-            background: rgba(255,255,255,0.8);
-            padding: 15px;
-            border-radius: 10px;
+        .shuffle-btn {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .mix-workout {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 16px;
             margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .day-workout.completed {
-            border-left: 3px solid #4ade80;
+        .mix-workout:last-child {
+            margin-bottom: 0;
+        }
+
+        .mix-workout-info {
+            flex: 1;
+        }
+
+        .mix-workout-name {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .mix-workout-meta {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .mix-workout-time {
+            background: rgba(247, 200, 70, 0.2);
+            color: #F7C846;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .start-btn {
+            width: 100%;
+            padding: 16px;
+            background: #F7C846;
+            border: none;
+            border-radius: 12px;
+            color: #0E121A;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 16px;
+            font-family: inherit;
+        }
+
+        /* Workout Library */
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #888;
+        }
+
+        .workout-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .workout-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 14px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .workout-card:hover {
+            background: rgba(255,255,255,0.08);
+        }
+
+        .workout-card.selected {
+            border-color: #F7C846;
+            background: rgba(247, 200, 70, 0.1);
+        }
+
+        .workout-icon {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .workout-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+
+        .workout-desc {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 8px;
+        }
+
+        .workout-time {
+            font-size: 0.75rem;
+            color: #F7C846;
+            font-weight: 500;
+        }
+
+        /* Build Your Mix */
+        .build-mix {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .build-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .build-title {
+            font-weight: 600;
+        }
+
+        .build-total {
+            color: #F7C846;
+            font-size: 0.9rem;
+        }
+
+        .selected-list {
+            margin-bottom: 12px;
+        }
+
+        .selected-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .selected-item:last-child {
+            border: none;
         }
 
         .remove-btn {
             background: none;
             border: none;
-            color: #aaa;
+            color: #888;
             cursor: pointer;
-            font-size: 1.2em;
-            padding: 5px;
+            font-size: 1.2rem;
         }
 
-        .remove-btn:hover {
-            color: #e74c3c;
-        }
-
-        .empty-day {
-            color: #999;
-            font-size: 0.9em;
-            text-align: center;
-            padding: 20px;
-        }
-
-        /* Submit Section */
-        .submit-section {
-            background: linear-gradient(135deg, rgba(45,45,45,0.03) 0%, rgba(45,45,45,0.08) 100%);
+        /* History */
+        .history-item {
+            background: rgba(255,255,255,0.05);
             border-radius: 12px;
-            padding: 20px;
-            margin-top: 15px;
+            padding: 16px;
+            margin-bottom: 12px;
         }
 
-        .submit-section h4 {
-            font-weight: 500;
-            margin-bottom: 10px;
-            font-size: 0.9em;
-        }
-
-        .submit-textarea {
-            background: rgba(255,255,255,0.8);
-            border: 1px solid rgba(0,0,0,0.1);
-            border-radius: 10px;
-            padding: 12px;
-            width: 100%;
-            min-height: 100px;
-            font-family: inherit;
-            font-size: 0.85em;
-            resize: none;
-            color: #333;
-        }
-
-        .submit-textarea:focus {
-            outline: none;
-            border-color: #2d2d2d;
-        }
-
-        .submit-btn {
-            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
-            color: #fff;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 0.9em;
-            font-weight: 500;
-            cursor: pointer;
-            margin-top: 10px;
-            font-family: inherit;
-            transition: all 0.2s;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-
-        /* Section Headers */
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(0,0,0,0.08);
-        }
-
-        .section-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.3em;
-            font-weight: 500;
-        }
-
-        /* Strength Cards */
-        .strength-cards {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 40px;
-        }
-
-        .strength-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            padding: 20px;
-            border-radius: 16px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-decoration: none;
-            color: inherit;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-        }
-
-        .strength-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-        }
-
-        .strength-icon {
-            font-size: 1.5em;
-            margin-bottom: 10px;
-        }
-
-        .strength-name {
-            font-weight: 500;
-            font-size: 0.9em;
-        }
-
-        .strength-desc {
+        .history-date {
+            font-size: 0.8rem;
             color: #888;
-            font-size: 0.75em;
-            margin-top: 5px;
+            margin-bottom: 8px;
         }
 
-        /* Filters */
-        .filters {
+        .history-workouts {
             display: flex;
-            gap: 8px;
             flex-wrap: wrap;
-            margin-bottom: 25px;
+            gap: 8px;
         }
 
-        .filter-btn {
-            background: rgba(255,255,255,0.6);
-            border: 1px solid rgba(0,0,0,0.08);
-            color: #666;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.85em;
-            font-weight: 400;
-            transition: all 0.2s;
-            font-family: inherit;
-        }
-
-        .filter-btn:hover, .filter-btn.active {
-            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
-            color: #fff;
-            border-color: transparent;
-        }
-
-        /* Workout Cards */
-        .workout-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .workout-card {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 20px;
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(10px);
-            border-radius: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
-        }
-
-        .workout-card:hover {
-            background: rgba(255, 255, 255, 0.9);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-        }
-
-        .workout-info {
-            flex: 1;
-        }
-
-        .workout-name {
-            font-weight: 500;
-            font-size: 1em;
-            margin-bottom: 4px;
-            color: #1a1a1a;
-        }
-
-        .workout-meta {
-            display: flex;
-            gap: 15px;
-            color: #888;
-            font-size: 0.85em;
-        }
-
-        .workout-type-tag {
-            background: rgba(45,45,45,0.08);
+        .history-tag {
+            background: rgba(138, 233, 141, 0.2);
+            color: #8AE98D;
             padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.7em;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+        }
+
+        .history-total {
+            margin-top: 8px;
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
             color: #666;
         }
 
-        .add-btn {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(45,45,45,0.08);
-            cursor: pointer;
-            font-size: 1.3em;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            color: #555;
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
         }
 
-        .add-btn:hover {
-            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
-            color: #fff;
-        }
-
-        /* Modal */
+        /* Active Workout Modal */
         .modal {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(5px);
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
             z-index: 100;
             align-items: center;
             justify-content: center;
+            padding: 20px;
         }
 
         .modal.show {
@@ -462,554 +326,362 @@
         }
 
         .modal-content {
-            background: linear-gradient(135deg, #fdfcfb 0%, #f5f3f0 100%);
-            padding: 30px;
+            background: #1a1f2e;
             border-radius: 20px;
-            max-width: 450px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            position: relative;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: none;
-            font-size: 1.5em;
-            cursor: pointer;
-            color: #888;
-        }
-
-        .modal h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5em;
-            font-weight: 500;
-            margin-bottom: 5px;
-        }
-
-        .modal .workout-type-label {
-            color: #888;
-            font-size: 0.9em;
-            margin-bottom: 20px;
-            display: block;
-        }
-
-        .modal-detail {
-            background: rgba(255,255,255,0.7);
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-        }
-
-        .modal-detail h4 {
-            font-weight: 500;
-            margin-bottom: 12px;
-            font-size: 0.9em;
-        }
-
-        .modal-detail ul {
-            list-style: none;
-        }
-
-        .modal-detail li {
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(0,0,0,0.06);
-            font-size: 0.9em;
-        }
-
-        .modal-detail li:last-child {
-            border: none;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
-            color: #fff;
-            border: none;
-            padding: 14px 28px;
-            border-radius: 10px;
-            font-size: 0.95em;
-            font-weight: 500;
-            cursor: pointer;
+            padding: 30px;
+            max-width: 400px;
             width: 100%;
-            transition: all 0.2s;
-            font-family: inherit;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-
-        .btn-secondary {
-            background: rgba(255,255,255,0.8);
-            color: #2d2d2d;
-            border: 1px solid rgba(0,0,0,0.1);
-            padding: 14px 28px;
-            border-radius: 10px;
-            font-size: 0.95em;
-            font-weight: 500;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.2s;
-            font-family: inherit;
-            margin-top: 10px;
-        }
-
-        .btn-secondary:hover {
-            background: #fff;
-        }
-
-        .success-msg {
-            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
-            color: #fff;
-            padding: 12px 20px;
-            border-radius: 10px;
-            margin-top: 10px;
             text-align: center;
-            font-weight: 500;
-            display: none;
+        }
+
+        .modal-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .modal-meta {
+            color: #888;
+            margin-bottom: 20px;
+        }
+
+        .modal-timer {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #F7C846;
+            margin-bottom: 30px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .modal-btn.primary {
+            background: #8AE98D;
+            color: #0E121A;
+        }
+
+        .modal-btn.secondary {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <a href="../index.html" style="display: inline-flex; align-items: center; gap: 8px; color: #888; text-decoration: none; font-size: 0.9em; margin-bottom: 20px; transition: color 0.2s;">
-            <span>←</span> Back to Daily Do
-        </a>
-        <span class="tag">January 2026</span>
-        <h1>Your Fitness</h1>
-        <p class="subtitle">Plan your workouts, track your progress</p>
+    <a href="../index.html" class="back-link">
+        <span>←</span> Back to Daily Do
+    </a>
 
-        <!-- Quick Start Section -->
-        <div class="quick-start" style="background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%); border-radius: 16px; padding: 20px; margin-bottom: 30px; color: #fff;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <span style="font-family: 'Playfair Display', serif; font-size: 1.2em;">Quick Start</span>
-                <span style="background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 12px; font-size: 0.75em;">TODAY</span>
-            </div>
-            <p style="color: rgba(255,255,255,0.7); font-size: 0.9em; margin-bottom: 15px;">Don't know what to do? Pick one:</p>
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-                <button onclick="startQuickWorkout('strength')" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 15px 10px; border-radius: 12px; color: #fff; cursor: pointer; transition: all 0.2s; font-family: inherit;">
-                    <div style="font-size: 1.5em; margin-bottom: 5px;">💪</div>
-                    <div style="font-size: 0.85em; font-weight: 500;">Strength</div>
-                    <div style="font-size: 0.7em; color: rgba(255,255,255,0.6);">30 min</div>
-                </button>
-                <button onclick="startQuickWorkout('cardio')" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 15px 10px; border-radius: 12px; color: #fff; cursor: pointer; transition: all 0.2s; font-family: inherit;">
-                    <div style="font-size: 1.5em; margin-bottom: 5px;">🏃</div>
-                    <div style="font-size: 0.85em; font-weight: 500;">Cardio</div>
-                    <div style="font-size: 0.7em; color: rgba(255,255,255,0.6);">25 min</div>
-                </button>
-                <button onclick="startQuickWorkout('quick')" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 15px 10px; border-radius: 12px; color: #fff; cursor: pointer; transition: all 0.2s; font-family: inherit;">
-                    <div style="font-size: 1.5em; margin-bottom: 5px;">⚡</div>
-                    <div style="font-size: 0.85em; font-weight: 500;">Quick</div>
-                    <div style="font-size: 0.7em; color: rgba(255,255,255,0.6);">15 min</div>
+    <h1>Fitness</h1>
+    <p class="subtitle">Quick 20-30 min workouts you can mix</p>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('workout')">Workout</button>
+        <button class="tab-btn" onclick="switchTab('history')">History</button>
+    </div>
+
+    <!-- Workout Tab -->
+    <div id="workout-tab" class="tab-content active">
+        <!-- Today's Mix -->
+        <div class="today-mix" id="today-mix">
+            <div class="mix-header">
+                <span class="mix-title">Today's Mix</span>
+                <button class="shuffle-btn" onclick="shuffleMix()">
+                    🔀 Shuffle
                 </button>
             </div>
+            <div id="mix-workouts"></div>
+            <button class="start-btn" onclick="startWorkout()">Start Workout</button>
         </div>
 
-        <!-- Calendar -->
-        <div class="calendar">
-            <div class="calendar-header">
-                <span class="calendar-title">January 2026</span>
-                <div class="calendar-nav">
-                    <button>←</button>
-                    <button>→</button>
-                </div>
+        <!-- Workout Library -->
+        <div class="section-title">Or build your own mix</div>
+        <div class="workout-grid" id="workout-grid"></div>
+
+        <!-- Build Your Mix -->
+        <div class="build-mix" id="build-mix" style="display: none;">
+            <div class="build-header">
+                <span class="build-title">Your Mix</span>
+                <span class="build-total" id="build-total">0 min</span>
             </div>
-            <div class="weekdays">
-                <div class="weekday">Mon</div>
-                <div class="weekday">Tue</div>
-                <div class="weekday">Wed</div>
-                <div class="weekday">Thu</div>
-                <div class="weekday">Fri</div>
-                <div class="weekday">Sat</div>
-                <div class="weekday">Sun</div>
-            </div>
-            <div class="days" id="calendar-days"></div>
+            <div class="selected-list" id="selected-list"></div>
+            <button class="start-btn" onclick="startCustomWorkout()">Start This Mix</button>
         </div>
+    </div>
 
-        <!-- Selected Day Detail -->
-        <div class="day-detail" id="day-detail">
-            <div class="day-detail-header">
-                <h3 id="selected-day-title">Friday, January 3</h3>
-                <button class="modal-close" onclick="closeDayDetail()">×</button>
-            </div>
-            <div id="day-workouts"></div>
+    <!-- History Tab -->
+    <div id="history-tab" class="tab-content">
+        <div id="history-list"></div>
+    </div>
 
-            <!-- Submit Workout Results -->
-            <div class="submit-section">
-                <h4>Submit Completed Workout</h4>
-                <textarea class="submit-textarea" id="workout-result" placeholder="Paste your WhatsApp workout log here...
-
-Example:
-VERTICAL DAY - Fri, 3 Jan 2026
-
-[PUSH] STANDING PRESS (RPT)
-Set 1: 40kg × 5
-Set 2: 36kg × 6
-..."></textarea>
-                <button class="submit-btn" onclick="submitWorkout()">Submit Workout</button>
-                <div class="success-msg" id="success-msg">Workout logged successfully!</div>
-            </div>
-        </div>
-
-        <!-- Strength Training -->
-        <div class="section-header">
-            <span class="section-title">Strength Training</span>
-            <span class="tag">RPT</span>
-        </div>
-
-        <div class="strength-cards">
-            <a href="vertical.html" class="strength-card">
-                <div class="strength-icon">↕</div>
-                <div class="strength-name">Vertical</div>
-                <div class="strength-desc">Shoulders + Lats</div>
-            </a>
-            <a href="horizontal.html" class="strength-card">
-                <div class="strength-icon">↔</div>
-                <div class="strength-name">Horizontal</div>
-                <div class="strength-desc">Chest + Back</div>
-            </a>
-            <a href="legs.html" class="strength-card">
-                <div class="strength-icon">⬇</div>
-                <div class="strength-name">Legs</div>
-                <div class="strength-desc">Lower Body</div>
-            </a>
-        </div>
-
-        <!-- Conditioning -->
-        <div class="section-header">
-            <span class="section-title">Conditioning</span>
-        </div>
-
-        <div class="filters">
-            <button class="filter-btn active" onclick="filterWorkouts('all')">All</button>
-            <button class="filter-btn" onclick="filterWorkouts('amrap')">AMRAP</button>
-            <button class="filter-btn" onclick="filterWorkouts('emom')">EMOM</button>
-            <button class="filter-btn" onclick="filterWorkouts('fortime')">For Time</button>
-            <button class="filter-btn" onclick="filterWorkouts('run')">Running</button>
-            <button class="filter-btn" onclick="filterWorkouts('tabata')">Tabata</button>
-        </div>
-
-        <div class="workout-list" id="workout-list"></div>
-
-        <!-- Modal -->
-        <div id="modal" class="modal">
-            <div class="modal-content">
-                <button class="modal-close" onclick="closeModal()">×</button>
-                <h2 id="modal-title"></h2>
-                <span class="workout-type-label" id="modal-type"></span>
-                <div class="modal-detail" id="modal-detail"></div>
-                <button class="btn-primary" onclick="addToSelectedDay()">Add to Selected Day</button>
-                <button class="btn-secondary" onclick="copyWorkout()">Copy to WhatsApp</button>
+    <!-- Active Workout Modal -->
+    <div id="workout-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-icon" id="modal-icon">💪</div>
+            <div class="modal-title" id="modal-title">Workout</div>
+            <div class="modal-meta" id="modal-meta">25 min total</div>
+            <div class="modal-timer" id="modal-timer">00:00</div>
+            <div class="modal-actions">
+                <button class="modal-btn secondary" onclick="cancelWorkout()">Cancel</button>
+                <button class="modal-btn primary" onclick="completeWorkout()">Done!</button>
             </div>
         </div>
     </div>
 
     <script src="../scripts/memory.js"></script>
     <script>
-        // Track visit
-        if (typeof Memory !== 'undefined') {
-            Memory.setLastVisited('fitness');
-        }
-
-        // Workout data - All sessions 25-30 min total (5 min warmup, 20 min work, 5 min cooldown)
+        // Workout library - simple 20-30 min sessions
         const workouts = [
-            // AMRAP
-            { id: 'amrap1', name: 'Burn Out', type: 'amrap', time: '25 min', moves: 'Burpees • Thrusters • Squats', detail: '<h4>25 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Jumping jacks, arm circles, leg swings, bodyweight squats</p><h4>15 Min AMRAP</h4><ul><li>10 Burpees</li><li>15 DB Thrusters</li><li>20 Air Squats</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Walk, stretch quads, hamstrings, shoulders</p>' },
-            { id: 'amrap2', name: "Devil's Dozen", type: 'amrap', time: '30 min', moves: 'Devil Press • Jumps • V-Ups', detail: '<h4>30 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Light jog, hip circles, inchworms, arm swings</p><h4>20 Min AMRAP</h4><ul><li>13 Devil Press</li><li>13 Squat Jumps</li><li>13 V-Ups</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Walk, deep breathing, full body stretch</p>' },
-            { id: 'amrap3', name: 'HYROX Lite', type: 'amrap', time: '30 min', moves: 'Run • Lunges • Burpees • Thrusters', detail: '<h4>30 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Easy jog, high knees, butt kicks, dynamic lunges</p><h4>20 Min AMRAP</h4><ul><li>200m Run</li><li>10 DB Farmers Lunges</li><li>15 Burpees</li><li>20 DB Thrusters</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Walk 200m, stretch hips, quads, shoulders</p>' },
-
-            // EMOM
-            { id: 'emom1', name: 'Death by Burpee', type: 'emom', time: '25 min', moves: 'Add 1 burpee each minute', detail: '<h4>25 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Jumping jacks, arm circles, squat holds, push-up position holds</p><h4>EMOM ~15 Min (Until Failure)</h4><ul><li>Min 1: 1 Burpee</li><li>Min 2: 2 Burpees</li><li>Min 3: 3 Burpees</li><li>Continue until you fail...</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Walk, shake out arms/legs, full body stretch</p>' },
-            { id: 'emom2', name: 'Push Pull Legs', type: 'emom', time: '30 min', moves: 'Push-ups • Rows • Squats', detail: '<h4>30 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Arm circles, leg swings, cat-cow, bodyweight squats</p><h4>21 Min EMOM (7 rounds)</h4><ul><li>Min 1: 15 Push-ups</li><li>Min 2: 12 DB Rows (each arm)</li><li>Min 3: 10 Goblet Squats</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (4 min):</strong> Chest stretch, lat stretch, quad stretch</p>' },
-            { id: 'emom3', name: 'Empire Blaster', type: 'emom', time: '30 min', moves: 'Devil Press • Jumps • Swings', detail: '<h4>30 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Light jog, hip openers, arm swings, air squats</p><h4>20 Min EMOM (5 rounds)</h4><ul><li>Min 1: 5 Devil Press</li><li>Min 2: 10 Tuck Jumps</li><li>Min 3: 15 DB Swings</li><li>Min 4: 20 Mountain Climbers</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Walk, hip flexor stretch, shoulder stretch</p>' },
-
-            // For Time
-            { id: 'fortime1', name: 'Filthy Thirty', type: 'fortime', time: '30 min', moves: '30 reps × 5 exercises', detail: '<h4>30 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Jumping jacks, inchworms, lunges, arm circles</p><h4>For Time (~20 min cap)</h4><ul><li>30 Jumping Jacks</li><li>30 Air Squats</li><li>30 Push-ups</li><li>30 Lunges</li><li>30 Burpees</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Walk, full body stretch sequence</p>' },
-            { id: 'fortime2', name: 'Sprint & Grind', type: 'fortime', time: '25 min', moves: '4 rounds: Run + Thrusters + Burpees', detail: '<h4>25 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Easy jog, high knees, butt kicks, arm swings</p><h4>4 Rounds For Time (~15 min)</h4><ul><li>200m Run</li><li>10 DB Thrusters</li><li>10 Burpees</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> 200m walk, stretch quads, shoulders, hips</p>' },
-            { id: 'fortime3', name: 'Mini Murph', type: 'fortime', time: '30 min', moves: 'Run • Push-ups • Squats', detail: '<h4>30 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Light jog, dynamic stretches, push-up walkouts</p><h4>For Time (~20 min cap)</h4><ul><li>400m Run</li><li>50 Push-ups</li><li>100 Air Squats</li><li>400m Run</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Walk, chest stretch, quad stretch, calf stretch</p>' },
-
-            // Running
-            { id: 'run1', name: '5K Easy', type: 'run', time: '30 min', moves: 'Easy pace, conversational', detail: '<h4>30 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Walk, dynamic leg swings, light jog</p><h4>Easy Run (~20 min)</h4><ul><li>Distance: ~3-4 kilometers</li><li>Pace: Easy/conversational</li><li>Heart Rate: Zone 2</li><li>Goal: Build aerobic base</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Walk, calf stretch, hamstring stretch</p>' },
-            { id: 'run2', name: 'Interval Sprints', type: 'run', time: '25 min', moves: '400m sprints × 5', detail: '<h4>25 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Easy jog, high knees, butt kicks, strides</p><h4>Interval Training (~15 min)</h4><ul><li>5 × 400m sprints (90% effort)</li><li>Rest: 90 sec walk between sprints</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Easy jog, walk, stretch calves and quads</p>' },
-            { id: 'run3', name: 'Tempo Run', type: 'run', time: '30 min', moves: '20 min at threshold pace', detail: '<h4>30 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Easy jog building pace</p><h4>Tempo Run (20 min)</h4><ul><li>20 min at tempo pace</li><li>Pace: Comfortably hard</li><li>Should be able to speak in short sentences</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Easy jog, walk, stretch</p>' },
-            { id: 'run4', name: 'Hill Repeats', type: 'run', time: '25 min', moves: '6 hill sprints', detail: '<h4>25 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Easy jog to hill, dynamic stretches</p><h4>Hill Repeats (~15 min)</h4><ul><li>Find a steep hill (50-100m)</li><li>6 × hill sprint (max effort)</li><li>Walk/jog down recovery</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Easy jog home, stretch calves, hip flexors</p>' },
-            { id: 'run5', name: 'Fartlek', type: 'run', time: '30 min', moves: 'Speed play - mix of paces', detail: '<h4>30 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Easy jog building gradually</p><h4>Fartlek (20 min)</h4><ul><li>Alternate between:</li><li>• 2 min fast / 2 min easy</li><li>• 1 min sprint / 1 min walk</li><li>• 30 sec all-out / 90 sec recovery</li><li>Repeat as you feel!</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Easy jog, walk, full leg stretch</p>' },
-            { id: 'run6', name: 'Long Run', type: 'run', time: '45 min', moves: '35 min at easy pace', detail: '<h4>45 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Walk, easy jog, gradual build</p><h4>Long Run (35 min)</h4><ul><li>Time: 35 minutes</li><li>Pace: Easy, sustainable</li><li>Focus: Time on feet</li><li>Stay hydrated</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Walk, stretch everything, hydrate</p>' },
-
-            // Tabata
-            { id: 'tabata1', name: 'Total Body Blast', type: 'tabata', time: '26 min', moves: 'Burpees • Thrusters • Climbers • Swings', detail: '<h4>26 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Jumping jacks, arm circles, leg swings, air squats</p><h4>Tabata 16 Min (20s on / 10s off)</h4><ul><li>8 rounds: Burpees (4 min)</li><li>8 rounds: DB Thrusters (4 min)</li><li>8 rounds: Mountain Climbers (4 min)</li><li>8 rounds: DB Swings (4 min)</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Walk, deep breathing, full body stretch</p>' },
-            { id: 'tabata2', name: 'Core Crusher', type: 'tabata', time: '25 min', moves: 'Plank • V-Ups • Twists • Hollow', detail: '<h4>25 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Cat-cow, bird dogs, dead bugs, glute bridges</p><h4>Tabata 16 Min (20s on / 10s off)</h4><ul><li>4 rounds through (4 min each):</li><li>• Plank Hold</li><li>• V-Ups</li><li>• Russian Twists</li><li>• Hollow Hold</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (4 min):</strong> Child\'s pose, spinal twist, cobra stretch</p>' },
-            { id: 'tabata3', name: 'Cardio Killer', type: 'tabata', time: '26 min', moves: 'High Knees • Squat Jumps • Burpees • Lunges', detail: '<h4>26 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> March in place, hip circles, arm swings, light jumps</p><h4>Tabata 16 Min (20s on / 10s off)</h4><ul><li>4 rounds through (4 min each):</li><li>• High Knees</li><li>• Squat Jumps</li><li>• Burpees</li><li>• Jumping Lunges</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Walk, stretch quads, hamstrings, hip flexors</p>' },
+            { id: 'hiit', name: 'HIIT', icon: '🔥', desc: 'High intensity intervals', time: 20 },
+            { id: 'strength', name: 'Strength', icon: '💪', desc: 'Bodyweight or weights', time: 25 },
+            { id: 'cardio', name: 'Cardio', icon: '🏃', desc: 'Running, cycling, etc', time: 30 },
+            { id: 'core', name: 'Core', icon: '🎯', desc: 'Abs and stability', time: 15 },
+            { id: 'stretch', name: 'Stretch', icon: '🧘', desc: 'Flexibility & recovery', time: 15 },
+            { id: 'upper', name: 'Upper Body', icon: '🏋️', desc: 'Arms, chest, back', time: 25 },
+            { id: 'lower', name: 'Lower Body', icon: '🦵', desc: 'Legs and glutes', time: 25 },
+            { id: 'tabata', name: 'Tabata', icon: '⚡', desc: '20s on, 10s off', time: 20 },
         ];
 
-        // State - Use unified Memory if available, fallback to localStorage
-        let selectedDay = 3;
-        let plannedWorkouts = typeof Memory !== 'undefined'
-            ? (Memory.get('fitness', 'planned') || {})
-            : JSON.parse(localStorage.getItem('plannedWorkouts') || '{}');
-        let completedWorkouts = typeof Memory !== 'undefined'
-            ? (Memory.get('fitness', 'completed') || {})
-            : JSON.parse(localStorage.getItem('completedWorkouts') || '{}');
-        let currentWorkout = null;
+        let selectedWorkouts = [];
+        let todaysMix = [];
+        let activeWorkout = null;
+        let timerInterval = null;
+        let startTime = null;
 
-        // Helper function to save data
-        function saveData() {
+        // Initialize
+        function init() {
             if (typeof Memory !== 'undefined') {
-                Memory.set('fitness', 'planned', plannedWorkouts);
-                Memory.set('fitness', 'completed', completedWorkouts);
-            } else {
-                localStorage.setItem('plannedWorkouts', JSON.stringify(plannedWorkouts));
-                localStorage.setItem('completedWorkouts', JSON.stringify(completedWorkouts));
+                Memory.setLastVisited('fitness');
             }
+            renderWorkoutGrid();
+            generateTodaysMix();
+            renderHistory();
         }
 
-        // Generate calendar
-        function generateCalendar() {
-            const container = document.getElementById('calendar-days');
-            container.innerHTML = '';
-
-            const startDay = 3; // Jan 2026 starts on Thursday
-            const daysInMonth = 31;
-            const today = 3;
-
-            for (let i = 0; i < startDay; i++) {
-                const div = document.createElement('div');
-                div.className = 'day empty';
-                container.appendChild(div);
-            }
-
-            for (let i = 1; i <= daysInMonth; i++) {
-                const div = document.createElement('div');
-                div.className = 'day';
-                div.textContent = i;
-
-                if (i === today) div.classList.add('today');
-                if (i === selectedDay) div.classList.add('selected');
-                if (plannedWorkouts[i] && plannedWorkouts[i].length > 0) {
-                    div.classList.add('has-workout');
-                }
-                if (completedWorkouts[i] && completedWorkouts[i].length > 0) {
-                    div.classList.add('completed');
-                }
-
-                div.onclick = () => selectDay(i);
-                container.appendChild(div);
-            }
+        // Tab switching
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById(tab + '-tab').classList.add('active');
         }
 
-        function selectDay(day) {
-            selectedDay = day;
-            generateCalendar();
-            showDayDetail(day);
+        // Generate random mix for today (2-3 workouts, ~30-45 min)
+        function generateTodaysMix() {
+            const shuffled = [...workouts].sort(() => Math.random() - 0.5);
+            todaysMix = shuffled.slice(0, 2);
+            renderTodaysMix();
         }
 
-        function showDayDetail(day) {
-            const detail = document.getElementById('day-detail');
-            const title = document.getElementById('selected-day-title');
-            const workoutsDiv = document.getElementById('day-workouts');
-
-            const date = new Date(2026, 0, day);
-            const options = { weekday: 'long', month: 'long', day: 'numeric' };
-            title.textContent = date.toLocaleDateString('en-US', options);
-
-            const dayWorkouts = plannedWorkouts[day] || [];
-            const dayCompleted = completedWorkouts[day] || [];
-
-            if (dayWorkouts.length === 0 && dayCompleted.length === 0) {
-                workoutsDiv.innerHTML = '<div class="empty-day">No workouts planned. Select a workout below to add.</div>';
-            } else {
-                let html = '';
-
-                // Show completed workouts
-                dayCompleted.forEach((w, index) => {
-                    html += `
-                        <div class="day-workout completed">
-                            <div>
-                                <div style="font-weight: 500;">✓ ${w.type || 'Workout'}</div>
-                                <div style="color: #888; font-size: 0.85em;">Completed</div>
-                            </div>
-                            <button class="remove-btn" onclick="removeCompleted(${day}, ${index})">×</button>
-                        </div>
-                    `;
-                });
-
-                // Show planned workouts
-                dayWorkouts.forEach((w, index) => {
-                    html += `
-                        <div class="day-workout">
-                            <div>
-                                <div style="font-weight: 500;">${w.name}</div>
-                                <div style="color: #888; font-size: 0.85em;">${w.type.toUpperCase()} • ${w.time}</div>
-                            </div>
-                            <button class="remove-btn" onclick="removeWorkout(${day}, ${index})">×</button>
-                        </div>
-                    `;
-                });
-
-                workoutsDiv.innerHTML = html;
-            }
-
-            detail.classList.add('show');
+        function shuffleMix() {
+            generateTodaysMix();
         }
 
-        function closeDayDetail() {
-            document.getElementById('day-detail').classList.remove('show');
-        }
+        function renderTodaysMix() {
+            const container = document.getElementById('mix-workouts');
+            const totalTime = todaysMix.reduce((sum, w) => sum + w.time, 0);
 
-        function removeWorkout(day, index) {
-            plannedWorkouts[day].splice(index, 1);
-            if (plannedWorkouts[day].length === 0) delete plannedWorkouts[day];
-            saveData();
-            generateCalendar();
-            showDayDetail(day);
-        }
-
-        function removeCompleted(day, index) {
-            completedWorkouts[day].splice(index, 1);
-            if (completedWorkouts[day].length === 0) delete completedWorkouts[day];
-            saveData();
-            generateCalendar();
-            showDayDetail(day);
-        }
-
-        // Submit workout from WhatsApp paste
-        function submitWorkout() {
-            const text = document.getElementById('workout-result').value;
-            if (!text.trim()) return;
-
-            // Parse workout type from text
-            let workoutType = 'Workout';
-            if (text.includes('VERTICAL')) workoutType = 'Vertical Day';
-            else if (text.includes('HORIZONTAL')) workoutType = 'Horizontal Day';
-            else if (text.includes('LEGS')) workoutType = 'Legs Day';
-            else if (text.includes('AMRAP')) workoutType = 'AMRAP';
-            else if (text.includes('EMOM')) workoutType = 'EMOM';
-            else if (text.includes('RUN') || text.includes('5K') || text.includes('TEMPO')) workoutType = 'Running';
-
-            // Add to completed workouts
-            if (!completedWorkouts[selectedDay]) {
-                completedWorkouts[selectedDay] = [];
-            }
-            completedWorkouts[selectedDay].push({
-                type: workoutType,
-                log: text,
-                timestamp: new Date().toISOString()
-            });
-
-            saveData();
-
-            // Show success
-            document.getElementById('success-msg').style.display = 'block';
-            document.getElementById('workout-result').value = '';
-
-            setTimeout(() => {
-                document.getElementById('success-msg').style.display = 'none';
-            }, 3000);
-
-            generateCalendar();
-            showDayDetail(selectedDay);
-        }
-
-        // Generate workout list
-        function generateWorkoutList(filter = 'all') {
-            const container = document.getElementById('workout-list');
-            const filtered = filter === 'all' ? workouts : workouts.filter(w => w.type === filter);
-
-            container.innerHTML = filtered.map(w => `
-                <div class="workout-card" onclick="showWorkout('${w.id}')">
-                    <div class="workout-info">
-                        <div class="workout-name">${w.name}</div>
-                        <div class="workout-meta">
-                            <span class="workout-type-tag">${w.type}</span>
-                            <span>${w.time}</span>
-                            <span>${w.moves}</span>
-                        </div>
+            container.innerHTML = todaysMix.map(w => `
+                <div class="mix-workout">
+                    <div class="mix-workout-info">
+                        <div class="mix-workout-name">${w.icon} ${w.name}</div>
+                        <div class="mix-workout-meta">${w.desc}</div>
                     </div>
-                    <button class="add-btn" onclick="event.stopPropagation(); quickAdd('${w.id}')">+</button>
+                    <span class="mix-workout-time">${w.time} min</span>
+                </div>
+            `).join('') + `
+                <div style="text-align: center; color: #888; font-size: 0.85rem; margin-top: 12px;">
+                    Total: ${totalTime} min
+                </div>
+            `;
+        }
+
+        // Render workout grid
+        function renderWorkoutGrid() {
+            const grid = document.getElementById('workout-grid');
+            grid.innerHTML = workouts.map(w => `
+                <div class="workout-card ${selectedWorkouts.includes(w.id) ? 'selected' : ''}"
+                     onclick="toggleWorkout('${w.id}')">
+                    <div class="workout-icon">${w.icon}</div>
+                    <div class="workout-name">${w.name}</div>
+                    <div class="workout-desc">${w.desc}</div>
+                    <div class="workout-time">${w.time} min</div>
                 </div>
             `).join('');
         }
 
-        function filterWorkouts(type) {
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            generateWorkoutList(type);
-        }
-
-        function showWorkout(id) {
-            currentWorkout = workouts.find(w => w.id === id);
-            document.getElementById('modal-title').textContent = currentWorkout.name;
-            document.getElementById('modal-type').textContent = `${currentWorkout.type.toUpperCase()} • ${currentWorkout.time}`;
-            document.getElementById('modal-detail').innerHTML = currentWorkout.detail;
-            document.getElementById('modal').classList.add('show');
-        }
-
-        function closeModal() {
-            document.getElementById('modal').classList.remove('show');
-        }
-
-        function quickAdd(id) {
-            const workout = workouts.find(w => w.id === id);
-            if (!plannedWorkouts[selectedDay]) plannedWorkouts[selectedDay] = [];
-            plannedWorkouts[selectedDay].push(workout);
-            saveData();
-            generateCalendar();
-            showDayDetail(selectedDay);
-        }
-
-        function addToSelectedDay() {
-            if (currentWorkout) {
-                quickAdd(currentWorkout.id);
-                closeModal();
-            }
-        }
-
-        function copyWorkout() {
-            const today = new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
-            const text = `WORKOUT - ${today}\n\n${currentWorkout.name.toUpperCase()}\n${currentWorkout.type.toUpperCase()} • ${currentWorkout.time}\n\n${document.getElementById('modal-detail').innerText}\n\nRESULT: ___________\nNOTES: `;
-
-            navigator.clipboard.writeText(text).then(() => {
-                const btn = document.querySelector('.btn-secondary');
-                btn.textContent = 'Copied!';
-                setTimeout(() => btn.textContent = 'Copy to WhatsApp', 2000);
-            });
-        }
-
-        document.getElementById('modal').onclick = function(e) {
-            if (e.target === this) closeModal();
-        }
-
-        // Quick Start function
-        function startQuickWorkout(type) {
-            let workout;
-            if (type === 'strength') {
-                // Pick a random strength-related workout or link to strength page
-                const strengthPages = ['vertical.html', 'horizontal.html', 'legs.html'];
-                window.location.href = strengthPages[Math.floor(Math.random() * strengthPages.length)];
-                return;
-            } else if (type === 'cardio') {
-                // Pick a random running or cardio workout
-                const cardioWorkouts = workouts.filter(w => w.type === 'run' || w.type === 'tabata');
-                workout = cardioWorkouts[Math.floor(Math.random() * cardioWorkouts.length)];
+        // Toggle workout selection
+        function toggleWorkout(id) {
+            const idx = selectedWorkouts.indexOf(id);
+            if (idx === -1) {
+                selectedWorkouts.push(id);
             } else {
-                // Quick = pick an AMRAP or shorter workout
-                const quickWorkouts = workouts.filter(w => w.time.includes('25') || w.type === 'amrap');
-                workout = quickWorkouts[Math.floor(Math.random() * quickWorkouts.length)];
+                selectedWorkouts.splice(idx, 1);
             }
-            if (workout) {
-                showWorkout(workout.id);
-            }
+            renderWorkoutGrid();
+            renderBuildMix();
         }
 
-        // Initialize
-        generateCalendar();
-        generateWorkoutList();
-        showDayDetail(selectedDay);
+        // Render build mix section
+        function renderBuildMix() {
+            const container = document.getElementById('build-mix');
+            const list = document.getElementById('selected-list');
+            const total = document.getElementById('build-total');
+
+            if (selectedWorkouts.length === 0) {
+                container.style.display = 'none';
+                return;
+            }
+
+            container.style.display = 'block';
+            const selected = selectedWorkouts.map(id => workouts.find(w => w.id === id));
+            const totalTime = selected.reduce((sum, w) => sum + w.time, 0);
+
+            total.textContent = totalTime + ' min';
+            list.innerHTML = selected.map(w => `
+                <div class="selected-item">
+                    <span>${w.icon} ${w.name} - ${w.time} min</span>
+                    <button class="remove-btn" onclick="toggleWorkout('${w.id}')">×</button>
+                </div>
+            `).join('');
+        }
+
+        // Start workout
+        function startWorkout() {
+            activeWorkout = todaysMix;
+            showWorkoutModal();
+        }
+
+        function startCustomWorkout() {
+            if (selectedWorkouts.length === 0) return;
+            activeWorkout = selectedWorkouts.map(id => workouts.find(w => w.id === id));
+            showWorkoutModal();
+        }
+
+        function showWorkoutModal() {
+            const modal = document.getElementById('workout-modal');
+            const totalTime = activeWorkout.reduce((sum, w) => sum + w.time, 0);
+            const names = activeWorkout.map(w => w.name).join(' + ');
+            const icons = activeWorkout.map(w => w.icon).join(' ');
+
+            document.getElementById('modal-icon').textContent = icons;
+            document.getElementById('modal-title').textContent = names;
+            document.getElementById('modal-meta').textContent = totalTime + ' min workout';
+
+            modal.classList.add('show');
+            startTimer();
+        }
+
+        function startTimer() {
+            startTime = Date.now();
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function updateTimer() {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const mins = Math.floor(elapsed / 60);
+            const secs = elapsed % 60;
+            document.getElementById('modal-timer').textContent =
+                String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+        }
+
+        function cancelWorkout() {
+            clearInterval(timerInterval);
+            document.getElementById('workout-modal').classList.remove('show');
+            activeWorkout = null;
+        }
+
+        function completeWorkout() {
+            clearInterval(timerInterval);
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const mins = Math.ceil(elapsed / 60);
+
+            // Save to history
+            const history = Memory.get('fitness', 'history') || [];
+            history.unshift({
+                date: new Date().toISOString(),
+                workouts: activeWorkout.map(w => w.name),
+                duration: mins,
+                icons: activeWorkout.map(w => w.icon)
+            });
+            Memory.set('fitness', 'history', history.slice(0, 30)); // Keep last 30
+
+            document.getElementById('workout-modal').classList.remove('show');
+            activeWorkout = null;
+
+            // Clear custom selection
+            selectedWorkouts = [];
+            renderWorkoutGrid();
+            renderBuildMix();
+
+            // Show history
+            switchTab('history');
+            document.querySelectorAll('.tab-btn')[1].classList.add('active');
+            document.querySelectorAll('.tab-btn')[0].classList.remove('active');
+            renderHistory();
+        }
+
+        // Render history
+        function renderHistory() {
+            const history = Memory.get('fitness', 'history') || [];
+            const container = document.getElementById('history-list');
+
+            if (history.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📊</div>
+                        <p>No workouts yet.<br>Complete a workout to see it here!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = history.map(h => {
+                const date = new Date(h.date);
+                const dateStr = date.toLocaleDateString('en-US', {
+                    weekday: 'short',
+                    month: 'short',
+                    day: 'numeric'
+                });
+                const timeStr = date.toLocaleTimeString('en-US', {
+                    hour: 'numeric',
+                    minute: '2-digit'
+                });
+
+                return `
+                    <div class="history-item">
+                        <div class="history-date">${dateStr} at ${timeStr}</div>
+                        <div class="history-workouts">
+                            ${h.workouts.map((w, i) => `
+                                <span class="history-tag">${h.icons?.[i] || '💪'} ${w}</span>
+                            `).join('')}
+                        </div>
+                        <div class="history-total">${h.duration} min completed</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Initialize on load
+        init();
     </script>
 </body>
 </html>
