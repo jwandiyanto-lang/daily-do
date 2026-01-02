@@ -15,7 +15,33 @@
             color: #fff;
             padding: 20px;
             padding-bottom: 100px;
+            transition: background 0.3s, color 0.3s;
         }
+
+        body.light-theme {
+            background: #F5F5F7;
+            color: #1a1a1a;
+        }
+
+        body.light-theme .back-link { color: #666; }
+        body.light-theme .subtitle { color: #666; }
+        body.light-theme .tab-btn { background: rgba(0,0,0,0.05); color: #666; }
+        body.light-theme .tab-btn.active { background: #F7C846; color: #0E121A; }
+        body.light-theme .today-mix { background: #fff; border-color: rgba(0,0,0,0.1); }
+        body.light-theme .mix-workout { background: rgba(0,0,0,0.03); }
+        body.light-theme .shuffle-btn { background: rgba(0,0,0,0.08); color: #333; }
+        body.light-theme .section-title { color: #666; }
+        body.light-theme .workout-card { background: #fff; border: 1px solid rgba(0,0,0,0.08); }
+        body.light-theme .workout-card:hover { background: #fafafa; }
+        body.light-theme .workout-desc { color: #666; }
+        body.light-theme .build-mix { background: #fff; border: 1px solid rgba(0,0,0,0.08); }
+        body.light-theme .selected-item { border-color: rgba(0,0,0,0.1); }
+        body.light-theme .history-item { background: #fff; border: 1px solid rgba(0,0,0,0.08); }
+        body.light-theme .history-date { color: #666; }
+        body.light-theme .history-total { color: #666; }
+        body.light-theme .modal-content { background: #fff; }
+        body.light-theme .modal-meta { color: #666; }
+        body.light-theme .modal-btn.secondary { background: rgba(0,0,0,0.08); color: #333; }
 
         .back-link {
             display: inline-flex;
@@ -466,8 +492,19 @@
         let timerInterval = null;
         let startTime = null;
 
+        // Load theme from settings
+        function loadTheme() {
+            if (typeof Memory !== 'undefined') {
+                const savedTheme = Memory.get('settings', 'theme');
+                if (savedTheme === 'light') {
+                    document.body.classList.add('light-theme');
+                }
+            }
+        }
+
         // Initialize
         function init() {
+            loadTheme();
             if (typeof Memory !== 'undefined') {
                 Memory.setLastVisited('fitness');
             }
