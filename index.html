@@ -41,26 +41,6 @@
       font-size: 1rem;
     }
 
-    .modules-section {
-      margin-top: var(--spacing-lg);
-    }
-
-    .modules-grid {
-      display: flex;
-      flex-direction: column;
-      gap: var(--spacing-md);
-    }
-
-    .module-card {
-      padding: var(--spacing-lg);
-    }
-
-    .module-card .icon-container {
-      width: 64px;
-      height: 64px;
-      font-size: 2rem;
-    }
-
     .quick-stats {
       margin-top: var(--spacing-xl);
     }
@@ -388,59 +368,6 @@
         </div>
       </section>
 
-      <section class="modules-section animate-slide-up">
-        <div class="modules-grid">
-          <!-- Finance Module -->
-          <a href="finance/summary.html" class="card card-clickable module-card" onclick="Memory.setLastVisited('finance')">
-            <div class="icon-container card-yellow">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="12" y1="1" x2="12" y2="23"/>
-                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-              </svg>
-            </div>
-            <div class="module-info">
-              <div class="module-title">Finance</div>
-              <div class="module-subtitle" id="financeSubtitle">Track your cashflow</div>
-            </div>
-            <span class="arrow">&rarr;</span>
-          </a>
-
-          <!-- Fitness Module -->
-          <a href="fitness/index.html" class="card card-clickable module-card" onclick="Memory.setLastVisited('fitness')">
-            <div class="icon-container card-mint">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
-                <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
-                <line x1="6" y1="1" x2="6" y2="4"/>
-                <line x1="10" y1="1" x2="10" y2="4"/>
-                <line x1="14" y1="1" x2="14" y2="4"/>
-              </svg>
-            </div>
-            <div class="module-info">
-              <div class="module-title">Fitness</div>
-              <div class="module-subtitle" id="fitnessSubtitle">Plan your workouts</div>
-            </div>
-            <span class="arrow">&rarr;</span>
-          </a>
-
-          <!-- LinkedIn Module -->
-          <a href="linkedin/index.html" class="card card-clickable module-card" onclick="Memory.setLastVisited('linkedin')">
-            <div class="icon-container" style="background: #0077b5;">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-                <rect x="2" y="9" width="4" height="12"/>
-                <circle cx="4" cy="4" r="2"/>
-              </svg>
-            </div>
-            <div class="module-info">
-              <div class="module-title">LinkedIn</div>
-              <div class="module-subtitle" id="linkedinSubtitle">News, jobs & content ideas</div>
-            </div>
-            <span class="arrow">&rarr;</span>
-          </a>
-        </div>
-      </section>
-
       <section class="quick-stats">
         <h2 class="quick-stats-title">Quick Stats</h2>
         <div class="stats-grid">
@@ -658,14 +585,6 @@
         }
       }
       document.getElementById('statStreak').textContent = streak;
-
-      // Update subtitles with last activity
-      const lastVisited = Memory.getLastVisited();
-      if (lastVisited === 'finance') {
-        document.getElementById('financeSubtitle').textContent = 'Last visited';
-      } else if (lastVisited === 'fitness') {
-        document.getElementById('fitnessSubtitle').textContent = 'Last visited';
-      }
     }
 
     // Settings modal
