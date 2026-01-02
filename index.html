@@ -262,28 +262,6 @@
       color: var(--text-white);
     }
 
-    .todo-due {
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-
-    .todo-due.today {
-      background: rgba(252, 87, 78, 0.2);
-      color: var(--accent-coral);
-    }
-
-    .todo-due.later {
-      background: rgba(247, 200, 70, 0.2);
-      color: var(--accent-yellow);
-    }
-
-    .todo-due.future {
-      background: rgba(138, 233, 141, 0.2);
-      color: var(--accent-mint);
-    }
 
     /* Completed item styling */
     .todo-item.completed .todo-text {
@@ -300,10 +278,13 @@
       border-left: 3px solid var(--accent-yellow);
     }
 
-    .snooze-info {
+    .snooze-badge {
       font-size: 0.7rem;
       color: var(--accent-yellow);
-      margin-top: 4px;
+      background: rgba(247, 200, 70, 0.15);
+      padding: 4px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
     }
 
     /* FAB */
@@ -770,21 +751,17 @@
       }
 
       listEl.innerHTML = pending.map(todo => {
-        const due = getDueLabel(todo.dueDate);
         const timeLeft = getSnoozeTimeLeft(todo.snoozedUntil);
         return `
           <div class="todo-item snoozed" data-id="${todo.id}" data-page="pending">
-            <div class="swipe-bg left">✓ Activate</div>
-            <div class="swipe-bg right">✗ Delete</div>
+            <div class="swipe-bg left"></div>
+            <div class="swipe-bg right"></div>
             <div class="todo-item-inner"
                  ontouchstart="handleSwipeStart(event)"
                  ontouchmove="handleSwipeMove(event)"
                  ontouchend="handleSwipeEnd(event, 'pending')">
-              <div style="flex:1">
-                <span class="todo-text">${escapeHtml(todo.text)}</span>
-                ${timeLeft ? `<div class="snooze-info">⏰ ${timeLeft}</div>` : ''}
-              </div>
-              <span class="todo-due ${due.class}">${due.text}</span>
+              <span class="todo-text">${escapeHtml(todo.text)}</span>
+              ${timeLeft ? `<span class="snooze-badge">${timeLeft}</span>` : ''}
             </div>
           </div>
         `;
@@ -809,17 +786,15 @@
       current.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
 
       listEl.innerHTML = current.map(todo => {
-        const due = getDueLabel(todo.dueDate);
         return `
           <div class="todo-item" data-id="${todo.id}" data-page="current">
-            <div class="swipe-bg left">✓ Done</div>
-            <div class="swipe-bg right">⏰ Snooze</div>
+            <div class="swipe-bg left"></div>
+            <div class="swipe-bg right"></div>
             <div class="todo-item-inner"
                  ontouchstart="handleSwipeStart(event)"
                  ontouchmove="handleSwipeMove(event)"
                  ontouchend="handleSwipeEnd(event, 'current')">
               <span class="todo-text">${escapeHtml(todo.text)}</span>
-              <span class="todo-due ${due.class}">${due.text}</span>
             </div>
           </div>
         `;
@@ -841,21 +816,15 @@
       }
 
       listEl.innerHTML = done.map(task => {
-        const date = new Date(task.completedAt);
-        const timeStr = date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        const dateStr = date.toLocaleDateString();
         return `
           <div class="todo-item completed" data-id="${task.id}" data-page="done">
-            <div class="swipe-bg left">↩ Restore</div>
-            <div class="swipe-bg right">✗ Delete</div>
+            <div class="swipe-bg left"></div>
+            <div class="swipe-bg right"></div>
             <div class="todo-item-inner"
                  ontouchstart="handleSwipeStart(event)"
                  ontouchmove="handleSwipeMove(event)"
                  ontouchend="handleSwipeEnd(event, 'done')">
-              <div style="flex:1">
-                <span class="todo-text">${escapeHtml(task.text)}</span>
-                <div class="completed-meta">✓ ${dateStr} at ${timeStr}</div>
-              </div>
+              <span class="todo-text">${escapeHtml(task.text)}</span>
             </div>
           </div>
         `;
