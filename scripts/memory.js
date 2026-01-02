@@ -8,7 +8,7 @@ const Memory = (function() {
   const PREFIX = 'dailydo_';
 
   // Valid namespaces
-  const NAMESPACES = ['finance', 'fitness', 'linkedin', 'meta'];
+  const NAMESPACES = ['finance', 'fitness', 'linkedin', 'todos', 'meta'];
 
   /**
    * Validate namespace
