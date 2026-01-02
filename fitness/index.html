@@ -584,6 +584,32 @@
         <h1>Your Fitness</h1>
         <p class="subtitle">Plan your workouts, track your progress</p>
 
+        <!-- Quick Start Section -->
+        <div class="quick-start" style="background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%); border-radius: 16px; padding: 20px; margin-bottom: 30px; color: #fff;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <span style="font-family: 'Playfair Display', serif; font-size: 1.2em;">Quick Start</span>
+                <span style="background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 12px; font-size: 0.75em;">TODAY</span>
+            </div>
+            <p style="color: rgba(255,255,255,0.7); font-size: 0.9em; margin-bottom: 15px;">Don't know what to do? Pick one:</p>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                <button onclick="startQuickWorkout('strength')" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 15px 10px; border-radius: 12px; color: #fff; cursor: pointer; transition: all 0.2s; font-family: inherit;">
+                    <div style="font-size: 1.5em; margin-bottom: 5px;">💪</div>
+                    <div style="font-size: 0.85em; font-weight: 500;">Strength</div>
+                    <div style="font-size: 0.7em; color: rgba(255,255,255,0.6);">30 min</div>
+                </button>
+                <button onclick="startQuickWorkout('cardio')" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 15px 10px; border-radius: 12px; color: #fff; cursor: pointer; transition: all 0.2s; font-family: inherit;">
+                    <div style="font-size: 1.5em; margin-bottom: 5px;">🏃</div>
+                    <div style="font-size: 0.85em; font-weight: 500;">Cardio</div>
+                    <div style="font-size: 0.7em; color: rgba(255,255,255,0.6);">25 min</div>
+                </button>
+                <button onclick="startQuickWorkout('quick')" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 15px 10px; border-radius: 12px; color: #fff; cursor: pointer; transition: all 0.2s; font-family: inherit;">
+                    <div style="font-size: 1.5em; margin-bottom: 5px;">⚡</div>
+                    <div style="font-size: 0.85em; font-weight: 500;">Quick</div>
+                    <div style="font-size: 0.7em; color: rgba(255,255,255,0.6);">15 min</div>
+                </button>
+            </div>
+        </div>
+
         <!-- Calendar -->
         <div class="calendar">
             <div class="calendar-header">
@@ -956,6 +982,28 @@ Set 2: 36kg × 6
 
         document.getElementById('modal').onclick = function(e) {
             if (e.target === this) closeModal();
+        }
+
+        // Quick Start function
+        function startQuickWorkout(type) {
+            let workout;
+            if (type === 'strength') {
+                // Pick a random strength-related workout or link to strength page
+                const strengthPages = ['vertical.html', 'horizontal.html', 'legs.html'];
+                window.location.href = strengthPages[Math.floor(Math.random() * strengthPages.length)];
+                return;
+            } else if (type === 'cardio') {
+                // Pick a random running or cardio workout
+                const cardioWorkouts = workouts.filter(w => w.type === 'run' || w.type === 'tabata');
+                workout = cardioWorkouts[Math.floor(Math.random() * cardioWorkouts.length)];
+            } else {
+                // Quick = pick an AMRAP or shorter workout
+                const quickWorkouts = workouts.filter(w => w.time.includes('25') || w.type === 'amrap');
+                workout = quickWorkouts[Math.floor(Math.random() * quickWorkouts.length)];
+            }
+            if (workout) {
+                showWorkout(workout.id);
+            }
         }
 
         // Initialize

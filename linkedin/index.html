@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LinkedIn Content Hub</title>
+    <title>News Hub - Daily Do</title>
     <link rel="stylesheet" href="../styles/app.css">
     <style>
         /* Override to light theme for this page */
@@ -745,8 +745,8 @@
                 <a href="../index.html" class="back-link">
                     <span>&larr;</span> Back to Daily Do
                 </a>
-                <h1 class="page-title">LinkedIn Hub</h1>
-                <p class="page-subtitle">Find news, jobs, and inspiration for your next post</p>
+                <h1 class="page-title">News Hub</h1>
+                <p class="page-subtitle">Stay informed with daily news, save ideas, and track opportunities</p>
             </header>
 
             <!-- Tabs -->
@@ -878,59 +878,18 @@
             <div id="jobs-tab" class="tab-content">
                 <div class="card">
                     <div class="card-header">
-                        <span class="card-title">Search Jobs</span>
+                        <span class="card-title">Quick Job Search</span>
                     </div>
                     <div class="job-search-links">
-                        <a href="https://www.anthropic.com/careers" target="_blank" class="job-link">
-                            <span>A</span> Anthropic Careers
+                        <a href="https://www.linkedin.com/jobs/" target="_blank" class="job-link">
+                            <span>in</span> LinkedIn Jobs
                         </a>
-                        <a href="https://www.linkedin.com/company/anthropic-ai/jobs/" target="_blank" class="job-link">
-                            <span>in</span> Anthropic on LinkedIn
+                        <a href="https://www.indeed.com/" target="_blank" class="job-link secondary">
+                            Indeed
                         </a>
-                        <a href="https://www.linkedin.com/jobs/search/?keywords=AI%20Engineer%20LLM&location=Dublin" target="_blank" class="job-link secondary">
-                            AI Jobs in Dublin
+                        <a href="https://www.glassdoor.com/Job/" target="_blank" class="job-link secondary">
+                            Glassdoor
                         </a>
-                        <a href="https://www.linkedin.com/jobs/search/?keywords=AI%20Safety%20Engineer" target="_blank" class="job-link secondary">
-                            AI Safety Jobs
-                        </a>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <span class="card-title">Target Roles</span>
-                    </div>
-                    <div class="filters-row">
-                        <span class="filter-tag">Software Engineer</span>
-                        <span class="filter-tag">AI Engineer</span>
-                        <span class="filter-tag">ML Engineer</span>
-                        <span class="filter-tag">Product Engineer</span>
-                        <span class="filter-tag">Research Engineer</span>
-                        <span class="filter-tag">Applied AI Engineer</span>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <span class="card-title">Target Locations</span>
-                    </div>
-                    <div class="filters-row">
-                        <span class="filter-tag location-tag">Dublin, Ireland</span>
-                        <span class="filter-tag location-tag">San Francisco, CA</span>
-                        <span class="filter-tag location-tag">Remote</span>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <span class="card-title">Keywords to Watch</span>
-                    </div>
-                    <div class="filters-row">
-                        <span class="filter-tag keyword-tag">Claude</span>
-                        <span class="filter-tag keyword-tag">LLM</span>
-                        <span class="filter-tag keyword-tag">AI Safety</span>
-                        <span class="filter-tag keyword-tag">Python</span>
-                        <span class="filter-tag keyword-tag">Machine Learning</span>
                     </div>
                 </div>
 
@@ -938,15 +897,16 @@
                     <div class="card-header">
                         <span class="card-title">Saved Jobs</span>
                     </div>
+                    <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 12px;">Track jobs you're interested in</p>
                     <div id="saved-jobs-list">
                         <div class="empty-state">
                             <div class="empty-state-icon">💼</div>
-                            <p>No saved jobs yet. Find a job and save it here!</p>
+                            <p>No saved jobs yet. Add jobs you want to apply for!</p>
                         </div>
                     </div>
                     <div class="idea-input-row" style="margin-top: 16px;">
-                        <input type="text" id="job-input" class="idea-input" placeholder="Paste job title and URL...">
-                        <button class="add-btn" onclick="saveJob()">Save Job</button>
+                        <input type="text" id="job-input" class="idea-input" placeholder="Job title, company, or paste URL...">
+                        <button class="add-btn" onclick="saveJob()">Save</button>
                     </div>
                 </div>
             </div>
@@ -955,117 +915,53 @@
             <div id="ideas-tab" class="tab-content">
                 <div class="card">
                     <div class="card-header">
-                        <span class="card-title">Post Templates</span>
+                        <span class="card-title">Quick Ideas</span>
                     </div>
+                    <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 12px;">Tap to copy a prompt to get you started</p>
 
-                    <div class="template-card" onclick="showTemplate('technical')">
+                    <div class="template-card" onclick="copyToClipboard('What I learned this week about...')">
                         <div class="template-header">
-                            <span class="template-name">Technical Breakdown</span>
-                            <span class="template-badge technical">Technical</span>
-                        </div>
-                        <div class="template-topics">
-                            <span class="topic-chip">How Constitutional AI works</span>
-                            <span class="topic-chip">RAG vs Fine-tuning</span>
-                            <span class="topic-chip">Prompt engineering patterns</span>
-                        </div>
-                    </div>
-
-                    <div class="template-card" onclick="showTemplate('industry')">
-                        <div class="template-header">
-                            <span class="template-name">Industry Commentary</span>
-                            <span class="template-badge industry">Industry</span>
-                        </div>
-                        <div class="template-topics">
-                            <span class="topic-chip">Anthropic announcements</span>
-                            <span class="topic-chip">AI regulation updates</span>
-                            <span class="topic-chip">State of AI safety</span>
-                        </div>
-                    </div>
-
-                    <div class="template-card" onclick="showTemplate('personal')">
-                        <div class="template-header">
-                            <span class="template-name">Personal Story</span>
+                            <span class="template-name">Weekly Learning</span>
                             <span class="template-badge personal">Personal</span>
                         </div>
                         <div class="template-topics">
-                            <span class="topic-chip">My journey into AI</span>
-                            <span class="topic-chip">Project failures & learnings</span>
-                            <span class="topic-chip">Career advice</span>
+                            <span class="topic-chip">Share insights</span>
+                            <span class="topic-chip">Reflect on growth</span>
                         </div>
                     </div>
 
-                    <div class="template-card" onclick="showTemplate('anthropic')">
+                    <div class="template-card" onclick="copyToClipboard('Hot take: I think...')">
                         <div class="template-header">
-                            <span class="template-name">Anthropic-Focused</span>
-                            <span class="template-badge anthropic">Anthropic</span>
+                            <span class="template-name">Opinion / Hot Take</span>
+                            <span class="template-badge industry">Opinion</span>
                         </div>
                         <div class="template-topics">
-                            <span class="topic-chip">Why I admire Anthropic</span>
-                            <span class="topic-chip">Building with Claude</span>
-                            <span class="topic-chip">Constitutional AI</span>
+                            <span class="topic-chip">Share your perspective</span>
+                            <span class="topic-chip">Start a discussion</span>
+                        </div>
+                    </div>
+
+                    <div class="template-card" onclick="copyToClipboard('A tip that changed how I work:')">
+                        <div class="template-header">
+                            <span class="template-name">Helpful Tip</span>
+                            <span class="template-badge technical">Tip</span>
+                        </div>
+                        <div class="template-topics">
+                            <span class="topic-chip">Be helpful</span>
+                            <span class="topic-chip">Share knowledge</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="card">
                     <div class="card-header">
-                        <span class="card-title">Engagement Hooks</span>
+                        <span class="card-title">Engagement Starters</span>
                     </div>
                     <div class="hooks-grid">
                         <div class="hook-chip" onclick="copyToClipboard(this.textContent)">What's your take?</div>
-                        <div class="hook-chip" onclick="copyToClipboard(this.textContent)">Have you experienced this?</div>
+                        <div class="hook-chip" onclick="copyToClipboard(this.textContent)">Have you tried this?</div>
                         <div class="hook-chip" onclick="copyToClipboard(this.textContent)">Agree or disagree?</div>
                         <div class="hook-chip" onclick="copyToClipboard(this.textContent)">What would you add?</div>
-                        <div class="hook-chip" onclick="copyToClipboard(this.textContent)">Drop your thoughts below</div>
-                        <div class="hook-chip" onclick="copyToClipboard(this.textContent)">Tag someone who needs this</div>
-                        <div class="hook-chip" onclick="copyToClipboard(this.textContent)">What's been your experience?</div>
-                        <div class="hook-chip" onclick="copyToClipboard(this.textContent)">Am I missing something?</div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <span class="card-title">Hashtag Sets</span>
-                    </div>
-                    <div class="hashtag-section">
-                        <div class="hashtag-group">
-                            <div class="hashtag-label">Technical</div>
-                            <div class="hashtag-chips">
-                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#AI</span>
-                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#MachineLearning</span>
-                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#LLM</span>
-                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#ArtificialIntelligence</span>
-                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#Tech</span>
-                            </div>
-                        </div>
-                        <div class="hashtag-group">
-                            <div class="hashtag-label">AI Safety</div>
-                            <div class="hashtag-chips">
-                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#AISafety</span>
-                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#ResponsibleAI</span>
-                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#AIEthics</span>
-                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#Anthropic</span>
-                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#Claude</span>
-                            </div>
-                        </div>
-                        <div class="hashtag-group">
-                            <div class="hashtag-label">Career</div>
-                            <div class="hashtag-chips">
-                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#CareerGrowth</span>
-                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#TechCareers</span>
-                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#SoftwareEngineering</span>
-                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#AIJobs</span>
-                            </div>
-                        </div>
-                        <div class="hashtag-group">
-                            <div class="hashtag-label">Industry</div>
-                            <div class="hashtag-chips">
-                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#TechNews</span>
-                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#AINews</span>
-                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#Innovation</span>
-                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#FutureOfWork</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
