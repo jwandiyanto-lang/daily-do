@@ -41,18 +41,6 @@
       font-size: 1rem;
     }
 
-    .quick-stats {
-      margin-top: var(--spacing-xl);
-    }
-
-    .quick-stats-title {
-      font-size: 0.875rem;
-      color: var(--text-gray);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: var(--spacing-md);
-    }
-
     .date-display {
       text-align: center;
       margin-bottom: var(--spacing-md);
@@ -368,19 +356,6 @@
         </div>
       </section>
 
-      <section class="quick-stats">
-        <h2 class="quick-stats-title">Quick Stats</h2>
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-value text-yellow" id="statWorkouts">0</div>
-            <div class="stat-label">Workouts This Month</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-value text-mint" id="statStreak">0</div>
-            <div class="stat-label">Day Streak</div>
-          </div>
-        </div>
-      </section>
     </div>
 
     <!-- Bottom Navigation -->
@@ -541,52 +516,6 @@
       day: 'numeric'
     });
 
-    // Load stats from memory
-    function loadStats() {
-      // Get fitness data
-      const fitnessData = Memory.getAll('fitness');
-
-      // Count completed workouts this month
-      let workoutCount = 0;
-      const currentMonth = new Date().toISOString().slice(0, 7);
-
-      if (fitnessData.completed) {
-        Object.keys(fitnessData.completed).forEach(date => {
-          if (date.startsWith(currentMonth) && fitnessData.completed[date]) {
-            workoutCount++;
-          }
-        });
-      }
-
-      // Also check for date-keyed entries (planned_YYYY-MM-DD format)
-      Object.keys(fitnessData).forEach(key => {
-        if (key.startsWith('completed_') && key.includes(currentMonth)) {
-          workoutCount++;
-        }
-      });
-
-      document.getElementById('statWorkouts').textContent = workoutCount;
-
-      // Calculate streak (consecutive days)
-      let streak = 0;
-      const today = new Date();
-      for (let i = 0; i < 365; i++) {
-        const checkDate = new Date(today);
-        checkDate.setDate(today.getDate() - i);
-        const dateStr = checkDate.toISOString().split('T')[0];
-
-        const hasWorkout = fitnessData.completed && fitnessData.completed[dateStr];
-        const hasCompletedKey = fitnessData['completed_' + dateStr];
-
-        if (hasWorkout || hasCompletedKey) {
-          streak++;
-        } else if (i > 0) {
-          break;
-        }
-      }
-      document.getElementById('statStreak').textContent = streak;
-    }
-
     // Settings modal
     function openSettings() {
       document.getElementById('settingsModal').classList.remove('hidden');
@@ -621,9 +550,6 @@
           });
       }
     }
-
-    // Initialize
-    loadStats();
 
     // Track home visit
     Memory.setLastVisited('home');
