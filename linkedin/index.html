@@ -512,12 +512,111 @@
             flex-shrink: 0;
         }
 
-        .news-source-badge.tc { background: #0a0; color: white; }
-        .news-source-badge.vb { background: #9333ea; color: white; }
-        .news-source-badge.verge { background: #e53935; color: white; }
-        .news-source-badge.wired { background: #000; color: white; }
-        .news-source-badge.anth { background: #d4a574; color: white; }
-        .news-source-badge.hn { background: #ff6600; color: white; }
+        .news-source-badge.fit { background: #22c55e; color: white; }
+        .news-source-badge.ai { background: #8b5cf6; color: white; }
+        .news-source-badge.edu { background: #f59e0b; color: white; }
+
+        /* Category grouping - Perplexity style */
+        .news-category {
+            margin-bottom: 24px;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .category-icon {
+            font-size: 1.2rem;
+        }
+
+        .category-name {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #1e293b;
+        }
+
+        .category-items {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Summary cards - clean Perplexity style */
+        .summary-card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            position: relative;
+        }
+
+        .summary-card:hover {
+            background: white;
+            border-color: #0077b5;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .summary-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .summary-source {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #0077b5;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .summary-time {
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+
+        .summary-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #1e293b;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .summary-text {
+            font-size: 0.875rem;
+            color: #64748b;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .summary-save {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 10px;
+            background: transparent;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .summary-save:hover {
+            background: #0077b5;
+            border-color: #0077b5;
+            color: white;
+        }
 
         .news-content {
             flex: 1;
@@ -1030,10 +1129,17 @@
         // Daily News Feed
         // ========================================
 
+        // News categories: Fitness Industry, AI, Education
         const RSS_FEEDS = [
-            { url: 'https://techcrunch.com/tag/artificial-intelligence/feed/', name: 'TechCrunch', badge: 'tc' },
-            { url: 'https://feeds.feedburner.com/venturebeat/SZYF', name: 'VentureBeat', badge: 'vb' },
-            { url: 'https://hnrss.org/newest?q=AI+OR+LLM+OR+Anthropic+OR+Claude&points=50', name: 'Hacker News', badge: 'hn' }
+            // Fitness Industry
+            { url: 'https://www.ukactive.com/feed/', name: 'ukactive', badge: 'fit', category: 'Fitness' },
+            { url: 'https://www.leisureopportunities.co.uk/rss/news.rss', name: 'Leisure Opps', badge: 'fit', category: 'Fitness' },
+            // AI & Tech
+            { url: 'https://techcrunch.com/tag/artificial-intelligence/feed/', name: 'TechCrunch', badge: 'ai', category: 'AI' },
+            { url: 'https://feeds.feedburner.com/venturebeat/SZYF', name: 'VentureBeat', badge: 'ai', category: 'AI' },
+            // Education & EdTech
+            { url: 'https://www.edsurge.com/rss', name: 'EdSurge', badge: 'edu', category: 'Education' },
+            { url: 'https://feeds.feedburner.com/EducationWeek', name: 'Education Week', badge: 'edu', category: 'Education' }
         ];
 
         const RSS_API = 'https://api.rss2json.com/v1/api.json?rss_url=';
@@ -1060,7 +1166,7 @@
             feedEl.innerHTML = `
                 <div class="loading-state">
                     <div class="loading-spinner"></div>
-                    <p>Fetching fresh AI news...</p>
+                    <p>Fetching your daily briefing...</p>
                 </div>
             `;
 
@@ -1074,12 +1180,14 @@
                         const data = await response.json();
 
                         if (data.status === 'ok' && data.items) {
-                            const items = data.items.slice(0, 5).map(item => ({
+                            const items = data.items.slice(0, 3).map(item => ({
                                 title: item.title,
                                 link: item.link,
                                 pubDate: item.pubDate,
+                                description: cleanDescription(item.description || item.content || ''),
                                 source: feed.name,
-                                badge: feed.badge
+                                badge: feed.badge,
+                                category: feed.category
                             }));
                             allItems.push(...items);
                         }
@@ -1091,8 +1199,8 @@
                 // Sort by date (newest first)
                 allItems.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
 
-                // Take top 10
-                const topItems = allItems.slice(0, 10);
+                // Take top 12 (4 per category ideally)
+                const topItems = allItems.slice(0, 12);
 
                 if (topItems.length > 0) {
                     // Cache the results
@@ -1123,6 +1231,19 @@
             }
         }
 
+        // Clean HTML from description
+        function cleanDescription(html) {
+            const temp = document.createElement('div');
+            temp.innerHTML = html;
+            let text = temp.textContent || temp.innerText || '';
+            // Trim and limit to ~150 chars
+            text = text.trim().replace(/\s+/g, ' ');
+            if (text.length > 180) {
+                text = text.substring(0, 180).trim() + '...';
+            }
+            return text;
+        }
+
         function renderNews(items) {
             const feedEl = document.getElementById('news-feed');
 
@@ -1136,22 +1257,57 @@
                 return;
             }
 
-            feedEl.innerHTML = items.map((item, idx) => {
-                const date = new Date(item.pubDate);
-                const timeAgo = getTimeAgo(date);
-                return `
-                    <div class="news-item" onclick="window.open('${item.link}', '_blank')">
-                        <div class="news-source-badge ${item.badge}">${item.source.slice(0, 2).toUpperCase()}</div>
-                        <div class="news-content">
-                            <div class="news-title">${escapeHtml(item.title)}</div>
-                            <div class="news-meta">${item.source} • ${timeAgo}</div>
+            // Group by category
+            const categories = {
+                'Fitness': { icon: '💪', items: [] },
+                'AI': { icon: '🤖', items: [] },
+                'Education': { icon: '📚', items: [] }
+            };
+
+            items.forEach((item, idx) => {
+                if (categories[item.category]) {
+                    categories[item.category].items.push({ ...item, idx });
+                }
+            });
+
+            // Render grouped by category - Perplexity style
+            let html = '';
+            for (const [catName, cat] of Object.entries(categories)) {
+                if (cat.items.length === 0) continue;
+
+                html += `
+                    <div class="news-category">
+                        <div class="category-header">
+                            <span class="category-icon">${cat.icon}</span>
+                            <span class="category-name">${catName}</span>
                         </div>
-                        <div class="news-actions">
-                            <button class="save-news-btn" onclick="event.stopPropagation(); saveNewsItem(${idx})">Save</button>
-                        </div>
-                    </div>
+                        <div class="category-items">
                 `;
-            }).join('');
+
+                cat.items.forEach(item => {
+                    const timeAgo = getTimeAgo(new Date(item.pubDate));
+                    html += `
+                        <div class="summary-card" onclick="window.open('${item.link}', '_blank')">
+                            <div class="summary-header">
+                                <span class="summary-source">${item.source}</span>
+                                <span class="summary-time">${timeAgo}</span>
+                            </div>
+                            <div class="summary-title">${escapeHtml(item.title)}</div>
+                            ${item.description ? `<div class="summary-text">${escapeHtml(item.description)}</div>` : ''}
+                            <button class="summary-save" onclick="event.stopPropagation(); saveNewsItem(${item.idx})">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                                </svg>
+                                Save
+                            </button>
+                        </div>
+                    `;
+                });
+
+                html += `</div></div>`;
+            }
+
+            feedEl.innerHTML = html;
         }
 
         function getTimeAgo(date) {
@@ -1191,29 +1347,40 @@
         function generateSuggestions(items) {
             const suggestionList = document.getElementById('suggestion-list');
 
-            // Analyze headlines for themes
-            const themes = [];
-            const keywords = ['Claude', 'Anthropic', 'OpenAI', 'GPT', 'LLM', 'AI Safety', 'regulation', 'enterprise', 'startup'];
+            // Find items by category
+            const fitnessItems = items.filter(i => i.category === 'Fitness');
+            const aiItems = items.filter(i => i.category === 'AI');
+            const eduItems = items.filter(i => i.category === 'Education');
 
-            items.forEach(item => {
-                const title = item.title.toLowerCase();
-                keywords.forEach(kw => {
-                    if (title.includes(kw.toLowerCase()) && !themes.includes(kw)) {
-                        themes.push(kw);
-                    }
+            // Generate suggestions based on today's news
+            const suggestions = [];
+
+            if (fitnessItems.length > 0) {
+                suggestions.push({
+                    icon: '💪',
+                    text: `UK fitness industry insight: ${fitnessItems[0]?.title?.slice(0, 40)}...`
                 });
-            });
-
-            // Generate suggestions
-            const suggestions = [
-                { icon: '🔥', text: `Hot take on today's top story: "${items[0]?.title?.slice(0, 50)}..."` },
-                { icon: '📊', text: 'Technical breakdown of a recent AI development' },
-                { icon: '💭', text: `Your thoughts on ${themes[0] || 'the latest AI news'}` }
-            ];
-
-            if (themes.includes('Anthropic') || themes.includes('Claude')) {
-                suggestions.push({ icon: '✨', text: 'Share your experience building with Claude' });
             }
+
+            if (aiItems.length > 0) {
+                suggestions.push({
+                    icon: '🤖',
+                    text: `AI perspective: How ${aiItems[0]?.title?.slice(0, 40)}... affects fitness tech`
+                });
+            }
+
+            if (eduItems.length > 0) {
+                suggestions.push({
+                    icon: '📚',
+                    text: `Education angle: ${eduItems[0]?.title?.slice(0, 40)}...`
+                });
+            }
+
+            // Always add a crossover suggestion
+            suggestions.push({
+                icon: '🔗',
+                text: 'How AI is transforming fitness education and training'
+            });
 
             suggestionList.innerHTML = suggestions.map(s => `
                 <li class="suggestion-item" onclick="copyToClipboard('${escapeHtml(s.text)}')">
