@@ -18,11 +18,7 @@
             transition: background 0.3s, color 0.3s;
         }
 
-        body.light-theme {
-            background: #F5F5F7;
-            color: #1a1a1a;
-        }
-
+        body.light-theme { background: #F5F5F7; color: #1a1a1a; }
         body.light-theme .back-link { color: #666; }
         body.light-theme .subtitle { color: #666; }
         body.light-theme .tab-btn { background: rgba(0,0,0,0.05); color: #666; }
@@ -38,80 +34,47 @@
         body.light-theme .history-date { color: #666; }
         body.light-theme .modal-content { background: #fff; }
         body.light-theme .rest-text { color: #666; }
+        body.light-theme .api-input { background: #f5f5f5; color: #333; border-color: rgba(0,0,0,0.15); }
 
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: #888;
-            text-decoration: none;
-            font-size: 0.9rem;
-            margin-bottom: 20px;
-        }
-
+        .back-link { display: inline-flex; align-items: center; gap: 8px; color: #888; text-decoration: none; font-size: 0.9rem; margin-bottom: 20px; }
         h1 { font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
         .subtitle { color: #888; margin-bottom: 24px; }
 
         .tabs { display: flex; gap: 8px; margin-bottom: 24px; }
-        .tab-btn {
-            flex: 1; padding: 12px;
-            background: rgba(255,255,255,0.05);
-            border: none; border-radius: 10px;
-            color: #888; font-size: 0.85rem; font-weight: 500;
-            cursor: pointer; transition: all 0.2s; font-family: inherit;
-        }
+        .tab-btn { flex: 1; padding: 12px; background: rgba(255,255,255,0.05); border: none; border-radius: 10px; color: #888; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all 0.2s; font-family: inherit; }
         .tab-btn.active { background: #F7C846; color: #0E121A; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        .trainer-card {
-            background: linear-gradient(135deg, #1a1f2e 0%, #0E121A 100%);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px; padding: 24px; margin-bottom: 20px;
-        }
+        .trainer-card { background: linear-gradient(135deg, #1a1f2e 0%, #0E121A 100%); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 24px; margin-bottom: 20px; }
         .trainer-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-        .trainer-avatar {
-            width: 50px; height: 50px;
-            background: linear-gradient(135deg, #F7C846 0%, #ff9500 100%);
-            border-radius: 50%; display: flex; align-items: center;
-            justify-content: center; font-size: 1.5rem;
-        }
+        .trainer-avatar { width: 50px; height: 50px; background: linear-gradient(135deg, #F7C846 0%, #ff9500 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
         .trainer-info h3 { font-size: 1rem; font-weight: 600; }
         .trainer-info p { font-size: 0.8rem; color: #888; }
-        .trainer-message { font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px; }
-        .generate-btn {
-            width: 100%; padding: 16px;
-            background: #F7C846; border: none; border-radius: 12px;
-            color: #0E121A; font-size: 1rem; font-weight: 600;
-            cursor: pointer; font-family: inherit;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-        }
+        .trainer-message { font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px; min-height: 60px; }
+        .generate-btn { width: 100%; padding: 16px; background: #F7C846; border: none; border-radius: 12px; color: #0E121A; font-size: 1rem; font-weight: 600; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .generate-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-        .pref-card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px; padding: 20px; margin-bottom: 20px;
-        }
+        .api-setup { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; margin-bottom: 20px; }
+        .api-setup-title { font-size: 0.9rem; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .api-setup-title .icon { font-size: 1.2rem; }
+        .api-input { width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff; font-size: 0.9rem; margin-bottom: 12px; font-family: inherit; }
+        .api-input::placeholder { color: #666; }
+        .api-row { display: flex; gap: 10px; }
+        .api-btn { flex: 1; padding: 12px; border: none; border-radius: 10px; font-size: 0.85rem; font-weight: 500; cursor: pointer; font-family: inherit; }
+        .api-btn.save { background: #8AE98D; color: #0E121A; }
+        .api-btn.clear { background: rgba(255,255,255,0.1); color: #fff; }
+        .api-status { font-size: 0.8rem; color: #8AE98D; margin-top: 10px; display: flex; align-items: center; gap: 6px; }
+        .api-status.error { color: #ff6b6b; }
+
+        .pref-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; margin-bottom: 20px; }
         .pref-title { font-size: 0.85rem; font-weight: 600; margin-bottom: 12px; color: #888; }
         .pref-options { display: flex; flex-wrap: wrap; gap: 8px; }
-        .pref-option {
-            padding: 10px 16px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px; font-size: 0.85rem; color: #ccc;
-            cursor: pointer; transition: all 0.2s;
-        }
-        .pref-option.selected {
-            background: rgba(247, 200, 70, 0.2);
-            border-color: #F7C846; color: #F7C846;
-        }
+        .pref-option { padding: 10px 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; font-size: 0.85rem; color: #ccc; cursor: pointer; transition: all 0.2s; }
+        .pref-option.selected { background: rgba(247, 200, 70, 0.2); border-color: #F7C846; color: #F7C846; }
 
         .workout-detail { background: rgba(255,255,255,0.03); border-radius: 20px; overflow: hidden; }
-        .workout-header {
-            background: linear-gradient(135deg, #F7C846 0%, #ff9500 100%);
-            padding: 24px; color: #0E121A;
-        }
+        .workout-header { background: linear-gradient(135deg, #F7C846 0%, #ff9500 100%); padding: 24px; color: #0E121A; }
         .workout-type { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; margin-bottom: 4px; }
         .workout-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
         .workout-meta { display: flex; gap: 16px; font-size: 0.85rem; }
@@ -120,14 +83,8 @@
         .section-label:first-child { margin-top: 0; }
 
         .exercise-card { background: rgba(255,255,255,0.05); border-radius: 12px; padding: 16px; margin-bottom: 10px; }
-        .exercise-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
-        .exercise-number {
-            width: 28px; height: 28px;
-            background: rgba(247, 200, 70, 0.2); color: #F7C846;
-            border-radius: 50%; display: flex; align-items: center;
-            justify-content: center; font-size: 0.8rem; font-weight: 600;
-            margin-right: 12px; flex-shrink: 0;
-        }
+        .exercise-header { display: flex; align-items: flex-start; margin-bottom: 8px; }
+        .exercise-number { width: 28px; height: 28px; background: rgba(247, 200, 70, 0.2); color: #F7C846; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 600; margin-right: 12px; flex-shrink: 0; }
         .exercise-info { flex: 1; }
         .exercise-name { font-weight: 600; font-size: 1rem; margin-bottom: 4px; }
         .exercise-meta { font-size: 0.8rem; color: #888; }
@@ -156,7 +113,7 @@
         .active-exercise-number { font-size: 0.85rem; color: #888; margin-bottom: 8px; }
         .active-exercise-name { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
         .active-exercise-detail { font-size: 1.1rem; color: #F7C846; margin-bottom: 8px; }
-        .active-exercise-tip { font-size: 0.9rem; color: #888; margin-top: 16px; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px; }
+        .active-exercise-tip { font-size: 0.9rem; color: #888; margin-top: 16px; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px; text-align: left; }
         .timer-display { font-size: 4rem; font-weight: 700; color: #F7C846; margin: 30px 0; }
 
         .rest-overlay { background: linear-gradient(135deg, #1a3a1a 0%, #0E121A 100%); padding: 40px; text-align: center; }
@@ -172,34 +129,51 @@
         .progress-bar { height: 4px; background: rgba(255,255,255,0.1); margin: 20px; border-radius: 2px; overflow: hidden; }
         .progress-fill { height: 100%; background: #F7C846; transition: width 0.3s; }
 
-        .loading { display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .loading-dot { width: 8px; height: 8px; background: #F7C846; border-radius: 50%; animation: bounce 1.4s infinite ease-in-out both; }
+        .loading { display: inline-flex; align-items: center; gap: 8px; }
+        .loading-dot { width: 8px; height: 8px; background: currentColor; border-radius: 50%; animation: bounce 1.4s infinite ease-in-out both; }
         .loading-dot:nth-child(1) { animation-delay: -0.32s; }
         .loading-dot:nth-child(2) { animation-delay: -0.16s; }
         @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+
+        .ai-badge { background: linear-gradient(135deg, #8B5CF6, #EC4899); padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; margin-left: 8px; }
     </style>
 </head>
 <body>
     <a href="../index.html" class="back-link"><span>←</span> Back to Daily Do</a>
     <h1>Fitness</h1>
-    <p class="subtitle">Your AI Personal Trainer</p>
+    <p class="subtitle">Your AI Personal Trainer <span class="ai-badge">Claude AI</span></p>
 
     <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('train')">Train</button>
         <button class="tab-btn" onclick="switchTab('history')">History</button>
+        <button class="tab-btn" onclick="switchTab('settings')">Settings</button>
     </div>
 
     <div id="train-tab" class="tab-content active">
-        <div class="trainer-card">
+        <!-- API Key Required Notice -->
+        <div class="api-setup" id="api-notice" style="display: none;">
+            <div class="api-setup-title">
+                <span class="icon">🔑</span> API Key Required
+            </div>
+            <p style="font-size: 0.85rem; color: #888; margin-bottom: 12px;">
+                Add your Anthropic API key in Settings to enable AI workout generation.
+            </p>
+            <button class="api-btn save" onclick="switchTab('settings'); document.querySelectorAll('.tab-btn')[2].classList.add('active'); document.querySelectorAll('.tab-btn')[0].classList.remove('active');">
+                Go to Settings
+            </button>
+        </div>
+
+        <!-- Trainer Card -->
+        <div class="trainer-card" id="trainer-card">
             <div class="trainer-header">
                 <div class="trainer-avatar">🏋️</div>
                 <div class="trainer-info">
                     <h3>Coach AI</h3>
-                    <p>Your Personal Trainer</p>
+                    <p>Powered by Claude</p>
                 </div>
             </div>
             <div class="trainer-message" id="trainer-message">
-                Ready to crush your workout? Tell me what you want to focus on and I'll create a personalized routine for you!
+                Ready to create your personalized workout! Select your preferences below and I'll design a complete routine with warm-up, main exercises, and cool-down.
             </div>
             <button class="generate-btn" id="generate-btn" onclick="generateWorkout()">
                 <span>⚡</span> Generate My Workout
@@ -209,11 +183,11 @@
         <div class="pref-card">
             <div class="pref-title">Focus Area</div>
             <div class="pref-options" id="focus-options">
-                <div class="pref-option selected" data-value="full">Full Body</div>
-                <div class="pref-option" data-value="upper">Upper Body</div>
-                <div class="pref-option" data-value="lower">Lower Body</div>
+                <div class="pref-option selected" data-value="full body">Full Body</div>
+                <div class="pref-option" data-value="upper body">Upper Body</div>
+                <div class="pref-option" data-value="lower body">Lower Body</div>
                 <div class="pref-option" data-value="core">Core</div>
-                <div class="pref-option" data-value="cardio">Cardio</div>
+                <div class="pref-option" data-value="cardio HIIT">Cardio</div>
             </div>
         </div>
 
@@ -222,16 +196,26 @@
             <div class="pref-options" id="duration-options">
                 <div class="pref-option" data-value="15">15 min</div>
                 <div class="pref-option selected" data-value="25">25 min</div>
-                <div class="pref-option" data-value="35">35 min</div>
+                <div class="pref-option" data-value="40">40 min</div>
             </div>
         </div>
 
         <div class="pref-card">
             <div class="pref-title">Intensity</div>
             <div class="pref-options" id="intensity-options">
-                <div class="pref-option" data-value="easy">Easy</div>
-                <div class="pref-option selected" data-value="moderate">Moderate</div>
-                <div class="pref-option" data-value="hard">Intense</div>
+                <div class="pref-option" data-value="beginner-friendly, low impact">Beginner</div>
+                <div class="pref-option selected" data-value="moderate intensity">Moderate</div>
+                <div class="pref-option" data-value="high intensity, challenging">Intense</div>
+            </div>
+        </div>
+
+        <div class="pref-card">
+            <div class="pref-title">Equipment</div>
+            <div class="pref-options" id="equipment-options">
+                <div class="pref-option selected" data-value="no equipment, bodyweight only">No Equipment</div>
+                <div class="pref-option" data-value="dumbbells">Dumbbells</div>
+                <div class="pref-option" data-value="resistance bands">Bands</div>
+                <div class="pref-option" data-value="full gym">Full Gym</div>
             </div>
         </div>
 
@@ -242,145 +226,53 @@
         <div id="history-list"></div>
     </div>
 
+    <div id="settings-tab" class="tab-content">
+        <div class="api-setup">
+            <div class="api-setup-title">
+                <span class="icon">🔑</span> Anthropic API Key
+            </div>
+            <p style="font-size: 0.85rem; color: #888; margin-bottom: 12px;">
+                Your API key is stored locally and never sent anywhere except Anthropic's API.
+            </p>
+            <input type="password" class="api-input" id="api-key-input" placeholder="sk-ant-api...">
+            <div class="api-row">
+                <button class="api-btn save" onclick="saveApiKey()">Save Key</button>
+                <button class="api-btn clear" onclick="clearApiKey()">Clear</button>
+            </div>
+            <div class="api-status" id="api-status" style="display: none;"></div>
+        </div>
+
+        <div class="pref-card">
+            <div class="pref-title">Get an API Key</div>
+            <p style="font-size: 0.85rem; color: #888; line-height: 1.5;">
+                1. Go to <a href="https://console.anthropic.com/" target="_blank" style="color: #F7C846;">console.anthropic.com</a><br>
+                2. Sign up or log in<br>
+                3. Go to API Keys section<br>
+                4. Create a new key and paste it above
+            </p>
+        </div>
+    </div>
+
     <div id="workout-modal" class="modal">
         <div class="modal-content" id="modal-body"></div>
     </div>
 
     <script src="../scripts/memory.js"></script>
     <script>
-        const exercises = {
-            upper: {
-                warmup: [
-                    { name: 'Arm Circles', duration: '30 sec each direction', tip: 'Start small, gradually increase the circle size' },
-                    { name: 'Shoulder Rolls', duration: '20 reps', tip: 'Roll forward then backward' },
-                    { name: 'Chest Opener Stretch', duration: '30 sec', tip: 'Clasp hands behind back, lift chest' }
-                ],
-                main: [
-                    { name: 'Push-Ups', sets: 3, reps: '10-15', rest: 45, tip: 'Keep your core tight, lower until chest nearly touches floor' },
-                    { name: 'Diamond Push-Ups', sets: 3, reps: '8-12', rest: 45, tip: 'Hands together forming a diamond, targets triceps' },
-                    { name: 'Pike Push-Ups', sets: 3, reps: '8-10', rest: 60, tip: 'Hips high, head toward floor - great for shoulders' },
-                    { name: 'Tricep Dips', sets: 3, reps: '12-15', rest: 45, tip: 'Use a chair or bench, keep elbows close' },
-                    { name: 'Plank Shoulder Taps', sets: 3, reps: '20 taps', rest: 45, tip: 'Keep hips stable, don\'t rotate' },
-                    { name: 'Superman Hold', sets: 3, reps: '20 sec', rest: 30, tip: 'Lift arms and legs, squeeze back muscles' },
-                    { name: 'Wide Push-Ups', sets: 3, reps: '10-12', rest: 45, tip: 'Hands wider than shoulders, targets chest' },
-                    { name: 'Incline Push-Ups', sets: 3, reps: '12-15', rest: 45, tip: 'Hands on elevated surface, easier variation' }
-                ],
-                cooldown: [
-                    { name: 'Chest Doorway Stretch', duration: '30 sec each side', tip: 'Arm on doorframe, lean forward gently' },
-                    { name: 'Tricep Stretch', duration: '30 sec each arm', tip: 'Elbow up, hand behind head, pull gently' },
-                    { name: 'Child\'s Pose', duration: '45 sec', tip: 'Arms extended, breathe deeply' }
-                ]
-            },
-            lower: {
-                warmup: [
-                    { name: 'Leg Swings', duration: '15 each leg', tip: 'Hold wall for balance, swing front to back' },
-                    { name: 'Hip Circles', duration: '10 each direction', tip: 'Hands on hips, big smooth circles' },
-                    { name: 'Bodyweight Squats', duration: '15 reps slow', tip: 'Warm up the movement pattern' }
-                ],
-                main: [
-                    { name: 'Goblet Squats', sets: 3, reps: '12-15', rest: 60, tip: 'Weight at chest, sit back and down, knees track over toes' },
-                    { name: 'Reverse Lunges', sets: 3, reps: '10 each leg', rest: 60, tip: 'Step back, front knee at 90°, drive through front heel' },
-                    { name: 'Romanian Deadlifts', sets: 3, reps: '12', rest: 60, tip: 'Slight knee bend, hinge at hips, feel the hamstring stretch' },
-                    { name: 'Jump Squats', sets: 3, reps: '10', rest: 60, tip: 'Explode up, land softly with bent knees' },
-                    { name: 'Glute Bridges', sets: 3, reps: '15', rest: 45, tip: 'Squeeze glutes at top, don\'t hyperextend back' },
-                    { name: 'Bulgarian Split Squats', sets: 3, reps: '10 each', rest: 60, tip: 'Back foot elevated, stay upright' },
-                    { name: 'Calf Raises', sets: 3, reps: '20', rest: 30, tip: 'Full range of motion, pause at top' },
-                    { name: 'Wall Sit', sets: 3, reps: '30 sec', rest: 45, tip: 'Thighs parallel to floor, back flat against wall' }
-                ],
-                cooldown: [
-                    { name: 'Quad Stretch', duration: '30 sec each leg', tip: 'Stand on one leg, pull heel to glute' },
-                    { name: 'Hamstring Stretch', duration: '30 sec each leg', tip: 'Seated or standing, reach for toes' },
-                    { name: 'Pigeon Pose', duration: '45 sec each side', tip: 'Great for hip flexors and glutes' }
-                ]
-            },
-            core: {
-                warmup: [
-                    { name: 'Cat-Cow Stretch', duration: '10 reps', tip: 'Alternate between arching and rounding spine' },
-                    { name: 'Dead Bug Hold', duration: '30 sec', tip: 'Back flat on floor, engage core' },
-                    { name: 'Bird Dogs', duration: '10 each side', tip: 'Opposite arm and leg, keep hips level' }
-                ],
-                main: [
-                    { name: 'Plank', sets: 3, reps: '30-45 sec', rest: 30, tip: 'Straight line from head to heels, don\'t let hips sag' },
-                    { name: 'Bicycle Crunches', sets: 3, reps: '20 each side', rest: 30, tip: 'Elbow to opposite knee, fully extend other leg' },
-                    { name: 'Mountain Climbers', sets: 3, reps: '30 sec', rest: 30, tip: 'Drive knees toward chest quickly, keep core tight' },
-                    { name: 'Russian Twists', sets: 3, reps: '20 total', rest: 30, tip: 'Lean back slightly, rotate fully side to side' },
-                    { name: 'Leg Raises', sets: 3, reps: '12', rest: 45, tip: 'Keep lower back pressed to floor, control the descent' },
-                    { name: 'Dead Bug', sets: 3, reps: '10 each side', rest: 30, tip: 'Lower opposite arm and leg, keep back flat' },
-                    { name: 'Side Plank', sets: 3, reps: '25 sec each', rest: 30, tip: 'Stack feet or stagger, hips off ground' },
-                    { name: 'Flutter Kicks', sets: 3, reps: '30 sec', rest: 30, tip: 'Small controlled kicks, lower back down' }
-                ],
-                cooldown: [
-                    { name: 'Cobra Stretch', duration: '30 sec', tip: 'Press up gently, hips on floor' },
-                    { name: 'Supine Twist', duration: '30 sec each side', tip: 'Knees to one side, opposite arm out' },
-                    { name: 'Happy Baby', duration: '45 sec', tip: 'Grab feet, gently rock side to side' }
-                ]
-            },
-            full: {
-                warmup: [
-                    { name: 'Jumping Jacks', duration: '30 sec', tip: 'Land softly, keep a rhythm' },
-                    { name: 'High Knees', duration: '30 sec', tip: 'Drive knees up, pump arms' },
-                    { name: 'Arm Circles + Leg Swings', duration: '30 sec', tip: 'Get blood flowing to all joints' }
-                ],
-                main: [
-                    { name: 'Burpees', sets: 3, reps: '8-10', rest: 60, tip: 'Full extension jump, chest to floor on pushup' },
-                    { name: 'Squat to Press', sets: 3, reps: '12', rest: 45, tip: 'Squat down, drive up and press overhead' },
-                    { name: 'Push-Ups', sets: 3, reps: '12-15', rest: 45, tip: 'Full range of motion, core engaged' },
-                    { name: 'Reverse Lunges', sets: 3, reps: '10 each', rest: 45, tip: 'Alternate legs, stay controlled' },
-                    { name: 'Plank Rows', sets: 3, reps: '10 each side', rest: 45, tip: 'Pull elbow high, minimize hip rotation' },
-                    { name: 'Jump Squats', sets: 3, reps: '12', rest: 45, tip: 'Explode up, soft landing' },
-                    { name: 'Mountain Climbers', sets: 3, reps: '30 sec', rest: 30, tip: 'Fast pace, drive knees to chest' },
-                    { name: 'Superman Pulls', sets: 3, reps: '12', rest: 30, tip: 'Arms extended, pull elbows back' }
-                ],
-                cooldown: [
-                    { name: 'Standing Forward Fold', duration: '45 sec', tip: 'Let head hang, bend knees if needed' },
-                    { name: 'World\'s Greatest Stretch', duration: '30 sec each', tip: 'Lunge, rotate, reach - hits everything' },
-                    { name: 'Child\'s Pose', duration: '45 sec', tip: 'Breathe deeply, relax completely' }
-                ]
-            },
-            cardio: {
-                warmup: [
-                    { name: 'March in Place', duration: '30 sec', tip: 'Lift knees high, swing arms' },
-                    { name: 'Arm Swings', duration: '20 sec', tip: 'Loosen up shoulders' },
-                    { name: 'Bodyweight Squats', duration: '10 reps', tip: 'Get legs warmed up' }
-                ],
-                main: [
-                    { name: 'High Knees', sets: 4, reps: '30 sec', rest: 15, tip: 'Sprint pace, pump those arms!' },
-                    { name: 'Burpees', sets: 4, reps: '30 sec', rest: 15, tip: 'Go as fast as you can with good form' },
-                    { name: 'Jump Squats', sets: 4, reps: '30 sec', rest: 15, tip: 'Explosive jumps, soft landings' },
-                    { name: 'Mountain Climbers', sets: 4, reps: '30 sec', rest: 15, tip: 'Drive those knees fast!' },
-                    { name: 'Jumping Lunges', sets: 4, reps: '30 sec', rest: 15, tip: 'Switch legs in the air' },
-                    { name: 'Skaters', sets: 4, reps: '30 sec', rest: 15, tip: 'Lateral bounds, stay low' },
-                    { name: 'Tuck Jumps', sets: 3, reps: '30 sec', rest: 20, tip: 'Bring knees to chest at peak' },
-                    { name: 'Fast Feet', sets: 4, reps: '30 sec', rest: 15, tip: 'Quick small steps, stay light' }
-                ],
-                cooldown: [
-                    { name: 'Walk in Place', duration: '1 min', tip: 'Slow your heart rate gradually' },
-                    { name: 'Deep Breathing', duration: '1 min', tip: '4 counts in, 4 counts out' },
-                    { name: 'Full Body Stretch', duration: '2 min', tip: 'Hit all major muscle groups' }
-                ]
-            }
-        };
-
-        const trainerMessages = {
-            full: "Full body day! We're hitting everything - get ready to feel accomplished 💪",
-            upper: "Let's sculpt that upper body! Focus on form over speed today 🎯",
-            lower: "Leg day is best day! Strong legs = strong foundation 🦵",
-            core: "Core work incoming! A strong core improves everything else 🔥",
-            cardio: "Cardio blast! Keep moving, keep breathing, you've got this! 🏃"
-        };
-
         let currentWorkout = null;
         let currentExerciseIndex = 0;
         let timerInterval = null;
         let exerciseTime = 0;
-        let selectedFocus = 'full';
+        let selectedFocus = 'full body';
         let selectedDuration = 25;
-        let selectedIntensity = 'moderate';
+        let selectedIntensity = 'moderate intensity';
+        let selectedEquipment = 'no equipment, bodyweight only';
 
         function init() {
             loadTheme();
             setupPreferenceListeners();
             renderHistory();
+            checkApiKey();
         }
 
         function loadTheme() {
@@ -388,6 +280,50 @@
                 const savedTheme = Memory.get('settings', 'theme');
                 if (savedTheme === 'light') document.body.classList.add('light-theme');
             }
+        }
+
+        function checkApiKey() {
+            const apiKey = Memory.get('settings', 'anthropic_api_key');
+            if (!apiKey) {
+                document.getElementById('api-notice').style.display = 'block';
+                document.getElementById('trainer-card').style.display = 'none';
+                document.querySelectorAll('.pref-card').forEach(el => el.style.opacity = '0.5');
+            } else {
+                document.getElementById('api-notice').style.display = 'none';
+                document.getElementById('trainer-card').style.display = 'block';
+                document.querySelectorAll('.pref-card').forEach(el => el.style.opacity = '1');
+            }
+        }
+
+        function saveApiKey() {
+            const input = document.getElementById('api-key-input');
+            const key = input.value.trim();
+            if (!key) return;
+
+            Memory.set('settings', 'anthropic_api_key', key);
+            input.value = '';
+
+            const status = document.getElementById('api-status');
+            status.textContent = '✓ API key saved successfully!';
+            status.className = 'api-status';
+            status.style.display = 'flex';
+
+            checkApiKey();
+
+            setTimeout(() => {
+                switchTab('train');
+                document.querySelectorAll('.tab-btn')[0].classList.add('active');
+                document.querySelectorAll('.tab-btn')[2].classList.remove('active');
+            }, 1000);
+        }
+
+        function clearApiKey() {
+            Memory.set('settings', 'anthropic_api_key', null);
+            const status = document.getElementById('api-status');
+            status.textContent = '✓ API key cleared';
+            status.className = 'api-status';
+            status.style.display = 'flex';
+            checkApiKey();
         }
 
         function switchTab(tab) {
@@ -407,56 +343,110 @@
                         if (group.id === 'focus-options') selectedFocus = value;
                         if (group.id === 'duration-options') selectedDuration = parseInt(value);
                         if (group.id === 'intensity-options') selectedIntensity = value;
+                        if (group.id === 'equipment-options') selectedEquipment = value;
                     }
                 });
             });
         }
 
-        function generateWorkout() {
-            const btn = document.getElementById('generate-btn');
-            btn.disabled = true;
-            btn.innerHTML = '<span class="loading"><span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span></span> Creating your workout...';
-            document.getElementById('trainer-message').textContent = trainerMessages[selectedFocus];
+        async function generateWorkout() {
+            const apiKey = Memory.get('settings', 'anthropic_api_key');
+            if (!apiKey) {
+                checkApiKey();
+                return;
+            }
 
-            setTimeout(() => {
-                const workout = buildWorkout();
+            const btn = document.getElementById('generate-btn');
+            const message = document.getElementById('trainer-message');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"><span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span></span> Generating...';
+            message.textContent = "Designing your personalized workout...";
+
+            const prompt = `You are an expert personal trainer. Create a detailed ${selectedDuration}-minute ${selectedFocus} workout that is ${selectedIntensity} using ${selectedEquipment}.
+
+Return ONLY valid JSON in this exact format (no markdown, no explanation):
+{
+  "title": "Workout name",
+  "warmup": [
+    {"name": "Exercise name", "duration": "30 sec", "tip": "Form tip"}
+  ],
+  "main": [
+    {"name": "Exercise name", "sets": 3, "reps": "10-12", "rest": 45, "tip": "Form tip"}
+  ],
+  "cooldown": [
+    {"name": "Exercise name", "duration": "30 sec", "tip": "Form tip"}
+  ]
+}
+
+Requirements:
+- Warmup: 3 dynamic exercises (2-3 min total)
+- Main: ${selectedDuration <= 15 ? '4' : selectedDuration <= 25 ? '5-6' : '7-8'} exercises with sets, reps, and rest periods
+- Cooldown: 3 stretches (2-3 min total)
+- Each exercise must have a helpful form tip
+- Make it creative and effective for the goals`;
+
+            try {
+                const response = await fetch('https://api.anthropic.com/v1/messages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': apiKey,
+                        'anthropic-version': '2023-06-01',
+                        'anthropic-dangerous-direct-browser-access': 'true'
+                    },
+                    body: JSON.stringify({
+                        model: 'claude-sonnet-4-20250514',
+                        max_tokens: 1500,
+                        messages: [{ role: 'user', content: prompt }]
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const content = data.content[0].text;
+
+                // Parse JSON from response
+                const jsonMatch = content.match(/\{[\s\S]*\}/);
+                if (!jsonMatch) throw new Error('Invalid response format');
+
+                const workout = JSON.parse(jsonMatch[0]);
+                workout.type = selectedFocus;
+                workout.duration = selectedDuration;
+                workout.intensity = selectedIntensity;
+                workout.equipment = selectedEquipment;
+
                 currentWorkout = workout;
                 renderWorkout(workout);
-                btn.disabled = false;
-                btn.innerHTML = '<span>🔄</span> Generate New Workout';
-            }, 1500);
-        }
+                message.textContent = `Your personalized ${selectedFocus} workout is ready! 💪`;
 
-        function buildWorkout() {
-            const exercisePool = exercises[selectedFocus];
-            const numExercises = selectedDuration === 15 ? 4 : selectedDuration === 25 ? 5 : 7;
-            const setsMultiplier = selectedIntensity === 'easy' ? 0.7 : selectedIntensity === 'hard' ? 1.3 : 1;
+            } catch (error) {
+                console.error('Error:', error);
+                message.textContent = `Error: ${error.message}. Please check your API key.`;
+                document.getElementById('api-status').textContent = '✗ ' + error.message;
+                document.getElementById('api-status').className = 'api-status error';
+                document.getElementById('api-status').style.display = 'flex';
+            }
 
-            const shuffled = [...exercisePool.main].sort(() => Math.random() - 0.5);
-            const selected = shuffled.slice(0, numExercises);
-            const mainExercises = selected.map(ex => ({ ...ex, sets: Math.round(ex.sets * setsMultiplier) }));
-
-            return {
-                type: selectedFocus, duration: selectedDuration, intensity: selectedIntensity,
-                warmup: exercisePool.warmup, main: mainExercises, cooldown: exercisePool.cooldown,
-                totalExercises: mainExercises.length + exercisePool.warmup.length + exercisePool.cooldown.length
-            };
+            btn.disabled = false;
+            btn.innerHTML = '<span>🔄</span> Generate New Workout';
         }
 
         function renderWorkout(workout) {
             const container = document.getElementById('workout-container');
-            const focusLabels = { full: 'Full Body', upper: 'Upper Body', lower: 'Lower Body', core: 'Core', cardio: 'Cardio HIIT' };
             let exerciseNumber = 1;
 
             container.innerHTML = `
                 <div class="workout-detail">
                     <div class="workout-header">
-                        <div class="workout-type">${workout.intensity} intensity</div>
-                        <div class="workout-title">${focusLabels[workout.type]} Workout</div>
+                        <div class="workout-type">${workout.intensity} • ${workout.equipment}</div>
+                        <div class="workout-title">${workout.title}</div>
                         <div class="workout-meta"><span>⏱️ ${workout.duration} min</span><span>💪 ${workout.main.length} exercises</span></div>
                     </div>
                     <div class="workout-body">
-                        <div class="section-label">🔥 Warm-Up (3 min)</div>
+                        <div class="section-label">🔥 Warm-Up</div>
                         ${workout.warmup.map(ex => `
                             <div class="exercise-card">
                                 <div class="exercise-header">
@@ -482,7 +472,7 @@
                                 <div class="exercise-detail">💡 ${ex.tip}</div>
                             </div>
                         `).join('')}
-                        <div class="section-label">🧘 Cool-Down (3 min)</div>
+                        <div class="section-label">🧘 Cool-Down</div>
                         ${workout.cooldown.map(ex => `
                             <div class="exercise-card">
                                 <div class="exercise-header">
@@ -561,7 +551,8 @@
 
             timerInterval = setInterval(() => {
                 remaining--;
-                document.getElementById('rest-timer').textContent = remaining;
+                const el = document.getElementById('rest-timer');
+                if (el) el.textContent = remaining;
                 if (remaining <= 0) { clearInterval(timerInterval); showExercise(currentExerciseIndex); }
             }, 1000);
         }
@@ -598,12 +589,14 @@
 
         function completeWorkout() {
             clearInterval(timerInterval);
-            const totalMins = currentWorkout.duration;
 
             const history = Memory.get('fitness', 'history') || [];
             history.unshift({
-                date: new Date().toISOString(), type: currentWorkout.type,
-                intensity: currentWorkout.intensity, duration: totalMins,
+                date: new Date().toISOString(),
+                title: currentWorkout.title,
+                type: currentWorkout.type,
+                intensity: currentWorkout.intensity,
+                duration: currentWorkout.duration,
                 exercises: currentWorkout.main.map(e => e.name)
             });
             Memory.set('fitness', 'history', history.slice(0, 50));
@@ -612,8 +605,10 @@
                 <div class="active-exercise" style="padding: 60px 30px;">
                     <div style="font-size: 4rem; margin-bottom: 20px;">🎉</div>
                     <div class="active-exercise-name">Workout Complete!</div>
-                    <div class="active-exercise-detail" style="color: #8AE98D;">${currentWorkout.main.length} exercises • ~${totalMins} min</div>
-                    <div class="active-exercise-tip" style="margin-top: 30px;">Great job! You're one workout stronger. 💪</div>
+                    <div class="active-exercise-detail" style="color: #8AE98D;">${currentWorkout.title}</div>
+                    <div class="active-exercise-tip" style="margin-top: 30px; text-align: center;">
+                        Great job! You crushed ${currentWorkout.main.length} exercises in ~${currentWorkout.duration} min. 💪
+                    </div>
                 </div>
                 <div class="modal-actions">
                     <button class="modal-btn primary" onclick="closeCompletion()">Done</button>
@@ -638,7 +633,6 @@
                 return;
             }
 
-            const focusLabels = { full: 'Full Body', upper: 'Upper Body', lower: 'Lower Body', core: 'Core', cardio: 'Cardio' };
             container.innerHTML = history.map(h => {
                 const date = new Date(h.date);
                 const dateStr = date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
@@ -646,7 +640,7 @@
                 return `
                     <div class="history-item">
                         <div class="history-date">${dateStr} at ${timeStr}</div>
-                        <div class="history-title">${focusLabels[h.type] || h.type} • ${h.intensity}</div>
+                        <div class="history-title">${h.title || h.type}</div>
                         <div class="history-exercises">${h.exercises.join(' → ')}</div>
                         <div class="history-stats">
                             <span class="history-stat">⏱️ ${h.duration} min</span>
