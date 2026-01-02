@@ -66,98 +66,175 @@
       position: relative;
     }
 
-    /* Todo Section */
-    .todo-section {
+    /* Todo Pages Container */
+    .todo-container {
       margin-top: var(--spacing-lg);
       margin-bottom: var(--spacing-md);
+      overflow: hidden;
     }
 
-    .todo-header {
+    /* Page Indicators */
+    .page-indicators {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      justify-content: center;
+      gap: 8px;
       margin-bottom: var(--spacing-md);
     }
 
-    .todo-title {
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--text-white);
-    }
-
-    .todo-count {
-      color: var(--text-gray);
-      font-weight: 400;
-    }
-
-    .todo-history-btn {
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.2);
-      color: var(--text-gray);
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 0.8rem;
+    .page-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.3s;
     }
 
-    .todo-history-btn:hover {
-      border-color: var(--accent-yellow);
-      color: var(--accent-yellow);
+    .page-dot.active {
+      background: var(--accent-yellow);
+      width: 24px;
+      border-radius: 4px;
+    }
+
+    .page-dot.pending { background: rgba(247, 200, 70, 0.3); }
+    .page-dot.pending.active { background: var(--accent-yellow); }
+    .page-dot.current { background: rgba(255,255,255,0.3); }
+    .page-dot.current.active { background: var(--text-white); }
+    .page-dot.done { background: rgba(138, 233, 141, 0.3); }
+    .page-dot.done.active { background: var(--accent-mint); }
+
+    /* Page Labels */
+    .page-labels {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 var(--spacing-sm);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .page-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      opacity: 0.4;
+      transition: all 0.3s;
+    }
+
+    .page-label.active {
+      opacity: 1;
+    }
+
+    .page-label.pending { color: var(--accent-yellow); }
+    .page-label.current { color: var(--text-white); }
+    .page-label.done { color: var(--accent-mint); }
+
+    /* Horizontal Scroll Container */
+    .pages-wrapper {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .pages-wrapper::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Individual Page */
+    .todo-page {
+      min-width: 100%;
+      scroll-snap-align: center;
+      padding: 0 var(--spacing-xs);
+      box-sizing: border-box;
+    }
+
+    .page-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-gray);
+      margin-bottom: var(--spacing-sm);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .page-title .count {
+      background: rgba(255,255,255,0.1);
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 0.75rem;
     }
 
     .todo-list {
       display: flex;
       flex-direction: column;
       gap: 8px;
+      min-height: 120px;
     }
 
     .todo-empty {
       text-align: center;
       padding: var(--spacing-lg);
       color: var(--text-gray);
-      font-size: 0.9rem;
+      font-size: 0.85rem;
+      opacity: 0.6;
     }
 
+    .todo-empty-icon {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    /* Todo Item */
     .todo-item {
       position: relative;
       background: var(--card-bg);
       border-radius: 12px;
+      overflow: hidden;
+      touch-action: pan-x;
+      user-select: none;
+    }
+
+    .todo-item-inner {
+      position: relative;
       padding: 16px;
       display: flex;
       align-items: center;
       gap: 12px;
-      overflow: hidden;
-      touch-action: pan-y;
-      user-select: none;
+      background: var(--card-bg);
+      transition: transform 0.15s ease-out;
+      z-index: 2;
     }
 
-    .todo-item-content {
-      flex: 1;
-      position: relative;
-      z-index: 1;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      transition: transform 0.2s;
-    }
-
-    .todo-item-bg {
+    /* Swipe backgrounds */
+    .swipe-bg {
       position: absolute;
       top: 0;
-      left: 0;
-      right: 0;
       bottom: 0;
-      opacity: 0;
-      transition: opacity 0.2s;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      z-index: 1;
     }
 
-    .todo-item-bg.complete {
+    .swipe-bg.left {
+      left: 0;
       background: var(--accent-mint);
+      color: #0E121A;
+      justify-content: flex-start;
     }
 
-    .todo-item-bg.snooze {
+    .swipe-bg.right {
+      right: 0;
       background: var(--accent-yellow);
+      color: #0E121A;
+      justify-content: flex-end;
     }
 
     .todo-text {
@@ -189,25 +266,25 @@
       color: var(--accent-mint);
     }
 
-    .todo-action-hint {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 0.8rem;
-      font-weight: 600;
-      opacity: 0;
-      transition: opacity 0.2s;
-      z-index: 2;
+    /* Completed item styling */
+    .todo-item.completed .todo-text {
+      text-decoration: line-through;
+      opacity: 0.6;
     }
 
-    .todo-action-hint.left {
-      right: 16px;
-      color: #0E121A;
+    .todo-item.completed .todo-inner {
+      opacity: 0.7;
     }
 
-    .todo-action-hint.right {
-      left: 16px;
-      color: #0E121A;
+    /* Snoozed item styling */
+    .todo-item.snoozed {
+      border-left: 3px solid var(--accent-yellow);
+    }
+
+    .snooze-info {
+      font-size: 0.7rem;
+      color: var(--accent-yellow);
+      margin-top: 4px;
     }
 
     /* FAB */
@@ -296,32 +373,15 @@
       justify-content: flex-end;
     }
 
-    /* History */
-    .history-list {
-      max-height: 300px;
-      overflow-y: auto;
-    }
-
-    .history-item {
-      padding: 12px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 8px;
-      margin-bottom: 8px;
-    }
-
-    .history-item-text {
-      color: var(--text-white);
-      font-size: 0.9rem;
-      margin-bottom: 4px;
-    }
-
-    .history-item-meta {
-      color: var(--text-gray);
-      font-size: 0.75rem;
-    }
-
     .mt-lg {
       margin-top: var(--spacing-lg);
+    }
+
+    /* Completed task meta */
+    .completed-meta {
+      font-size: 0.7rem;
+      color: var(--text-gray);
+      margin-top: 4px;
     }
   </style>
 </head>
@@ -343,15 +403,52 @@
         <p class="hero-subtitle">Your personal command center</p>
       </section>
 
-      <!-- Todo Section -->
-      <section class="todo-section animate-slide-up">
-        <div class="todo-header">
-          <h2 class="todo-title">Tasks <span class="todo-count" id="todoCount">(0)</span></h2>
-          <button class="todo-history-btn" onclick="openHistory()">History</button>
+      <!-- Todo Pages Container -->
+      <section class="todo-container animate-slide-up">
+        <!-- Page Indicators -->
+        <div class="page-indicators">
+          <div class="page-dot pending" data-page="0" onclick="goToPage(0)"></div>
+          <div class="page-dot current active" data-page="1" onclick="goToPage(1)"></div>
+          <div class="page-dot done" data-page="2" onclick="goToPage(2)"></div>
         </div>
-        <div class="todo-list" id="todoList">
-          <div class="todo-empty" id="todoEmpty">
-            <p>No tasks yet. Tap + to add one!</p>
+
+        <!-- Page Labels -->
+        <div class="page-labels">
+          <span class="page-label pending">Pending</span>
+          <span class="page-label current active">Current</span>
+          <span class="page-label done">Done</span>
+        </div>
+
+        <!-- Swipeable Pages -->
+        <div class="pages-wrapper" id="pagesWrapper">
+          <!-- Pending Page (Snoozed) -->
+          <div class="todo-page" data-page="pending">
+            <div class="todo-list" id="pendingList">
+              <div class="todo-empty">
+                <div class="todo-empty-icon">⏰</div>
+                <p>No snoozed tasks</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Current Page (Active) -->
+          <div class="todo-page" data-page="current">
+            <div class="todo-list" id="currentList">
+              <div class="todo-empty">
+                <div class="todo-empty-icon">✨</div>
+                <p>No tasks yet. Tap + to add one!</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Done Page (Completed) -->
+          <div class="todo-page" data-page="done">
+            <div class="todo-list" id="doneList">
+              <div class="todo-empty">
+                <div class="todo-empty-icon">🎉</div>
+                <p>Completed tasks will appear here</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -438,16 +535,6 @@
     </div>
   </div>
 
-  <!-- History Modal -->
-  <div id="historyModal" class="modal hidden" onclick="closeHistory(event)">
-    <div class="modal-content card" onclick="event.stopPropagation()">
-      <h2 class="text-title mb-lg">Completed Tasks</h2>
-      <div class="history-list" id="historyList">
-        <p class="text-gray">No completed tasks yet</p>
-      </div>
-      <button class="btn btn-ghost btn-block mt-lg" onclick="closeHistory()">Close</button>
-    </div>
-  </div>
 
   <!-- Settings Modal -->
   <div id="settingsModal" class="modal hidden" onclick="closeSettings(event)">
@@ -555,10 +642,11 @@
     Memory.setLastVisited('home');
 
     // ========================================
-    // Todo List Functionality
+    // Todo List with 3 Pages
     // ========================================
 
     let selectedDue = 'today';
+    let currentPage = 1; // 0=pending, 1=current, 2=done
 
     // Get todos from memory
     function getTodos() {
@@ -608,43 +696,107 @@
       return { text: 'Later', class: 'future' };
     }
 
-    // Filter visible todos (not snoozed)
-    function getVisibleTodos() {
+    // Get time until snooze ends
+    function getSnoozeTimeLeft(snoozedUntil) {
+      const until = new Date(snoozedUntil);
+      const now = new Date();
+      const diff = until - now;
+      if (diff <= 0) return null;
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      if (hours > 0) return `${hours}h ${mins}m left`;
+      return `${mins}m left`;
+    }
+
+    // Separate todos into pending (snoozed) and current (active)
+    function getPendingTodos() {
+      const todos = getTodos();
+      const now = new Date().getTime();
+      return todos.filter(t => t.snoozedUntil && new Date(t.snoozedUntil).getTime() > now);
+    }
+
+    function getCurrentTodos() {
       const todos = getTodos();
       const now = new Date().getTime();
       return todos.filter(t => !t.snoozedUntil || new Date(t.snoozedUntil).getTime() <= now);
     }
 
-    // Render todos
-    function renderTodos() {
-      const todos = getVisibleTodos();
-      const listEl = document.getElementById('todoList');
-      const countEl = document.getElementById('todoCount');
-      const emptyEl = document.getElementById('todoEmpty');
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
 
-      countEl.textContent = `(${todos.length})`;
+    // Render all three pages
+    function renderAllPages() {
+      renderPendingPage();
+      renderCurrentPage();
+      renderDonePage();
+    }
 
-      if (todos.length === 0) {
-        listEl.innerHTML = '';
-        listEl.appendChild(emptyEl);
-        emptyEl.style.display = 'block';
+    function renderPendingPage() {
+      const pending = getPendingTodos();
+      const listEl = document.getElementById('pendingList');
+
+      if (pending.length === 0) {
+        listEl.innerHTML = `
+          <div class="todo-empty">
+            <div class="todo-empty-icon">⏰</div>
+            <p>No snoozed tasks</p>
+          </div>
+        `;
         return;
       }
 
-      emptyEl.style.display = 'none';
+      listEl.innerHTML = pending.map(todo => {
+        const due = getDueLabel(todo.dueDate);
+        const timeLeft = getSnoozeTimeLeft(todo.snoozedUntil);
+        return `
+          <div class="todo-item snoozed" data-id="${todo.id}" data-page="pending">
+            <div class="swipe-bg left">✓ Activate</div>
+            <div class="swipe-bg right">✗ Delete</div>
+            <div class="todo-item-inner"
+                 ontouchstart="handleSwipeStart(event)"
+                 ontouchmove="handleSwipeMove(event)"
+                 ontouchend="handleSwipeEnd(event, 'pending')">
+              <div style="flex:1">
+                <span class="todo-text">${escapeHtml(todo.text)}</span>
+                ${timeLeft ? `<div class="snooze-info">⏰ ${timeLeft}</div>` : ''}
+              </div>
+              <span class="todo-due ${due.class}">${due.text}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderCurrentPage() {
+      const current = getCurrentTodos();
+      const listEl = document.getElementById('currentList');
+
+      if (current.length === 0) {
+        listEl.innerHTML = `
+          <div class="todo-empty">
+            <div class="todo-empty-icon">✨</div>
+            <p>No tasks yet. Tap + to add one!</p>
+          </div>
+        `;
+        return;
+      }
 
       // Sort by due date
-      todos.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+      current.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
 
-      listEl.innerHTML = todos.map(todo => {
+      listEl.innerHTML = current.map(todo => {
         const due = getDueLabel(todo.dueDate);
         return `
-          <div class="todo-item" data-id="${todo.id}" ontouchstart="handleTouchStart(event)" ontouchmove="handleTouchMove(event)" ontouchend="handleTouchEnd(event)">
-            <div class="todo-item-bg complete"></div>
-            <div class="todo-item-bg snooze"></div>
-            <span class="todo-action-hint right">Done</span>
-            <span class="todo-action-hint left">+6h</span>
-            <div class="todo-item-content">
+          <div class="todo-item" data-id="${todo.id}" data-page="current">
+            <div class="swipe-bg left">✓ Done</div>
+            <div class="swipe-bg right">⏰ Snooze</div>
+            <div class="todo-item-inner"
+                 ontouchstart="handleSwipeStart(event)"
+                 ontouchmove="handleSwipeMove(event)"
+                 ontouchend="handleSwipeEnd(event, 'current')">
               <span class="todo-text">${escapeHtml(todo.text)}</span>
               <span class="todo-due ${due.class}">${due.text}</span>
             </div>
@@ -653,10 +805,278 @@
       }).join('');
     }
 
-    function escapeHtml(text) {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
+    function renderDonePage() {
+      const done = getCompletedTodos();
+      const listEl = document.getElementById('doneList');
+
+      if (done.length === 0) {
+        listEl.innerHTML = `
+          <div class="todo-empty">
+            <div class="todo-empty-icon">🎉</div>
+            <p>Completed tasks will appear here</p>
+          </div>
+        `;
+        return;
+      }
+
+      listEl.innerHTML = done.map(task => {
+        const date = new Date(task.completedAt);
+        const timeStr = date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        const dateStr = date.toLocaleDateString();
+        return `
+          <div class="todo-item completed" data-id="${task.id}" data-page="done">
+            <div class="swipe-bg left">↩ Restore</div>
+            <div class="swipe-bg right">✗ Delete</div>
+            <div class="todo-item-inner"
+                 ontouchstart="handleSwipeStart(event)"
+                 ontouchmove="handleSwipeMove(event)"
+                 ontouchend="handleSwipeEnd(event, 'done')">
+              <div style="flex:1">
+                <span class="todo-text">${escapeHtml(task.text)}</span>
+                <div class="completed-meta">✓ ${dateStr} at ${timeStr}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Page navigation
+    function goToPage(pageIndex) {
+      const wrapper = document.getElementById('pagesWrapper');
+      const pageWidth = wrapper.offsetWidth;
+      wrapper.scrollTo({ left: pageWidth * pageIndex, behavior: 'smooth' });
+      updatePageIndicators(pageIndex);
+    }
+
+    function updatePageIndicators(pageIndex) {
+      currentPage = pageIndex;
+      const dots = document.querySelectorAll('.page-dot');
+      const labels = document.querySelectorAll('.page-label');
+
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === pageIndex);
+      });
+
+      labels.forEach((label, i) => {
+        label.classList.toggle('active', i === pageIndex);
+      });
+    }
+
+    // Handle scroll to update indicators
+    function setupPageScroll() {
+      const wrapper = document.getElementById('pagesWrapper');
+      let scrollTimeout;
+
+      wrapper.addEventListener('scroll', () => {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          const pageWidth = wrapper.offsetWidth;
+          const scrollLeft = wrapper.scrollLeft;
+          const pageIndex = Math.round(scrollLeft / pageWidth);
+          updatePageIndicators(pageIndex);
+        }, 50);
+      });
+
+      // Start on current page (middle)
+      setTimeout(() => goToPage(1), 100);
+    }
+
+    // Swipe handling for individual tasks
+    let swipeStartX = 0;
+    let swipeCurrentX = 0;
+    let swipingItem = null;
+    let swipingInner = null;
+
+    function handleSwipeStart(e) {
+      swipeStartX = e.touches[0].clientX;
+      swipeCurrentX = swipeStartX;
+      swipingInner = e.currentTarget;
+      swipingItem = swipingInner.closest('.todo-item');
+
+      // Disable page scrolling while swiping item
+      document.getElementById('pagesWrapper').style.overflowX = 'hidden';
+    }
+
+    function handleSwipeMove(e) {
+      if (!swipingInner || !swipingItem) return;
+
+      swipeCurrentX = e.touches[0].clientX;
+      const diff = swipeCurrentX - swipeStartX;
+
+      // Limit swipe distance with resistance
+      const maxSwipe = 120;
+      let clampedDiff = diff;
+      if (Math.abs(diff) > maxSwipe) {
+        const overflow = Math.abs(diff) - maxSwipe;
+        clampedDiff = (diff > 0 ? 1 : -1) * (maxSwipe + overflow * 0.2);
+      }
+
+      swipingInner.style.transform = `translateX(${clampedDiff}px)`;
+
+      // Show background colors progressively
+      const leftBg = swipingItem.querySelector('.swipe-bg.left');
+      const rightBg = swipingItem.querySelector('.swipe-bg.right');
+
+      if (diff > 10) {
+        // Swiping right - show left background (complete/activate/restore)
+        leftBg.style.opacity = Math.min(1, diff / 80);
+        rightBg.style.opacity = 0;
+      } else if (diff < -10) {
+        // Swiping left - show right background (snooze/delete)
+        rightBg.style.opacity = Math.min(1, Math.abs(diff) / 80);
+        leftBg.style.opacity = 0;
+      } else {
+        leftBg.style.opacity = 0;
+        rightBg.style.opacity = 0;
+      }
+    }
+
+    function handleSwipeEnd(e, pageType) {
+      if (!swipingInner || !swipingItem) return;
+
+      // Re-enable page scrolling
+      document.getElementById('pagesWrapper').style.overflowX = 'auto';
+
+      const diff = swipeCurrentX - swipeStartX;
+      const id = swipingItem.dataset.id;
+      const leftBg = swipingItem.querySelector('.swipe-bg.left');
+      const rightBg = swipingItem.querySelector('.swipe-bg.right');
+      const threshold = 80;
+
+      if (Math.abs(diff) >= threshold) {
+        // Action triggered
+        swipingItem.style.transition = 'transform 0.3s, opacity 0.3s';
+        swipingItem.style.transform = `translateX(${diff > 0 ? '100%' : '-100%'})`;
+        swipingItem.style.opacity = '0';
+
+        setTimeout(() => {
+          if (pageType === 'current') {
+            if (diff > 0) completeTask(id);
+            else snoozeTask(id);
+          } else if (pageType === 'pending') {
+            if (diff > 0) activateTask(id);
+            else deleteTask(id);
+          } else if (pageType === 'done') {
+            if (diff > 0) restoreTask(id);
+            else permanentlyDeleteTask(id);
+          }
+        }, 300);
+      } else {
+        // Reset position smoothly
+        swipingInner.style.transition = 'transform 0.2s ease-out';
+        swipingInner.style.transform = 'translateX(0)';
+        leftBg.style.opacity = 0;
+        rightBg.style.opacity = 0;
+
+        setTimeout(() => {
+          if (swipingInner) swipingInner.style.transition = '';
+        }, 200);
+      }
+
+      swipingItem = null;
+      swipingInner = null;
+      swipeStartX = 0;
+      swipeCurrentX = 0;
+    }
+
+    // Task actions
+    function completeTask(id) {
+      const todos = getTodos();
+      const taskIndex = todos.findIndex(t => t.id === id);
+      if (taskIndex === -1) return;
+
+      const task = todos[taskIndex];
+      todos.splice(taskIndex, 1);
+      saveTodos(todos);
+
+      // Add to completed
+      const completed = getCompletedTodos();
+      completed.unshift({
+        id: task.id,
+        text: task.text,
+        completedAt: new Date().toISOString(),
+        originalDueDate: task.dueDate
+      });
+      saveCompletedTodos(completed);
+
+      renderAllPages();
+    }
+
+    function snoozeTask(id) {
+      const todos = getTodos();
+      const task = todos.find(t => t.id === id);
+      if (!task) return;
+
+      const snoozeUntil = new Date();
+      snoozeUntil.setHours(snoozeUntil.getHours() + 6);
+      task.snoozedUntil = snoozeUntil.toISOString();
+      task.snoozedCount = (task.snoozedCount || 0) + 1;
+
+      saveTodos(todos);
+      renderAllPages();
+
+      // Go to pending page to show snoozed task
+      setTimeout(() => goToPage(0), 100);
+    }
+
+    function activateTask(id) {
+      const todos = getTodos();
+      const task = todos.find(t => t.id === id);
+      if (!task) return;
+
+      // Remove snooze
+      delete task.snoozedUntil;
+      saveTodos(todos);
+      renderAllPages();
+
+      // Go to current page
+      setTimeout(() => goToPage(1), 100);
+    }
+
+    function deleteTask(id) {
+      const todos = getTodos();
+      const taskIndex = todos.findIndex(t => t.id === id);
+      if (taskIndex === -1) return;
+
+      todos.splice(taskIndex, 1);
+      saveTodos(todos);
+      renderAllPages();
+    }
+
+    function restoreTask(id) {
+      const completed = getCompletedTodos();
+      const taskIndex = completed.findIndex(t => t.id === id);
+      if (taskIndex === -1) return;
+
+      const task = completed[taskIndex];
+      completed.splice(taskIndex, 1);
+      saveCompletedTodos(completed);
+
+      // Add back to active
+      const todos = getTodos();
+      todos.push({
+        id: task.id,
+        text: task.text,
+        dueDate: task.originalDueDate || new Date().toISOString(),
+        createdAt: new Date().toISOString(),
+        snoozedCount: 0
+      });
+      saveTodos(todos);
+      renderAllPages();
+
+      // Go to current page
+      setTimeout(() => goToPage(1), 100);
+    }
+
+    function permanentlyDeleteTask(id) {
+      const completed = getCompletedTodos();
+      const taskIndex = completed.findIndex(t => t.id === id);
+      if (taskIndex === -1) return;
+
+      completed.splice(taskIndex, 1);
+      saveCompletedTodos(completed);
+      renderAllPages();
     }
 
     // Add task modal
@@ -699,157 +1119,10 @@
       todos.push(newTodo);
       saveTodos(todos);
       closeAddTask();
-      renderTodos();
-    }
+      renderAllPages();
 
-    // Complete task
-    function completeTask(id) {
-      const todos = getTodos();
-      const taskIndex = todos.findIndex(t => t.id === id);
-      if (taskIndex === -1) return;
-
-      const task = todos[taskIndex];
-      todos.splice(taskIndex, 1);
-      saveTodos(todos);
-
-      // Add to completed
-      const completed = getCompletedTodos();
-      completed.unshift({
-        id: task.id,
-        text: task.text,
-        completedAt: new Date().toISOString(),
-        originalDueDate: task.dueDate
-      });
-      // Keep only last 50 completed
-      if (completed.length > 50) completed.pop();
-      saveCompletedTodos(completed);
-
-      renderTodos();
-    }
-
-    // Snooze task (+6 hours)
-    function snoozeTask(id) {
-      const todos = getTodos();
-      const task = todos.find(t => t.id === id);
-      if (!task) return;
-
-      const snoozeUntil = new Date();
-      snoozeUntil.setHours(snoozeUntil.getHours() + 6);
-      task.snoozedUntil = snoozeUntil.toISOString();
-      task.snoozedCount = (task.snoozedCount || 0) + 1;
-
-      saveTodos(todos);
-      renderTodos();
-    }
-
-    // Swipe handling
-    let touchStartX = 0;
-    let touchCurrentX = 0;
-    let currentTodoItem = null;
-
-    function handleTouchStart(e) {
-      touchStartX = e.touches[0].clientX;
-      currentTodoItem = e.currentTarget;
-    }
-
-    function handleTouchMove(e) {
-      if (!currentTodoItem) return;
-      touchCurrentX = e.touches[0].clientX;
-      const diff = touchCurrentX - touchStartX;
-      const content = currentTodoItem.querySelector('.todo-item-content');
-      const completeBg = currentTodoItem.querySelector('.todo-item-bg.complete');
-      const snoozeBg = currentTodoItem.querySelector('.todo-item-bg.snooze');
-      const rightHint = currentTodoItem.querySelector('.todo-action-hint.right');
-      const leftHint = currentTodoItem.querySelector('.todo-action-hint.left');
-
-      // Limit swipe distance
-      const maxSwipe = 100;
-      const clampedDiff = Math.max(-maxSwipe, Math.min(maxSwipe, diff));
-
-      content.style.transform = `translateX(${clampedDiff}px)`;
-
-      // Show backgrounds based on direction
-      if (diff > 20) {
-        completeBg.style.opacity = Math.min(1, diff / 80);
-        snoozeBg.style.opacity = 0;
-        rightHint.style.opacity = diff > 40 ? 1 : 0;
-        leftHint.style.opacity = 0;
-      } else if (diff < -20) {
-        snoozeBg.style.opacity = Math.min(1, Math.abs(diff) / 80);
-        completeBg.style.opacity = 0;
-        leftHint.style.opacity = Math.abs(diff) > 40 ? 1 : 0;
-        rightHint.style.opacity = 0;
-      } else {
-        completeBg.style.opacity = 0;
-        snoozeBg.style.opacity = 0;
-        rightHint.style.opacity = 0;
-        leftHint.style.opacity = 0;
-      }
-    }
-
-    function handleTouchEnd(e) {
-      if (!currentTodoItem) return;
-      const diff = touchCurrentX - touchStartX;
-      const id = currentTodoItem.dataset.id;
-      const content = currentTodoItem.querySelector('.todo-item-content');
-      const completeBg = currentTodoItem.querySelector('.todo-item-bg.complete');
-      const snoozeBg = currentTodoItem.querySelector('.todo-item-bg.snooze');
-      const rightHint = currentTodoItem.querySelector('.todo-action-hint.right');
-      const leftHint = currentTodoItem.querySelector('.todo-action-hint.left');
-
-      // Threshold for action
-      if (diff > 80) {
-        // Complete
-        currentTodoItem.style.transition = 'transform 0.3s, opacity 0.3s';
-        currentTodoItem.style.transform = 'translateX(100%)';
-        currentTodoItem.style.opacity = '0';
-        setTimeout(() => completeTask(id), 300);
-      } else if (diff < -80) {
-        // Snooze
-        currentTodoItem.style.transition = 'transform 0.3s, opacity 0.3s';
-        currentTodoItem.style.transform = 'translateX(-100%)';
-        currentTodoItem.style.opacity = '0';
-        setTimeout(() => snoozeTask(id), 300);
-      } else {
-        // Reset position
-        content.style.transform = 'translateX(0)';
-        completeBg.style.opacity = 0;
-        snoozeBg.style.opacity = 0;
-        rightHint.style.opacity = 0;
-        leftHint.style.opacity = 0;
-      }
-
-      currentTodoItem = null;
-      touchStartX = 0;
-      touchCurrentX = 0;
-    }
-
-    // History modal
-    function openHistory() {
-      const completed = getCompletedTodos();
-      const listEl = document.getElementById('historyList');
-
-      if (completed.length === 0) {
-        listEl.innerHTML = '<p class="text-gray">No completed tasks yet</p>';
-      } else {
-        listEl.innerHTML = completed.map(task => {
-          const date = new Date(task.completedAt);
-          return `
-            <div class="history-item">
-              <div class="history-item-text">${escapeHtml(task.text)}</div>
-              <div class="history-item-meta">Completed ${date.toLocaleDateString()} at ${date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
-            </div>
-          `;
-        }).join('');
-      }
-
-      document.getElementById('historyModal').classList.remove('hidden');
-    }
-
-    function closeHistory(event) {
-      if (!event || event.target === event.currentTarget) {
-        document.getElementById('historyModal').classList.add('hidden');
-      }
+      // Ensure we're on current page
+      goToPage(1);
     }
 
     // Enter key to add task
@@ -857,7 +1130,9 @@
       document.getElementById('taskInput').addEventListener('keypress', (e) => {
         if (e.key === 'Enter') addTask();
       });
-      renderTodos();
+
+      renderAllPages();
+      setupPageScroll();
     });
 
     // Register Service Worker for PWA
