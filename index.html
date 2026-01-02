@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0E121A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="Your personal command center - Finance, Fitness & LinkedIn">
+  <title>Daily Do</title>
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Icons -->
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+
+  <link rel="stylesheet" href="styles/app.css">
+  <style>
+    /* Page-specific styles */
+    .hero {
+      text-align: center;
+      padding: var(--spacing-xl) 0;
+    }
+
+    .hero-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .hero-title span {
+      color: var(--accent-yellow);
+    }
+
+    .hero-subtitle {
+      color: var(--text-gray);
+      font-size: 1rem;
+    }
+
+    .modules-section {
+      margin-top: var(--spacing-lg);
+    }
+
+    .modules-grid {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+    }
+
+    .module-card {
+      padding: var(--spacing-lg);
+    }
+
+    .module-card .icon-container {
+      width: 64px;
+      height: 64px;
+      font-size: 2rem;
+    }
+
+    .quick-stats {
+      margin-top: var(--spacing-xl);
+    }
+
+    .quick-stats-title {
+      font-size: 0.875rem;
+      color: var(--text-gray);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .date-display {
+      text-align: center;
+      margin-bottom: var(--spacing-md);
+      color: var(--text-gray);
+      font-size: 0.875rem;
+    }
+
+    .settings-link {
+      position: absolute;
+      top: var(--spacing-md);
+      right: var(--spacing-md);
+      color: var(--text-gray);
+      text-decoration: none;
+      font-size: 1.5rem;
+      transition: color var(--transition-fast);
+    }
+
+    .settings-link:hover {
+      color: var(--accent-yellow);
+    }
+
+    .header {
+      position: relative;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="page-content">
+      <header class="header">
+        <button class="settings-link btn-ghost" onclick="openSettings()" aria-label="Settings">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </button>
+      </header>
+
+      <section class="hero animate-fade-in">
+        <p class="date-display" id="currentDate"></p>
+        <h1 class="hero-title">Daily<span>Do</span></h1>
+        <p class="hero-subtitle">Your personal command center</p>
+      </section>
+
+      <section class="modules-section animate-slide-up">
+        <div class="modules-grid">
+          <!-- Finance Module -->
+          <a href="finance/summary.html" class="card card-clickable module-card" onclick="Memory.setLastVisited('finance')">
+            <div class="icon-container card-yellow">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="1" x2="12" y2="23"/>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              </svg>
+            </div>
+            <div class="module-info">
+              <div class="module-title">Finance</div>
+              <div class="module-subtitle" id="financeSubtitle">Track your cashflow</div>
+            </div>
+            <span class="arrow">&rarr;</span>
+          </a>
+
+          <!-- Fitness Module -->
+          <a href="fitness/index.html" class="card card-clickable module-card" onclick="Memory.setLastVisited('fitness')">
+            <div class="icon-container card-mint">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
+                <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+                <line x1="6" y1="1" x2="6" y2="4"/>
+                <line x1="10" y1="1" x2="10" y2="4"/>
+                <line x1="14" y1="1" x2="14" y2="4"/>
+              </svg>
+            </div>
+            <div class="module-info">
+              <div class="module-title">Fitness</div>
+              <div class="module-subtitle" id="fitnessSubtitle">Plan your workouts</div>
+            </div>
+            <span class="arrow">&rarr;</span>
+          </a>
+
+          <!-- LinkedIn Module -->
+          <a href="linkedin/index.html" class="card card-clickable module-card" onclick="Memory.setLastVisited('linkedin')">
+            <div class="icon-container" style="background: #0077b5;">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                <rect x="2" y="9" width="4" height="12"/>
+                <circle cx="4" cy="4" r="2"/>
+              </svg>
+            </div>
+            <div class="module-info">
+              <div class="module-title">LinkedIn</div>
+              <div class="module-subtitle" id="linkedinSubtitle">News, jobs & content ideas</div>
+            </div>
+            <span class="arrow">&rarr;</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="quick-stats">
+        <h2 class="quick-stats-title">Quick Stats</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-value text-yellow" id="statWorkouts">0</div>
+            <div class="stat-label">Workouts This Month</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value text-mint" id="statStreak">0</div>
+            <div class="stat-label">Day Streak</div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+      <ul class="nav-items">
+        <li class="nav-item">
+          <a href="index.html" class="nav-link active">
+            <span class="nav-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9,22 9,12 15,12 15,22"/>
+              </svg>
+            </span>
+            <span class="nav-label">Home</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="finance/summary.html" class="nav-link">
+            <span class="nav-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="1" x2="12" y2="23"/>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              </svg>
+            </span>
+            <span class="nav-label">Finance</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="fitness/index.html" class="nav-link">
+            <span class="nav-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6.5 6.5m-2.5 0a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0 -5 0"/>
+                <path d="M3 12h4l3 8 4-16 3 8h4"/>
+              </svg>
+            </span>
+            <span class="nav-label">Fitness</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="linkedin/index.html" class="nav-link">
+            <span class="nav-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                <rect x="2" y="9" width="4" height="12"/>
+                <circle cx="4" cy="4" r="2"/>
+              </svg>
+            </span>
+            <span class="nav-label">LinkedIn</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="modal hidden" onclick="closeSettings(event)">
+    <div class="modal-content card" onclick="event.stopPropagation()">
+      <h2 class="text-title mb-lg">Settings</h2>
+
+      <div class="setting-item mb-lg">
+        <h3 class="text-body mb-sm">Data Backup</h3>
+        <div class="flex gap-sm">
+          <button class="btn btn-secondary btn-sm" onclick="Memory.downloadBackup()">
+            Export Data
+          </button>
+          <label class="btn btn-secondary btn-sm">
+            Import Data
+            <input type="file" accept=".json" onchange="handleImport(event)" style="display:none">
+          </label>
+        </div>
+      </div>
+
+      <div class="setting-item mb-lg">
+        <h3 class="text-body mb-sm">Storage Used</h3>
+        <p class="text-caption" id="storageInfo">Calculating...</p>
+      </div>
+
+      <button class="btn btn-ghost btn-block" onclick="closeSettings()">Close</button>
+    </div>
+  </div>
+
+  <style>
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--spacing-md);
+      z-index: 200;
+    }
+
+    .modal.hidden {
+      display: none;
+    }
+
+    .modal-content {
+      width: 100%;
+      max-width: 360px;
+    }
+
+    .setting-item {
+      padding-bottom: var(--spacing-md);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  </style>
+
+  <script src="scripts/memory.js"></script>
+  <script>
+    // Set current date
+    document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+
+    // Load stats from memory
+    function loadStats() {
+      // Get fitness data
+      const fitnessData = Memory.getAll('fitness');
+
+      // Count completed workouts this month
+      let workoutCount = 0;
+      const currentMonth = new Date().toISOString().slice(0, 7);
+
+      if (fitnessData.completed) {
+        Object.keys(fitnessData.completed).forEach(date => {
+          if (date.startsWith(currentMonth) && fitnessData.completed[date]) {
+            workoutCount++;
+          }
+        });
+      }
+
+      // Also check for date-keyed entries (planned_YYYY-MM-DD format)
+      Object.keys(fitnessData).forEach(key => {
+        if (key.startsWith('completed_') && key.includes(currentMonth)) {
+          workoutCount++;
+        }
+      });
+
+      document.getElementById('statWorkouts').textContent = workoutCount;
+
+      // Calculate streak (consecutive days)
+      let streak = 0;
+      const today = new Date();
+      for (let i = 0; i < 365; i++) {
+        const checkDate = new Date(today);
+        checkDate.setDate(today.getDate() - i);
+        const dateStr = checkDate.toISOString().split('T')[0];
+
+        const hasWorkout = fitnessData.completed && fitnessData.completed[dateStr];
+        const hasCompletedKey = fitnessData['completed_' + dateStr];
+
+        if (hasWorkout || hasCompletedKey) {
+          streak++;
+        } else if (i > 0) {
+          break;
+        }
+      }
+      document.getElementById('statStreak').textContent = streak;
+
+      // Update subtitles with last activity
+      const lastVisited = Memory.getLastVisited();
+      if (lastVisited === 'finance') {
+        document.getElementById('financeSubtitle').textContent = 'Last visited';
+      } else if (lastVisited === 'fitness') {
+        document.getElementById('fitnessSubtitle').textContent = 'Last visited';
+      }
+    }
+
+    // Settings modal
+    function openSettings() {
+      document.getElementById('settingsModal').classList.remove('hidden');
+      updateStorageInfo();
+    }
+
+    function closeSettings(event) {
+      if (!event || event.target === event.currentTarget) {
+        document.getElementById('settingsModal').classList.add('hidden');
+      }
+    }
+
+    function updateStorageInfo() {
+      const info = Memory.getStorageInfo();
+      const breakdown = Object.entries(info.breakdownFormatted)
+        .map(([ns, size]) => `${ns}: ${size}`)
+        .join(', ');
+      document.getElementById('storageInfo').textContent = `Total: ${info.totalFormatted} (${breakdown})`;
+    }
+
+    function handleImport(event) {
+      const file = event.target.files[0];
+      if (file) {
+        Memory.restoreFromFile(file)
+          .then(() => {
+            alert('Data imported successfully!');
+            loadStats();
+            updateStorageInfo();
+          })
+          .catch(err => {
+            alert('Error importing data: ' + err.message);
+          });
+      }
+    }
+
+    // Initialize
+    loadStats();
+
+    // Track home visit
+    Memory.setLastVisited('home');
+
+    // Register Service Worker for PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then((registration) => {
+            console.log('SW registered:', registration.scope);
+          })
+          .catch((error) => {
+            console.log('SW registration failed:', error);
+          });
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+{
+  "name": "Daily Do",
+  "short_name": "DailyDo",
+  "description": "Your personal command center - Finance, Fitness & LinkedIn",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0E121A",
+  "theme_color": "#0E121A",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["productivity", "lifestyle", "health"],
+  "shortcuts": [
+    {
+      "name": "Finance",
+      "short_name": "Finance",
+      "description": "Track your cashflow",
+      "url": "./finance/summary.html",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Fitness",
+      "short_name": "Fitness",
+      "description": "Plan your workouts",
+      "url": "./fitness/index.html",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "LinkedIn",
+      "short_name": "LinkedIn",
+      "description": "Content inspiration",
+      "url": "./linkedin/index.html",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

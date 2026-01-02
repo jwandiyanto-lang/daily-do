@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Tracker - Cashflow</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-sankey"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #1a1a2e;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a2e;
+        }
+        .period-badge {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .summary-item {
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 12px;
+        }
+        .summary-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+        .summary-value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .summary-value.income { color: #2e7d32; }
+        .summary-value.expense { color: #c62828; }
+        .summary-value.balance { color: #1565c0; }
+        .chart-container {
+            position: relative;
+            height: 500px;
+            width: 100%;
+        }
+        .category-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        .category-card {
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 12px;
+        }
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .category-name {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: #1a1a2e;
+        }
+        .category-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .category-amount {
+            font-weight: 700;
+            color: #c62828;
+        }
+        .category-bar {
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .category-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+        .transactions-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .transactions-table th,
+        .transactions-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        .transactions-table th {
+            font-weight: 600;
+            color: #666;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        .transactions-table td {
+            font-size: 14px;
+        }
+        .amount-credit {
+            color: #2e7d32;
+            font-weight: 600;
+        }
+        .amount-debit {
+            color: #c62828;
+            font-weight: 600;
+        }
+        .category-tag {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #666;
+        }
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" style="display: inline-flex; align-items: center; gap: 8px; color: #666; text-decoration: none; font-size: 14px; margin-bottom: 20px; transition: color 0.2s;">
+            <span>←</span> Back to Daily Do
+        </a>
+        <div class="header">
+            <h1>Cashflow Overview</h1>
+            <p>Emirates NBD Credit Card Statement Analysis</p>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Summary</span>
+                <span class="period-badge">11 Nov - 10 Dec 2025</span>
+            </div>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <div class="summary-label">Total Income/Credits</div>
+                    <div class="summary-value income">AED 5,825.47</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Total Expenses</div>
+                    <div class="summary-value expense">AED 3,355.32</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Net Cash Flow</div>
+                    <div class="summary-value balance">AED 2,470.15</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Current Balance</div>
+                    <div class="summary-value">AED 857.49</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Cashflow</span>
+            </div>
+            <div class="chart-container">
+                <canvas id="sankeyChart"></canvas>
+            </div>
+            <div class="legend">
+                <div class="legend-item"><div class="legend-color" style="background: #4caf50"></div> Income</div>
+                <div class="legend-item"><div class="legend-color" style="background: #66bb6a"></div> Cash Flow</div>
+                <div class="legend-item"><div class="legend-color" style="background: #ef5350"></div> Food & Dining</div>
+                <div class="legend-item"><div class="legend-color" style="background: #ff7043"></div> Transportation</div>
+                <div class="legend-item"><div class="legend-color" style="background: #42a5f5"></div> Utilities</div>
+                <div class="legend-item"><div class="legend-color" style="background: #ab47bc"></div> Shopping</div>
+                <div class="legend-item"><div class="legend-color" style="background: #26a69a"></div> Groceries</div>
+                <div class="legend-item"><div class="legend-color" style="background: #ffa726"></div> Installments</div>
+                <div class="legend-item"><div class="legend-color" style="background: #78909c"></div> Other</div>
+                <div class="legend-item"><div class="legend-color" style="background: #8bc34a"></div> Surplus</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Expense Breakdown by Category</span>
+            </div>
+            <div class="category-breakdown" id="categoryBreakdown"></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">All Transactions</span>
+            </div>
+            <div style="overflow-x: auto;">
+                <table class="transactions-table" id="transactionsTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Amount (AED)</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Transaction data from the credit card statement
+        const transactions = [
+            { date: '11/11/2025', description: 'CONNECTECH L.L.C', amount: 50.00, category: 'Shopping', type: 'debit' },
+            { date: '12/11/2025', description: 'EMIRATES FLIGHT CATERING', amount: 12.00, category: 'Food & Dining', type: 'debit' },
+            { date: '13/11/2025', description: 'CAREEM HALA', amount: 34.00, category: 'Transportation', type: 'debit' },
+            { date: '14/11/2025', description: 'NATIONAL TAXI', amount: 38.50, category: 'Transportation', type: 'debit' },
+            { date: '13/11/2025', description: 'EMIRATES FLIGHT CATERING', amount: 5.00, category: 'Food & Dining', type: 'debit' },
+            { date: '14/11/2025', description: 'EMIRATES FLIGHT CATERING', amount: 2.50, category: 'Food & Dining', type: 'debit' },
+            { date: '14/11/2025', description: 'THE COFFEE LA QLUB', amount: 62.00, category: 'Food & Dining', type: 'debit' },
+            { date: '14/11/2025', description: 'TRENDYOL', amount: 173.05, category: 'Shopping', type: 'debit' },
+            { date: '15/11/2025', description: 'FEELS MARSA AL ARAB', amount: 20.00, category: 'Food & Dining', type: 'debit' },
+            { date: '15/11/2025', description: 'CARS TAXI SERVICES', amount: 15.50, category: 'Transportation', type: 'debit' },
+            { date: '15/11/2025', description: 'NATIONAL TAXI', amount: 22.00, category: 'Transportation', type: 'debit' },
+            { date: '15/11/2025', description: 'MOSHI RESTAURANT', amount: 222.75, category: 'Food & Dining', type: 'debit' },
+            { date: '16/11/2025', description: 'NESTO HYPERMARKET', amount: 85.13, category: 'Groceries', type: 'debit' },
+            { date: '17/11/2025', description: 'NOON.COM', amount: 56.00, category: 'Shopping', type: 'debit' },
+            { date: '18/11/2025', description: 'NATIONAL TAXI', amount: 44.00, category: 'Transportation', type: 'debit' },
+            { date: '25/11/2025', description: 'DUBAI ELECTRICITY', amount: 472.06, category: 'Utilities', type: 'debit' },
+            { date: '25/11/2025', description: 'CAREEM', amount: 56.67, category: 'Transportation', type: 'debit' },
+            { date: '28/11/2025', description: 'TRANSFER PAYMENT RECEIVED', amount: 5652.42, category: 'Payment', type: 'credit' },
+            { date: '27/11/2025', description: 'DUBAI TAXI', amount: 60.50, category: 'Transportation', type: 'debit' },
+            { date: '27/11/2025', description: 'ETISALAT TELECOM', amount: 450.45, category: 'Utilities', type: 'debit' },
+            { date: '28/11/2025', description: 'NESTO HYPERMARKET', amount: 92.59, category: 'Groceries', type: 'debit' },
+            { date: '28/11/2025', description: 'EMIRATES FLIGHT CATERING', amount: 14.00, category: 'Food & Dining', type: 'debit' },
+            { date: '28/11/2025', description: 'E& DIGITAL APP', amount: 50.00, category: 'Utilities', type: 'debit' },
+            { date: '29/11/2025', description: 'REWE DUESSELDORF (Germany)', amount: 173.21, category: 'Groceries', type: 'debit' },
+            { date: '29/11/2025', description: 'DM-DROGERIE MARKT (Germany)', amount: 69.65, category: 'Personal Care', type: 'debit' },
+            { date: '29/11/2025', description: 'ZEIT FUER BROT (Germany)', amount: 61.25, category: 'Food & Dining', type: 'debit' },
+            { date: '29/11/2025', description: 'SUMUP DITMAR', amount: 19.40, category: 'Other', type: 'debit' },
+            { date: '01/12/2025', description: 'CAREEM QUIK', amount: 42.19, category: 'Transportation', type: 'debit' },
+            { date: '30/11/2025', description: 'REWE DUESSELDORF (Germany)', amount: 12.89, category: 'Groceries', type: 'debit' },
+            { date: '01/12/2025', description: 'NOON MINUTES', amount: 28.85, category: 'Groceries', type: 'debit' },
+            { date: '03/12/2025', description: 'TRENDYOL REFUND', amount: 173.05, category: 'Refund', type: 'credit' },
+            { date: '03/12/2025', description: 'JAYA GROCER (Malaysia)', amount: 65.52, category: 'Groceries', type: 'debit' },
+            { date: '03/12/2025', description: 'JAYA GROCER (Malaysia)', amount: 3.15, category: 'Groceries', type: 'debit' },
+            { date: '03/12/2025', description: "NATURE'S VEGETARIAN (Malaysia)", amount: 43.17, category: 'Food & Dining', type: 'debit' },
+            { date: '06/12/2025', description: 'COMMON GROUNDS CAFE', amount: 17.00, category: 'Food & Dining', type: 'debit' },
+            { date: '05/12/2025', description: 'TAP*KEETA', amount: 45.60, category: 'Food & Dining', type: 'debit' },
+            { date: '06/12/2025', description: 'CARREFOUR', amount: 34.76, category: 'Groceries', type: 'debit' },
+            { date: '06/12/2025', description: 'NESTO HYPERMARKET', amount: 40.94, category: 'Groceries', type: 'debit' },
+            { date: '06/12/2025', description: 'TAP*KEETA', amount: 59.50, category: 'Food & Dining', type: 'debit' },
+            { date: '06/12/2025', description: 'AL FUTTAIM TRADING', amount: 27.00, category: 'Shopping', type: 'debit' },
+            { date: '08/12/2025', description: 'NOON.COM', amount: 74.75, category: 'Shopping', type: 'debit' },
+            { date: '07/12/2025', description: 'NESTO HYPERMARKET', amount: 91.45, category: 'Groceries', type: 'debit' },
+            { date: '07/12/2025', description: 'E S B E RESTAURANT', amount: 42.00, category: 'Food & Dining', type: 'debit' },
+            { date: '07/12/2025', description: 'E S B E RESTAURANT', amount: 39.00, category: 'Food & Dining', type: 'debit' },
+            { date: '07/12/2025', description: 'GRANDIOSE SUPERMARKET', amount: 15.00, category: 'Groceries', type: 'debit' },
+            { date: '10/12/2025', description: 'SPOTIFY', amount: 24.26, category: 'Entertainment', type: 'debit' },
+            { date: '15/03/2025', description: 'INSTALLMENT - JUMBO ELECTRONICS (9/12)', amount: 286.08, category: 'Installments', type: 'debit' }
+        ];
+
+        // Category colors
+        const categoryColors = {
+            'Food & Dining': '#ef5350',
+            'Transportation': '#ff7043',
+            'Utilities': '#42a5f5',
+            'Shopping': '#ab47bc',
+            'Groceries': '#26a69a',
+            'Entertainment': '#5c6bc0',
+            'Personal Care': '#ec407a',
+            'Installments': '#ffa726',
+            'Other': '#78909c',
+            'Payment': '#4caf50',
+            'Refund': '#66bb6a'
+        };
+
+        // Calculate totals by category
+        function calculateCategoryTotals() {
+            const totals = {};
+            transactions.forEach(t => {
+                if (t.type === 'debit') {
+                    totals[t.category] = (totals[t.category] || 0) + t.amount;
+                }
+            });
+            return totals;
+        }
+
+        // Create Sankey chart
+        function createSankeyChart() {
+            const ctx = document.getElementById('sankeyChart').getContext('2d');
+
+            const categoryTotals = calculateCategoryTotals();
+            const totalExpenses = Object.values(categoryTotals).reduce((a, b) => a + b, 0);
+            const totalIncome = 5825.47; // Payment received + refund
+            const surplus = totalIncome - totalExpenses;
+
+            // Sankey data
+            const data = [
+                { from: 'Payment', to: 'Cash Flow', flow: 5652.42 },
+                { from: 'Refund', to: 'Cash Flow', flow: 173.05 },
+            ];
+
+            // Add expense flows
+            Object.entries(categoryTotals).forEach(([category, amount]) => {
+                data.push({ from: 'Cash Flow', to: category, flow: amount });
+            });
+
+            // Add surplus
+            if (surplus > 0) {
+                data.push({ from: 'Cash Flow', to: 'Surplus', flow: surplus });
+            }
+
+            const colors = {
+                'Payment': '#4caf50',
+                'Refund': '#66bb6a',
+                'Cash Flow': '#66bb6a',
+                'Food & Dining': '#ef5350',
+                'Transportation': '#ff7043',
+                'Utilities': '#42a5f5',
+                'Shopping': '#ab47bc',
+                'Groceries': '#26a69a',
+                'Entertainment': '#5c6bc0',
+                'Personal Care': '#ec407a',
+                'Installments': '#ffa726',
+                'Other': '#78909c',
+                'Surplus': '#8bc34a'
+            };
+
+            new Chart(ctx, {
+                type: 'sankey',
+                data: {
+                    datasets: [{
+                        label: 'Cashflow',
+                        data: data,
+                        colorFrom: (c) => colors[c.dataset.data[c.dataIndex].from],
+                        colorTo: (c) => colors[c.dataset.data[c.dataIndex].to],
+                        colorMode: 'gradient',
+                        size: 'max',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.raw.from} → ${context.raw.to}: AED ${context.raw.flow.toFixed(2)}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Render category breakdown
+        function renderCategoryBreakdown() {
+            const container = document.getElementById('categoryBreakdown');
+            const totals = calculateCategoryTotals();
+            const maxAmount = Math.max(...Object.values(totals));
+
+            const sortedCategories = Object.entries(totals).sort((a, b) => b[1] - a[1]);
+
+            container.innerHTML = sortedCategories.map(([category, amount]) => `
+                <div class="category-card">
+                    <div class="category-header">
+                        <span class="category-name">
+                            <span class="category-dot" style="background: ${categoryColors[category] || '#78909c'}"></span>
+                            ${category}
+                        </span>
+                        <span class="category-amount">AED ${amount.toFixed(2)}</span>
+                    </div>
+                    <div class="category-bar">
+                        <div class="category-bar-fill" style="width: ${(amount / maxAmount) * 100}%; background: ${categoryColors[category] || '#78909c'}"></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render transactions table
+        function renderTransactionsTable() {
+            const tbody = document.querySelector('#transactionsTable tbody');
+
+            tbody.innerHTML = transactions.map(t => `
+                <tr>
+                    <td>${t.date}</td>
+                    <td>${t.description}</td>
+                    <td><span class="category-tag" style="background: ${categoryColors[t.category] || '#e0e0e0'}20; color: ${categoryColors[t.category] || '#666'}">${t.category}</span></td>
+                    <td class="${t.type === 'credit' ? 'amount-credit' : 'amount-debit'}">${t.type === 'credit' ? '+' : '-'} ${t.amount.toFixed(2)}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            createSankeyChart();
+            renderCategoryBreakdown();
+            renderTransactionsTable();
+        });
+    </script>
+</body>
+</html>

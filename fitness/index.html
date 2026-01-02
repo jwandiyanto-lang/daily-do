@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness - January 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: linear-gradient(135deg, #fdfcfb 0%, #f5f3f0 50%, #e8e4df 100%);
+            min-height: 100vh;
+            color: #2d2d2d;
+            padding: 30px 20px;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .tag {
+            display: inline-block;
+            background: rgba(45, 45, 45, 0.08);
+            color: #666;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 2.5em;
+            font-weight: 500;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+            color: #1a1a1a;
+        }
+
+        .subtitle {
+            color: #888;
+            margin-bottom: 40px;
+            font-size: 1em;
+            font-weight: 300;
+        }
+
+        /* Calendar */
+        .calendar {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3em;
+            font-weight: 500;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .calendar-nav button {
+            background: rgba(45, 45, 45, 0.06);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.2s;
+            color: #555;
+        }
+
+        .calendar-nav button:hover {
+            background: #2d2d2d;
+            color: #fff;
+        }
+
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .weekday {
+            text-align: center;
+            font-size: 0.75em;
+            font-weight: 500;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 8px;
+        }
+
+        .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: rgba(255,255,255,0.5);
+            position: relative;
+            font-size: 0.95em;
+            color: #444;
+        }
+
+        .day:hover {
+            background: rgba(45, 45, 45, 0.1);
+        }
+
+        .day.empty {
+            background: transparent;
+            cursor: default;
+        }
+
+        .day.today {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+            color: #fff;
+        }
+
+        .day.has-workout::after {
+            content: '';
+            position: absolute;
+            bottom: 6px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #2d2d2d;
+        }
+
+        .day.today.has-workout::after {
+            background: #fff;
+        }
+
+        .day.completed::after {
+            background: #4ade80 !important;
+        }
+
+        .day.selected {
+            box-shadow: 0 0 0 2px #2d2d2d;
+        }
+
+        /* Day Detail */
+        .day-detail {
+            display: none;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        }
+
+        .day-detail.show {
+            display: block;
+        }
+
+        .day-detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .day-detail h3 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 500;
+        }
+
+        .day-workout {
+            background: rgba(255,255,255,0.8);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .day-workout.completed {
+            border-left: 3px solid #4ade80;
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: #aaa;
+            cursor: pointer;
+            font-size: 1.2em;
+            padding: 5px;
+        }
+
+        .remove-btn:hover {
+            color: #e74c3c;
+        }
+
+        .empty-day {
+            color: #999;
+            font-size: 0.9em;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Submit Section */
+        .submit-section {
+            background: linear-gradient(135deg, rgba(45,45,45,0.03) 0%, rgba(45,45,45,0.08) 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+
+        .submit-section h4 {
+            font-weight: 500;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+
+        .submit-textarea {
+            background: rgba(255,255,255,0.8);
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 10px;
+            padding: 12px;
+            width: 100%;
+            min-height: 100px;
+            font-family: inherit;
+            font-size: 0.85em;
+            resize: none;
+            color: #333;
+        }
+
+        .submit-textarea:focus {
+            outline: none;
+            border-color: #2d2d2d;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 10px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3em;
+            font-weight: 500;
+        }
+
+        /* Strength Cards */
+        .strength-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .strength-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        .strength-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+
+        .strength-icon {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .strength-name {
+            font-weight: 500;
+            font-size: 0.9em;
+        }
+
+        .strength-desc {
+            color: #888;
+            font-size: 0.75em;
+            margin-top: 5px;
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+
+        .filter-btn {
+            background: rgba(255,255,255,0.6);
+            border: 1px solid rgba(0,0,0,0.08);
+            color: #666;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: 400;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+            color: #fff;
+            border-color: transparent;
+        }
+
+        /* Workout Cards */
+        .workout-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .workout-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 20px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .workout-card:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        }
+
+        .workout-info {
+            flex: 1;
+        }
+
+        .workout-name {
+            font-weight: 500;
+            font-size: 1em;
+            margin-bottom: 4px;
+            color: #1a1a1a;
+        }
+
+        .workout-meta {
+            display: flex;
+            gap: 15px;
+            color: #888;
+            font-size: 0.85em;
+        }
+
+        .workout-type-tag {
+            background: rgba(45,45,45,0.08);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.7em;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #666;
+        }
+
+        .add-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(45,45,45,0.08);
+            cursor: pointer;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            color: #555;
+        }
+
+        .add-btn:hover {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+            color: #fff;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(5px);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #fdfcfb 0%, #f5f3f0 100%);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 450px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #888;
+        }
+
+        .modal h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5em;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .modal .workout-type-label {
+            color: #888;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .modal-detail {
+            background: rgba(255,255,255,0.7);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .modal-detail h4 {
+            font-weight: 500;
+            margin-bottom: 12px;
+            font-size: 0.9em;
+        }
+
+        .modal-detail ul {
+            list-style: none;
+        }
+
+        .modal-detail li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            font-size: 0.9em;
+        }
+
+        .modal-detail li:last-child {
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+            color: #fff;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-size: 0.95em;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.8);
+            color: #2d2d2d;
+            border: 1px solid rgba(0,0,0,0.1);
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-size: 0.95em;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s;
+            font-family: inherit;
+            margin-top: 10px;
+        }
+
+        .btn-secondary:hover {
+            background: #fff;
+        }
+
+        .success-msg {
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin-top: 10px;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" style="display: inline-flex; align-items: center; gap: 8px; color: #888; text-decoration: none; font-size: 0.9em; margin-bottom: 20px; transition: color 0.2s;">
+            <span>←</span> Back to Daily Do
+        </a>
+        <span class="tag">January 2026</span>
+        <h1>Your Fitness</h1>
+        <p class="subtitle">Plan your workouts, track your progress</p>
+
+        <!-- Calendar -->
+        <div class="calendar">
+            <div class="calendar-header">
+                <span class="calendar-title">January 2026</span>
+                <div class="calendar-nav">
+                    <button>←</button>
+                    <button>→</button>
+                </div>
+            </div>
+            <div class="weekdays">
+                <div class="weekday">Mon</div>
+                <div class="weekday">Tue</div>
+                <div class="weekday">Wed</div>
+                <div class="weekday">Thu</div>
+                <div class="weekday">Fri</div>
+                <div class="weekday">Sat</div>
+                <div class="weekday">Sun</div>
+            </div>
+            <div class="days" id="calendar-days"></div>
+        </div>
+
+        <!-- Selected Day Detail -->
+        <div class="day-detail" id="day-detail">
+            <div class="day-detail-header">
+                <h3 id="selected-day-title">Friday, January 3</h3>
+                <button class="modal-close" onclick="closeDayDetail()">×</button>
+            </div>
+            <div id="day-workouts"></div>
+
+            <!-- Submit Workout Results -->
+            <div class="submit-section">
+                <h4>Submit Completed Workout</h4>
+                <textarea class="submit-textarea" id="workout-result" placeholder="Paste your WhatsApp workout log here...
+
+Example:
+VERTICAL DAY - Fri, 3 Jan 2026
+
+[PUSH] STANDING PRESS (RPT)
+Set 1: 40kg × 5
+Set 2: 36kg × 6
+..."></textarea>
+                <button class="submit-btn" onclick="submitWorkout()">Submit Workout</button>
+                <div class="success-msg" id="success-msg">Workout logged successfully!</div>
+            </div>
+        </div>
+
+        <!-- Strength Training -->
+        <div class="section-header">
+            <span class="section-title">Strength Training</span>
+            <span class="tag">RPT</span>
+        </div>
+
+        <div class="strength-cards">
+            <a href="vertical.html" class="strength-card">
+                <div class="strength-icon">↕</div>
+                <div class="strength-name">Vertical</div>
+                <div class="strength-desc">Shoulders + Lats</div>
+            </a>
+            <a href="horizontal.html" class="strength-card">
+                <div class="strength-icon">↔</div>
+                <div class="strength-name">Horizontal</div>
+                <div class="strength-desc">Chest + Back</div>
+            </a>
+            <a href="legs.html" class="strength-card">
+                <div class="strength-icon">⬇</div>
+                <div class="strength-name">Legs</div>
+                <div class="strength-desc">Lower Body</div>
+            </a>
+        </div>
+
+        <!-- Conditioning -->
+        <div class="section-header">
+            <span class="section-title">Conditioning</span>
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterWorkouts('all')">All</button>
+            <button class="filter-btn" onclick="filterWorkouts('amrap')">AMRAP</button>
+            <button class="filter-btn" onclick="filterWorkouts('emom')">EMOM</button>
+            <button class="filter-btn" onclick="filterWorkouts('fortime')">For Time</button>
+            <button class="filter-btn" onclick="filterWorkouts('run')">Running</button>
+            <button class="filter-btn" onclick="filterWorkouts('tabata')">Tabata</button>
+        </div>
+
+        <div class="workout-list" id="workout-list"></div>
+
+        <!-- Modal -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <button class="modal-close" onclick="closeModal()">×</button>
+                <h2 id="modal-title"></h2>
+                <span class="workout-type-label" id="modal-type"></span>
+                <div class="modal-detail" id="modal-detail"></div>
+                <button class="btn-primary" onclick="addToSelectedDay()">Add to Selected Day</button>
+                <button class="btn-secondary" onclick="copyWorkout()">Copy to WhatsApp</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../scripts/memory.js"></script>
+    <script>
+        // Track visit
+        if (typeof Memory !== 'undefined') {
+            Memory.setLastVisited('fitness');
+        }
+
+        // Workout data - All sessions 25-30 min total (5 min warmup, 20 min work, 5 min cooldown)
+        const workouts = [
+            // AMRAP
+            { id: 'amrap1', name: 'Burn Out', type: 'amrap', time: '25 min', moves: 'Burpees • Thrusters • Squats', detail: '<h4>25 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Jumping jacks, arm circles, leg swings, bodyweight squats</p><h4>15 Min AMRAP</h4><ul><li>10 Burpees</li><li>15 DB Thrusters</li><li>20 Air Squats</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Walk, stretch quads, hamstrings, shoulders</p>' },
+            { id: 'amrap2', name: "Devil's Dozen", type: 'amrap', time: '30 min', moves: 'Devil Press • Jumps • V-Ups', detail: '<h4>30 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Light jog, hip circles, inchworms, arm swings</p><h4>20 Min AMRAP</h4><ul><li>13 Devil Press</li><li>13 Squat Jumps</li><li>13 V-Ups</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Walk, deep breathing, full body stretch</p>' },
+            { id: 'amrap3', name: 'HYROX Lite', type: 'amrap', time: '30 min', moves: 'Run • Lunges • Burpees • Thrusters', detail: '<h4>30 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Easy jog, high knees, butt kicks, dynamic lunges</p><h4>20 Min AMRAP</h4><ul><li>200m Run</li><li>10 DB Farmers Lunges</li><li>15 Burpees</li><li>20 DB Thrusters</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Walk 200m, stretch hips, quads, shoulders</p>' },
+
+            // EMOM
+            { id: 'emom1', name: 'Death by Burpee', type: 'emom', time: '25 min', moves: 'Add 1 burpee each minute', detail: '<h4>25 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Jumping jacks, arm circles, squat holds, push-up position holds</p><h4>EMOM ~15 Min (Until Failure)</h4><ul><li>Min 1: 1 Burpee</li><li>Min 2: 2 Burpees</li><li>Min 3: 3 Burpees</li><li>Continue until you fail...</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Walk, shake out arms/legs, full body stretch</p>' },
+            { id: 'emom2', name: 'Push Pull Legs', type: 'emom', time: '30 min', moves: 'Push-ups • Rows • Squats', detail: '<h4>30 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Arm circles, leg swings, cat-cow, bodyweight squats</p><h4>21 Min EMOM (7 rounds)</h4><ul><li>Min 1: 15 Push-ups</li><li>Min 2: 12 DB Rows (each arm)</li><li>Min 3: 10 Goblet Squats</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (4 min):</strong> Chest stretch, lat stretch, quad stretch</p>' },
+            { id: 'emom3', name: 'Empire Blaster', type: 'emom', time: '30 min', moves: 'Devil Press • Jumps • Swings', detail: '<h4>30 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Light jog, hip openers, arm swings, air squats</p><h4>20 Min EMOM (5 rounds)</h4><ul><li>Min 1: 5 Devil Press</li><li>Min 2: 10 Tuck Jumps</li><li>Min 3: 15 DB Swings</li><li>Min 4: 20 Mountain Climbers</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Walk, hip flexor stretch, shoulder stretch</p>' },
+
+            // For Time
+            { id: 'fortime1', name: 'Filthy Thirty', type: 'fortime', time: '30 min', moves: '30 reps × 5 exercises', detail: '<h4>30 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Jumping jacks, inchworms, lunges, arm circles</p><h4>For Time (~20 min cap)</h4><ul><li>30 Jumping Jacks</li><li>30 Air Squats</li><li>30 Push-ups</li><li>30 Lunges</li><li>30 Burpees</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Walk, full body stretch sequence</p>' },
+            { id: 'fortime2', name: 'Sprint & Grind', type: 'fortime', time: '25 min', moves: '4 rounds: Run + Thrusters + Burpees', detail: '<h4>25 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Easy jog, high knees, butt kicks, arm swings</p><h4>4 Rounds For Time (~15 min)</h4><ul><li>200m Run</li><li>10 DB Thrusters</li><li>10 Burpees</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> 200m walk, stretch quads, shoulders, hips</p>' },
+            { id: 'fortime3', name: 'Mini Murph', type: 'fortime', time: '30 min', moves: 'Run • Push-ups • Squats', detail: '<h4>30 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Light jog, dynamic stretches, push-up walkouts</p><h4>For Time (~20 min cap)</h4><ul><li>400m Run</li><li>50 Push-ups</li><li>100 Air Squats</li><li>400m Run</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Walk, chest stretch, quad stretch, calf stretch</p>' },
+
+            // Running
+            { id: 'run1', name: '5K Easy', type: 'run', time: '30 min', moves: 'Easy pace, conversational', detail: '<h4>30 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Walk, dynamic leg swings, light jog</p><h4>Easy Run (~20 min)</h4><ul><li>Distance: ~3-4 kilometers</li><li>Pace: Easy/conversational</li><li>Heart Rate: Zone 2</li><li>Goal: Build aerobic base</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Walk, calf stretch, hamstring stretch</p>' },
+            { id: 'run2', name: 'Interval Sprints', type: 'run', time: '25 min', moves: '400m sprints × 5', detail: '<h4>25 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Easy jog, high knees, butt kicks, strides</p><h4>Interval Training (~15 min)</h4><ul><li>5 × 400m sprints (90% effort)</li><li>Rest: 90 sec walk between sprints</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Easy jog, walk, stretch calves and quads</p>' },
+            { id: 'run3', name: 'Tempo Run', type: 'run', time: '30 min', moves: '20 min at threshold pace', detail: '<h4>30 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Easy jog building pace</p><h4>Tempo Run (20 min)</h4><ul><li>20 min at tempo pace</li><li>Pace: Comfortably hard</li><li>Should be able to speak in short sentences</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Easy jog, walk, stretch</p>' },
+            { id: 'run4', name: 'Hill Repeats', type: 'run', time: '25 min', moves: '6 hill sprints', detail: '<h4>25 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Easy jog to hill, dynamic stretches</p><h4>Hill Repeats (~15 min)</h4><ul><li>Find a steep hill (50-100m)</li><li>6 × hill sprint (max effort)</li><li>Walk/jog down recovery</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Easy jog home, stretch calves, hip flexors</p>' },
+            { id: 'run5', name: 'Fartlek', type: 'run', time: '30 min', moves: 'Speed play - mix of paces', detail: '<h4>30 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Easy jog building gradually</p><h4>Fartlek (20 min)</h4><ul><li>Alternate between:</li><li>• 2 min fast / 2 min easy</li><li>• 1 min sprint / 1 min walk</li><li>• 30 sec all-out / 90 sec recovery</li><li>Repeat as you feel!</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Easy jog, walk, full leg stretch</p>' },
+            { id: 'run6', name: 'Long Run', type: 'run', time: '45 min', moves: '35 min at easy pace', detail: '<h4>45 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Walk, easy jog, gradual build</p><h4>Long Run (35 min)</h4><ul><li>Time: 35 minutes</li><li>Pace: Easy, sustainable</li><li>Focus: Time on feet</li><li>Stay hydrated</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Walk, stretch everything, hydrate</p>' },
+
+            // Tabata
+            { id: 'tabata1', name: 'Total Body Blast', type: 'tabata', time: '26 min', moves: 'Burpees • Thrusters • Climbers • Swings', detail: '<h4>26 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Jumping jacks, arm circles, leg swings, air squats</p><h4>Tabata 16 Min (20s on / 10s off)</h4><ul><li>8 rounds: Burpees (4 min)</li><li>8 rounds: DB Thrusters (4 min)</li><li>8 rounds: Mountain Climbers (4 min)</li><li>8 rounds: DB Swings (4 min)</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Walk, deep breathing, full body stretch</p>' },
+            { id: 'tabata2', name: 'Core Crusher', type: 'tabata', time: '25 min', moves: 'Plank • V-Ups • Twists • Hollow', detail: '<h4>25 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> Cat-cow, bird dogs, dead bugs, glute bridges</p><h4>Tabata 16 Min (20s on / 10s off)</h4><ul><li>4 rounds through (4 min each):</li><li>• Plank Hold</li><li>• V-Ups</li><li>• Russian Twists</li><li>• Hollow Hold</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (4 min):</strong> Child\'s pose, spinal twist, cobra stretch</p>' },
+            { id: 'tabata3', name: 'Cardio Killer', type: 'tabata', time: '26 min', moves: 'High Knees • Squat Jumps • Burpees • Lunges', detail: '<h4>26 Min Session</h4><p style="color:#888;font-size:0.9em;margin-bottom:12px;"><strong>Warm-up (5 min):</strong> March in place, hip circles, arm swings, light jumps</p><h4>Tabata 16 Min (20s on / 10s off)</h4><ul><li>4 rounds through (4 min each):</li><li>• High Knees</li><li>• Squat Jumps</li><li>• Burpees</li><li>• Jumping Lunges</li></ul><p style="color:#888;font-size:0.9em;margin-top:12px;"><strong>Cool-down (5 min):</strong> Walk, stretch quads, hamstrings, hip flexors</p>' },
+        ];
+
+        // State - Use unified Memory if available, fallback to localStorage
+        let selectedDay = 3;
+        let plannedWorkouts = typeof Memory !== 'undefined'
+            ? (Memory.get('fitness', 'planned') || {})
+            : JSON.parse(localStorage.getItem('plannedWorkouts') || '{}');
+        let completedWorkouts = typeof Memory !== 'undefined'
+            ? (Memory.get('fitness', 'completed') || {})
+            : JSON.parse(localStorage.getItem('completedWorkouts') || '{}');
+        let currentWorkout = null;
+
+        // Helper function to save data
+        function saveData() {
+            if (typeof Memory !== 'undefined') {
+                Memory.set('fitness', 'planned', plannedWorkouts);
+                Memory.set('fitness', 'completed', completedWorkouts);
+            } else {
+                localStorage.setItem('plannedWorkouts', JSON.stringify(plannedWorkouts));
+                localStorage.setItem('completedWorkouts', JSON.stringify(completedWorkouts));
+            }
+        }
+
+        // Generate calendar
+        function generateCalendar() {
+            const container = document.getElementById('calendar-days');
+            container.innerHTML = '';
+
+            const startDay = 3; // Jan 2026 starts on Thursday
+            const daysInMonth = 31;
+            const today = 3;
+
+            for (let i = 0; i < startDay; i++) {
+                const div = document.createElement('div');
+                div.className = 'day empty';
+                container.appendChild(div);
+            }
+
+            for (let i = 1; i <= daysInMonth; i++) {
+                const div = document.createElement('div');
+                div.className = 'day';
+                div.textContent = i;
+
+                if (i === today) div.classList.add('today');
+                if (i === selectedDay) div.classList.add('selected');
+                if (plannedWorkouts[i] && plannedWorkouts[i].length > 0) {
+                    div.classList.add('has-workout');
+                }
+                if (completedWorkouts[i] && completedWorkouts[i].length > 0) {
+                    div.classList.add('completed');
+                }
+
+                div.onclick = () => selectDay(i);
+                container.appendChild(div);
+            }
+        }
+
+        function selectDay(day) {
+            selectedDay = day;
+            generateCalendar();
+            showDayDetail(day);
+        }
+
+        function showDayDetail(day) {
+            const detail = document.getElementById('day-detail');
+            const title = document.getElementById('selected-day-title');
+            const workoutsDiv = document.getElementById('day-workouts');
+
+            const date = new Date(2026, 0, day);
+            const options = { weekday: 'long', month: 'long', day: 'numeric' };
+            title.textContent = date.toLocaleDateString('en-US', options);
+
+            const dayWorkouts = plannedWorkouts[day] || [];
+            const dayCompleted = completedWorkouts[day] || [];
+
+            if (dayWorkouts.length === 0 && dayCompleted.length === 0) {
+                workoutsDiv.innerHTML = '<div class="empty-day">No workouts planned. Select a workout below to add.</div>';
+            } else {
+                let html = '';
+
+                // Show completed workouts
+                dayCompleted.forEach((w, index) => {
+                    html += `
+                        <div class="day-workout completed">
+                            <div>
+                                <div style="font-weight: 500;">✓ ${w.type || 'Workout'}</div>
+                                <div style="color: #888; font-size: 0.85em;">Completed</div>
+                            </div>
+                            <button class="remove-btn" onclick="removeCompleted(${day}, ${index})">×</button>
+                        </div>
+                    `;
+                });
+
+                // Show planned workouts
+                dayWorkouts.forEach((w, index) => {
+                    html += `
+                        <div class="day-workout">
+                            <div>
+                                <div style="font-weight: 500;">${w.name}</div>
+                                <div style="color: #888; font-size: 0.85em;">${w.type.toUpperCase()} • ${w.time}</div>
+                            </div>
+                            <button class="remove-btn" onclick="removeWorkout(${day}, ${index})">×</button>
+                        </div>
+                    `;
+                });
+
+                workoutsDiv.innerHTML = html;
+            }
+
+            detail.classList.add('show');
+        }
+
+        function closeDayDetail() {
+            document.getElementById('day-detail').classList.remove('show');
+        }
+
+        function removeWorkout(day, index) {
+            plannedWorkouts[day].splice(index, 1);
+            if (plannedWorkouts[day].length === 0) delete plannedWorkouts[day];
+            saveData();
+            generateCalendar();
+            showDayDetail(day);
+        }
+
+        function removeCompleted(day, index) {
+            completedWorkouts[day].splice(index, 1);
+            if (completedWorkouts[day].length === 0) delete completedWorkouts[day];
+            saveData();
+            generateCalendar();
+            showDayDetail(day);
+        }
+
+        // Submit workout from WhatsApp paste
+        function submitWorkout() {
+            const text = document.getElementById('workout-result').value;
+            if (!text.trim()) return;
+
+            // Parse workout type from text
+            let workoutType = 'Workout';
+            if (text.includes('VERTICAL')) workoutType = 'Vertical Day';
+            else if (text.includes('HORIZONTAL')) workoutType = 'Horizontal Day';
+            else if (text.includes('LEGS')) workoutType = 'Legs Day';
+            else if (text.includes('AMRAP')) workoutType = 'AMRAP';
+            else if (text.includes('EMOM')) workoutType = 'EMOM';
+            else if (text.includes('RUN') || text.includes('5K') || text.includes('TEMPO')) workoutType = 'Running';
+
+            // Add to completed workouts
+            if (!completedWorkouts[selectedDay]) {
+                completedWorkouts[selectedDay] = [];
+            }
+            completedWorkouts[selectedDay].push({
+                type: workoutType,
+                log: text,
+                timestamp: new Date().toISOString()
+            });
+
+            saveData();
+
+            // Show success
+            document.getElementById('success-msg').style.display = 'block';
+            document.getElementById('workout-result').value = '';
+
+            setTimeout(() => {
+                document.getElementById('success-msg').style.display = 'none';
+            }, 3000);
+
+            generateCalendar();
+            showDayDetail(selectedDay);
+        }
+
+        // Generate workout list
+        function generateWorkoutList(filter = 'all') {
+            const container = document.getElementById('workout-list');
+            const filtered = filter === 'all' ? workouts : workouts.filter(w => w.type === filter);
+
+            container.innerHTML = filtered.map(w => `
+                <div class="workout-card" onclick="showWorkout('${w.id}')">
+                    <div class="workout-info">
+                        <div class="workout-name">${w.name}</div>
+                        <div class="workout-meta">
+                            <span class="workout-type-tag">${w.type}</span>
+                            <span>${w.time}</span>
+                            <span>${w.moves}</span>
+                        </div>
+                    </div>
+                    <button class="add-btn" onclick="event.stopPropagation(); quickAdd('${w.id}')">+</button>
+                </div>
+            `).join('');
+        }
+
+        function filterWorkouts(type) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            generateWorkoutList(type);
+        }
+
+        function showWorkout(id) {
+            currentWorkout = workouts.find(w => w.id === id);
+            document.getElementById('modal-title').textContent = currentWorkout.name;
+            document.getElementById('modal-type').textContent = `${currentWorkout.type.toUpperCase()} • ${currentWorkout.time}`;
+            document.getElementById('modal-detail').innerHTML = currentWorkout.detail;
+            document.getElementById('modal').classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('show');
+        }
+
+        function quickAdd(id) {
+            const workout = workouts.find(w => w.id === id);
+            if (!plannedWorkouts[selectedDay]) plannedWorkouts[selectedDay] = [];
+            plannedWorkouts[selectedDay].push(workout);
+            saveData();
+            generateCalendar();
+            showDayDetail(selectedDay);
+        }
+
+        function addToSelectedDay() {
+            if (currentWorkout) {
+                quickAdd(currentWorkout.id);
+                closeModal();
+            }
+        }
+
+        function copyWorkout() {
+            const today = new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+            const text = `WORKOUT - ${today}\n\n${currentWorkout.name.toUpperCase()}\n${currentWorkout.type.toUpperCase()} • ${currentWorkout.time}\n\n${document.getElementById('modal-detail').innerText}\n\nRESULT: ___________\nNOTES: `;
+
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.querySelector('.btn-secondary');
+                btn.textContent = 'Copied!';
+                setTimeout(() => btn.textContent = 'Copy to WhatsApp', 2000);
+            });
+        }
+
+        document.getElementById('modal').onclick = function(e) {
+            if (e.target === this) closeModal();
+        }
+
+        // Initialize
+        generateCalendar();
+        generateWorkoutList();
+        showDayDetail(selectedDay);
+    </script>
+</body>
+</html>

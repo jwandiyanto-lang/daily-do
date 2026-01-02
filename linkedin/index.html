@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIn Content Hub</title>
+    <link rel="stylesheet" href="../styles/app.css">
+    <style>
+        /* Override to light theme for this page */
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            color: #1e293b;
+        }
+
+        .page-header {
+            margin-bottom: 24px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: #0077b5;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+
+        .page-subtitle {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 8px;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            background: transparent;
+            color: #64748b;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 8px 8px 0 0;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .tab-btn:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .tab-btn.active {
+            background: #0077b5;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        /* News Sources */
+        .source-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .source-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 10px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .source-card:hover {
+            background: white;
+            border-color: #0077b5;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,119,181,0.15);
+        }
+
+        .source-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .source-icon.anthropic { background: #d4a574; }
+        .source-icon.techcrunch { background: #0a0; color: white; }
+        .source-icon.verge { background: #e53935; color: white; }
+        .source-icon.linkedin { background: #0077b5; color: white; }
+        .source-icon.twitter { background: #1da1f2; color: white; }
+
+        .source-info {
+            flex: 1;
+        }
+
+        .source-name {
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .source-type {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        /* Jobs Section */
+        .job-search-links {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .job-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #0077b5 0%, #005582 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .job-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,119,181,0.3);
+        }
+
+        .job-link.secondary {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .job-link.secondary:hover {
+            background: #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .filters-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .filter-tag {
+            padding: 6px 12px;
+            background: #e2e8f0;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #475569;
+        }
+
+        .keyword-tag {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .location-tag {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        /* Content Ideas */
+        .template-card {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .template-card:hover {
+            background: white;
+            border-color: #0077b5;
+        }
+
+        .template-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .template-name {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .template-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .template-badge.technical { background: #dbeafe; color: #1d4ed8; }
+        .template-badge.industry { background: #fef3c7; color: #92400e; }
+        .template-badge.personal { background: #dcfce7; color: #166534; }
+        .template-badge.anthropic { background: #fae8ff; color: #86198f; }
+
+        .template-topics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .topic-chip {
+            padding: 4px 10px;
+            background: white;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* Saved Ideas */
+        .idea-input-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .idea-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+
+        .idea-input:focus {
+            outline: none;
+            border-color: #0077b5;
+        }
+
+        .add-btn {
+            padding: 12px 20px;
+            background: #0077b5;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.2s;
+        }
+
+        .add-btn:hover {
+            background: #005582;
+        }
+
+        .saved-ideas-list {
+            list-style: none;
+        }
+
+        .saved-idea {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .saved-idea .idea-text {
+            flex: 1;
+            font-size: 0.95rem;
+        }
+
+        .delete-btn {
+            padding: 6px 10px;
+            background: #fee2e2;
+            color: #dc2626;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .delete-btn:hover {
+            background: #fecaca;
+        }
+
+        /* Hashtags */
+        .hashtag-section {
+            margin-top: 16px;
+        }
+
+        .hashtag-group {
+            margin-bottom: 12px;
+        }
+
+        .hashtag-label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #64748b;
+            margin-bottom: 6px;
+        }
+
+        .hashtag-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .hashtag {
+            padding: 4px 10px;
+            background: #0077b5;
+            color: white;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .hashtag:hover {
+            background: #005582;
+        }
+
+        /* Engagement Hooks */
+        .hooks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 8px;
+        }
+
+        .hook-chip {
+            padding: 10px 14px;
+            background: #f1f5f9;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #475569;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .hook-chip:hover {
+            background: #0077b5;
+            color: white;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 100;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #64748b;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+
+        /* News Feed Styles */
+        .refresh-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: #f1f5f9;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .refresh-btn:hover {
+            background: #0077b5;
+            color: white;
+        }
+
+        .refresh-btn.loading svg {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .last-updated {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-bottom: 16px;
+        }
+
+        .news-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .news-item {
+            display: flex;
+            gap: 12px;
+            padding: 14px;
+            background: #f8fafc;
+            border-radius: 10px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .news-item:hover {
+            background: white;
+            border-color: #0077b5;
+            transform: translateX(4px);
+        }
+
+        .news-source-badge {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .news-source-badge.tc { background: #0a0; color: white; }
+        .news-source-badge.vb { background: #9333ea; color: white; }
+        .news-source-badge.verge { background: #e53935; color: white; }
+        .news-source-badge.wired { background: #000; color: white; }
+        .news-source-badge.anth { background: #d4a574; color: white; }
+        .news-source-badge.hn { background: #ff6600; color: white; }
+
+        .news-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .news-title {
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: #1e293b;
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+
+        .news-meta {
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
+        .news-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .save-news-btn {
+            padding: 6px 10px;
+            background: transparent;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .save-news-btn:hover {
+            background: #0077b5;
+            border-color: #0077b5;
+            color: white;
+        }
+
+        .loading-state {
+            text-align: center;
+            padding: 40px;
+            color: #64748b;
+        }
+
+        .loading-spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid #e2e8f0;
+            border-top-color: #0077b5;
+            border-radius: 50%;
+            margin: 0 auto 12px;
+            animation: spin 1s linear infinite;
+        }
+
+        .suggestion-hint {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 12px;
+        }
+
+        .suggestion-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .suggestion-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: linear-gradient(135deg, #dbeafe 0%, #ede9fe 100%);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #1e293b;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .suggestion-item:hover {
+            transform: translateX(4px);
+        }
+
+        .suggestion-icon {
+            font-size: 1.2rem;
+        }
+
+        .error-state {
+            text-align: center;
+            padding: 30px;
+            color: #ef4444;
+            background: #fef2f2;
+            border-radius: 8px;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .tabs {
+                flex-wrap: wrap;
+            }
+
+            .tab-btn {
+                flex: 1;
+                min-width: 80px;
+                text-align: center;
+            }
+
+            .job-search-links {
+                flex-direction: column;
+            }
+
+            .job-link {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container" style="padding-bottom: 20px;">
+        <div class="page-content">
+            <header class="page-header">
+                <a href="../index.html" class="back-link">
+                    <span>&larr;</span> Back to Daily Do
+                </a>
+                <h1 class="page-title">LinkedIn Hub</h1>
+                <p class="page-subtitle">Find news, jobs, and inspiration for your next post</p>
+            </header>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('news')">News</button>
+                <button class="tab-btn" onclick="switchTab('jobs')">Jobs</button>
+                <button class="tab-btn" onclick="switchTab('ideas')">Content Ideas</button>
+                <button class="tab-btn" onclick="switchTab('saved')">Saved</button>
+            </div>
+
+            <!-- News Tab -->
+            <div id="news-tab" class="tab-content active">
+                <!-- Today's Feed -->
+                <div class="card" id="today-feed-card">
+                    <div class="card-header">
+                        <span class="card-title">Today's AI News</span>
+                        <button class="refresh-btn" onclick="refreshNews()" id="refresh-btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M23 4v6h-6M1 20v-6h6"/>
+                                <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+                            </svg>
+                            Refresh
+                        </button>
+                    </div>
+                    <p class="last-updated" id="last-updated"></p>
+                    <div id="news-feed" class="news-feed">
+                        <div class="loading-state">
+                            <div class="loading-spinner"></div>
+                            <p>Loading today's news...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Suggestions -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Today's Content Ideas</span>
+                    </div>
+                    <div id="content-suggestions">
+                        <p class="suggestion-hint">Based on today's news, consider posting about:</p>
+                        <ul class="suggestion-list" id="suggestion-list">
+                            <!-- Populated dynamically -->
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Official Sources</span>
+                    </div>
+                    <div class="source-grid">
+                        <a href="https://www.anthropic.com/news" target="_blank" class="source-card">
+                            <div class="source-icon anthropic">A</div>
+                            <div class="source-info">
+                                <div class="source-name">Anthropic News</div>
+                                <div class="source-type">Official announcements</div>
+                            </div>
+                        </a>
+                        <a href="https://www.anthropic.com/research" target="_blank" class="source-card">
+                            <div class="source-icon anthropic">R</div>
+                            <div class="source-info">
+                                <div class="source-name">Anthropic Research</div>
+                                <div class="source-type">Papers & insights</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Social Media</span>
+                    </div>
+                    <div class="source-grid">
+                        <a href="https://www.linkedin.com/company/anthropic-ai/" target="_blank" class="source-card">
+                            <div class="source-icon linkedin">in</div>
+                            <div class="source-info">
+                                <div class="source-name">Anthropic LinkedIn</div>
+                                <div class="source-type">Company updates</div>
+                            </div>
+                        </a>
+                        <a href="https://twitter.com/AnthropicAI" target="_blank" class="source-card">
+                            <div class="source-icon twitter">X</div>
+                            <div class="source-info">
+                                <div class="source-name">@AnthropicAI</div>
+                                <div class="source-type">Real-time updates</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Tech News</span>
+                    </div>
+                    <div class="source-grid">
+                        <a href="https://techcrunch.com/tag/artificial-intelligence/" target="_blank" class="source-card">
+                            <div class="source-icon techcrunch">TC</div>
+                            <div class="source-info">
+                                <div class="source-name">TechCrunch AI</div>
+                                <div class="source-type">Industry news</div>
+                            </div>
+                        </a>
+                        <a href="https://venturebeat.com/category/ai/" target="_blank" class="source-card">
+                            <div class="source-icon" style="background: #9333ea; color: white;">VB</div>
+                            <div class="source-info">
+                                <div class="source-name">VentureBeat AI</div>
+                                <div class="source-type">Enterprise AI</div>
+                            </div>
+                        </a>
+                        <a href="https://www.theverge.com/ai-artificial-intelligence" target="_blank" class="source-card">
+                            <div class="source-icon verge">V</div>
+                            <div class="source-info">
+                                <div class="source-name">The Verge AI</div>
+                                <div class="source-type">Tech & culture</div>
+                            </div>
+                        </a>
+                        <a href="https://www.wired.com/tag/artificial-intelligence/" target="_blank" class="source-card">
+                            <div class="source-icon" style="background: #000; color: white;">W</div>
+                            <div class="source-info">
+                                <div class="source-name">WIRED AI</div>
+                                <div class="source-type">Deep dives</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jobs Tab -->
+            <div id="jobs-tab" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Search Jobs</span>
+                    </div>
+                    <div class="job-search-links">
+                        <a href="https://www.anthropic.com/careers" target="_blank" class="job-link">
+                            <span>A</span> Anthropic Careers
+                        </a>
+                        <a href="https://www.linkedin.com/company/anthropic-ai/jobs/" target="_blank" class="job-link">
+                            <span>in</span> Anthropic on LinkedIn
+                        </a>
+                        <a href="https://www.linkedin.com/jobs/search/?keywords=AI%20Engineer%20LLM&location=Dublin" target="_blank" class="job-link secondary">
+                            AI Jobs in Dublin
+                        </a>
+                        <a href="https://www.linkedin.com/jobs/search/?keywords=AI%20Safety%20Engineer" target="_blank" class="job-link secondary">
+                            AI Safety Jobs
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Target Roles</span>
+                    </div>
+                    <div class="filters-row">
+                        <span class="filter-tag">Software Engineer</span>
+                        <span class="filter-tag">AI Engineer</span>
+                        <span class="filter-tag">ML Engineer</span>
+                        <span class="filter-tag">Product Engineer</span>
+                        <span class="filter-tag">Research Engineer</span>
+                        <span class="filter-tag">Applied AI Engineer</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Target Locations</span>
+                    </div>
+                    <div class="filters-row">
+                        <span class="filter-tag location-tag">Dublin, Ireland</span>
+                        <span class="filter-tag location-tag">San Francisco, CA</span>
+                        <span class="filter-tag location-tag">Remote</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Keywords to Watch</span>
+                    </div>
+                    <div class="filters-row">
+                        <span class="filter-tag keyword-tag">Claude</span>
+                        <span class="filter-tag keyword-tag">LLM</span>
+                        <span class="filter-tag keyword-tag">AI Safety</span>
+                        <span class="filter-tag keyword-tag">Python</span>
+                        <span class="filter-tag keyword-tag">Machine Learning</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Saved Jobs</span>
+                    </div>
+                    <div id="saved-jobs-list">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">💼</div>
+                            <p>No saved jobs yet. Find a job and save it here!</p>
+                        </div>
+                    </div>
+                    <div class="idea-input-row" style="margin-top: 16px;">
+                        <input type="text" id="job-input" class="idea-input" placeholder="Paste job title and URL...">
+                        <button class="add-btn" onclick="saveJob()">Save Job</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Ideas Tab -->
+            <div id="ideas-tab" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Post Templates</span>
+                    </div>
+
+                    <div class="template-card" onclick="showTemplate('technical')">
+                        <div class="template-header">
+                            <span class="template-name">Technical Breakdown</span>
+                            <span class="template-badge technical">Technical</span>
+                        </div>
+                        <div class="template-topics">
+                            <span class="topic-chip">How Constitutional AI works</span>
+                            <span class="topic-chip">RAG vs Fine-tuning</span>
+                            <span class="topic-chip">Prompt engineering patterns</span>
+                        </div>
+                    </div>
+
+                    <div class="template-card" onclick="showTemplate('industry')">
+                        <div class="template-header">
+                            <span class="template-name">Industry Commentary</span>
+                            <span class="template-badge industry">Industry</span>
+                        </div>
+                        <div class="template-topics">
+                            <span class="topic-chip">Anthropic announcements</span>
+                            <span class="topic-chip">AI regulation updates</span>
+                            <span class="topic-chip">State of AI safety</span>
+                        </div>
+                    </div>
+
+                    <div class="template-card" onclick="showTemplate('personal')">
+                        <div class="template-header">
+                            <span class="template-name">Personal Story</span>
+                            <span class="template-badge personal">Personal</span>
+                        </div>
+                        <div class="template-topics">
+                            <span class="topic-chip">My journey into AI</span>
+                            <span class="topic-chip">Project failures & learnings</span>
+                            <span class="topic-chip">Career advice</span>
+                        </div>
+                    </div>
+
+                    <div class="template-card" onclick="showTemplate('anthropic')">
+                        <div class="template-header">
+                            <span class="template-name">Anthropic-Focused</span>
+                            <span class="template-badge anthropic">Anthropic</span>
+                        </div>
+                        <div class="template-topics">
+                            <span class="topic-chip">Why I admire Anthropic</span>
+                            <span class="topic-chip">Building with Claude</span>
+                            <span class="topic-chip">Constitutional AI</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Engagement Hooks</span>
+                    </div>
+                    <div class="hooks-grid">
+                        <div class="hook-chip" onclick="copyToClipboard(this.textContent)">What's your take?</div>
+                        <div class="hook-chip" onclick="copyToClipboard(this.textContent)">Have you experienced this?</div>
+                        <div class="hook-chip" onclick="copyToClipboard(this.textContent)">Agree or disagree?</div>
+                        <div class="hook-chip" onclick="copyToClipboard(this.textContent)">What would you add?</div>
+                        <div class="hook-chip" onclick="copyToClipboard(this.textContent)">Drop your thoughts below</div>
+                        <div class="hook-chip" onclick="copyToClipboard(this.textContent)">Tag someone who needs this</div>
+                        <div class="hook-chip" onclick="copyToClipboard(this.textContent)">What's been your experience?</div>
+                        <div class="hook-chip" onclick="copyToClipboard(this.textContent)">Am I missing something?</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Hashtag Sets</span>
+                    </div>
+                    <div class="hashtag-section">
+                        <div class="hashtag-group">
+                            <div class="hashtag-label">Technical</div>
+                            <div class="hashtag-chips">
+                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#AI</span>
+                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#MachineLearning</span>
+                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#LLM</span>
+                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#ArtificialIntelligence</span>
+                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#Tech</span>
+                            </div>
+                        </div>
+                        <div class="hashtag-group">
+                            <div class="hashtag-label">AI Safety</div>
+                            <div class="hashtag-chips">
+                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#AISafety</span>
+                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#ResponsibleAI</span>
+                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#AIEthics</span>
+                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#Anthropic</span>
+                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#Claude</span>
+                            </div>
+                        </div>
+                        <div class="hashtag-group">
+                            <div class="hashtag-label">Career</div>
+                            <div class="hashtag-chips">
+                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#CareerGrowth</span>
+                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#TechCareers</span>
+                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#SoftwareEngineering</span>
+                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#AIJobs</span>
+                            </div>
+                        </div>
+                        <div class="hashtag-group">
+                            <div class="hashtag-label">Industry</div>
+                            <div class="hashtag-chips">
+                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#TechNews</span>
+                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#AINews</span>
+                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#Innovation</span>
+                                <span class="hashtag" onclick="copyToClipboard(this.textContent)">#FutureOfWork</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Saved Tab -->
+            <div id="saved-tab" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Save a Post Idea</span>
+                    </div>
+                    <div class="idea-input-row">
+                        <input type="text" id="idea-input" class="idea-input" placeholder="Write your post idea...">
+                        <button class="add-btn" onclick="saveIdea()">Save</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Saved Post Ideas</span>
+                    </div>
+                    <ul class="saved-ideas-list" id="saved-ideas-list">
+                        <!-- Populated by JS -->
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Saved News Articles</span>
+                    </div>
+                    <ul class="saved-ideas-list" id="saved-news-list">
+                        <!-- Populated by JS -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Template Modal -->
+    <div id="template-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: center; justify-content: center; padding: 20px;">
+        <div style="background: white; border-radius: 12px; padding: 24px; max-width: 500px; width: 100%; max-height: 80vh; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h3 id="modal-title" style="font-size: 1.2rem; font-weight: 600;"></h3>
+                <button onclick="closeModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #64748b;">&times;</button>
+            </div>
+            <div id="modal-content" style="background: #f8fafc; padding: 16px; border-radius: 8px; font-family: monospace; font-size: 0.9rem; white-space: pre-wrap; margin-bottom: 16px;"></div>
+            <button onclick="copyTemplate()" style="width: 100%; padding: 12px; background: #0077b5; color: white; border: none; border-radius: 8px; font-weight: 500; cursor: pointer;">Copy Template</button>
+        </div>
+    </div>
+
+    <script src="../scripts/memory.js"></script>
+    <script>
+        // Track visit
+        if (typeof Memory !== 'undefined') {
+            Memory.setLastVisited('linkedin');
+        }
+
+        // ========================================
+        // Daily News Feed
+        // ========================================
+
+        const RSS_FEEDS = [
+            { url: 'https://techcrunch.com/tag/artificial-intelligence/feed/', name: 'TechCrunch', badge: 'tc' },
+            { url: 'https://feeds.feedburner.com/venturebeat/SZYF', name: 'VentureBeat', badge: 'vb' },
+            { url: 'https://hnrss.org/newest?q=AI+OR+LLM+OR+Anthropic+OR+Claude&points=50', name: 'Hacker News', badge: 'hn' }
+        ];
+
+        const RSS_API = 'https://api.rss2json.com/v1/api.json?rss_url=';
+
+        async function fetchNews() {
+            const feedEl = document.getElementById('news-feed');
+            const lastUpdatedEl = document.getElementById('last-updated');
+            const refreshBtn = document.getElementById('refresh-btn');
+
+            // Check cache first
+            const cached = Memory.get('linkedin', 'cachedNews');
+            const cacheTime = Memory.get('linkedin', 'newsCacheTime');
+            const now = Date.now();
+            const ONE_HOUR = 60 * 60 * 1000;
+
+            if (cached && cacheTime && (now - cacheTime < ONE_HOUR)) {
+                renderNews(cached);
+                lastUpdatedEl.textContent = `Last updated: ${new Date(cacheTime).toLocaleTimeString()}`;
+                return;
+            }
+
+            // Show loading
+            refreshBtn.classList.add('loading');
+            feedEl.innerHTML = `
+                <div class="loading-state">
+                    <div class="loading-spinner"></div>
+                    <p>Fetching fresh AI news...</p>
+                </div>
+            `;
+
+            try {
+                const allItems = [];
+
+                // Fetch from multiple RSS feeds
+                for (const feed of RSS_FEEDS) {
+                    try {
+                        const response = await fetch(RSS_API + encodeURIComponent(feed.url));
+                        const data = await response.json();
+
+                        if (data.status === 'ok' && data.items) {
+                            const items = data.items.slice(0, 5).map(item => ({
+                                title: item.title,
+                                link: item.link,
+                                pubDate: item.pubDate,
+                                source: feed.name,
+                                badge: feed.badge
+                            }));
+                            allItems.push(...items);
+                        }
+                    } catch (e) {
+                        console.warn(`Failed to fetch ${feed.name}:`, e);
+                    }
+                }
+
+                // Sort by date (newest first)
+                allItems.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+
+                // Take top 10
+                const topItems = allItems.slice(0, 10);
+
+                if (topItems.length > 0) {
+                    // Cache the results
+                    Memory.set('linkedin', 'cachedNews', topItems);
+                    Memory.set('linkedin', 'newsCacheTime', now);
+
+                    renderNews(topItems);
+                    lastUpdatedEl.textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
+
+                    // Generate content suggestions
+                    generateSuggestions(topItems);
+                } else {
+                    feedEl.innerHTML = `
+                        <div class="error-state">
+                            <p>Couldn't fetch news. Check your connection and try again.</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('News fetch error:', error);
+                feedEl.innerHTML = `
+                    <div class="error-state">
+                        <p>Error loading news. Try refreshing.</p>
+                    </div>
+                `;
+            } finally {
+                refreshBtn.classList.remove('loading');
+            }
+        }
+
+        function renderNews(items) {
+            const feedEl = document.getElementById('news-feed');
+
+            if (!items || items.length === 0) {
+                feedEl.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📰</div>
+                        <p>No news yet. Click Refresh to load.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            feedEl.innerHTML = items.map((item, idx) => {
+                const date = new Date(item.pubDate);
+                const timeAgo = getTimeAgo(date);
+                return `
+                    <div class="news-item" onclick="window.open('${item.link}', '_blank')">
+                        <div class="news-source-badge ${item.badge}">${item.source.slice(0, 2).toUpperCase()}</div>
+                        <div class="news-content">
+                            <div class="news-title">${escapeHtml(item.title)}</div>
+                            <div class="news-meta">${item.source} • ${timeAgo}</div>
+                        </div>
+                        <div class="news-actions">
+                            <button class="save-news-btn" onclick="event.stopPropagation(); saveNewsItem(${idx})">Save</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function getTimeAgo(date) {
+            const now = new Date();
+            const diff = now - date;
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+            if (hours < 1) return 'Just now';
+            if (hours < 24) return `${hours}h ago`;
+            if (days === 1) return 'Yesterday';
+            return `${days} days ago`;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function saveNewsItem(idx) {
+            const cached = Memory.get('linkedin', 'cachedNews') || [];
+            if (!cached[idx]) return;
+
+            const item = cached[idx];
+            const savedNews = Memory.get('linkedin', 'savedNews') || [];
+            savedNews.unshift({
+                text: `${item.title} - ${item.source}`,
+                link: item.link,
+                date: new Date().toISOString()
+            });
+            Memory.set('linkedin', 'savedNews', savedNews);
+            renderSavedNews();
+            showToast('News saved!');
+        }
+
+        function generateSuggestions(items) {
+            const suggestionList = document.getElementById('suggestion-list');
+
+            // Analyze headlines for themes
+            const themes = [];
+            const keywords = ['Claude', 'Anthropic', 'OpenAI', 'GPT', 'LLM', 'AI Safety', 'regulation', 'enterprise', 'startup'];
+
+            items.forEach(item => {
+                const title = item.title.toLowerCase();
+                keywords.forEach(kw => {
+                    if (title.includes(kw.toLowerCase()) && !themes.includes(kw)) {
+                        themes.push(kw);
+                    }
+                });
+            });
+
+            // Generate suggestions
+            const suggestions = [
+                { icon: '🔥', text: `Hot take on today's top story: "${items[0]?.title?.slice(0, 50)}..."` },
+                { icon: '📊', text: 'Technical breakdown of a recent AI development' },
+                { icon: '💭', text: `Your thoughts on ${themes[0] || 'the latest AI news'}` }
+            ];
+
+            if (themes.includes('Anthropic') || themes.includes('Claude')) {
+                suggestions.push({ icon: '✨', text: 'Share your experience building with Claude' });
+            }
+
+            suggestionList.innerHTML = suggestions.map(s => `
+                <li class="suggestion-item" onclick="copyToClipboard('${escapeHtml(s.text)}')">
+                    <span class="suggestion-icon">${s.icon}</span>
+                    <span>${s.text}</span>
+                </li>
+            `).join('');
+        }
+
+        function refreshNews() {
+            // Clear cache to force refresh
+            Memory.remove('linkedin', 'cachedNews');
+            Memory.remove('linkedin', 'newsCacheTime');
+            fetchNews();
+        }
+
+        // Load news on page load
+        document.addEventListener('DOMContentLoaded', fetchNews);
+
+        // Templates data
+        const templates = {
+            technical: {
+                name: 'Technical Breakdown',
+                format: `# [Concept] explained simply
+
+[Hook - surprising fact or question]
+
+[3-5 bullet points breaking down the concept]
+
+[Real-world application]
+
+[Call to action - question for discussion]
+
+#AI #MachineLearning #Tech`
+            },
+            industry: {
+                name: 'Industry Commentary',
+                format: `[Hot take or observation]
+
+[Context and your perspective]
+
+[Why this matters]
+
+[What I think will happen / should happen]
+
+[Question for audience]
+
+#AINews #TechIndustry`
+            },
+            personal: {
+                name: 'Personal Story',
+                format: `[Relatable opening]
+
+[The situation / challenge]
+
+[What I learned]
+
+[How it changed my approach]
+
+[Advice for others]
+
+#CareerGrowth #TechCareer`
+            },
+            anthropic: {
+                name: 'Anthropic-Focused',
+                format: `[Observation about Anthropic/Claude]
+
+[Why this is significant]
+
+[My experience/thoughts]
+
+[Broader implications]
+
+[Discussion question]
+
+#Anthropic #Claude #AISafety`
+            }
+        };
+
+        // Tab switching
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(tabName + '-tab').classList.add('active');
+        }
+
+        // Show template modal
+        function showTemplate(type) {
+            const template = templates[type];
+            document.getElementById('modal-title').textContent = template.name;
+            document.getElementById('modal-content').textContent = template.format;
+            document.getElementById('template-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('template-modal').style.display = 'none';
+        }
+
+        function copyTemplate() {
+            const content = document.getElementById('modal-content').textContent;
+            navigator.clipboard.writeText(content);
+            showToast('Template copied!');
+            closeModal();
+        }
+
+        // Copy to clipboard
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text);
+            showToast('Copied: ' + text);
+        }
+
+        // Toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
+        // Save idea
+        function saveIdea() {
+            const input = document.getElementById('idea-input');
+            const idea = input.value.trim();
+            if (!idea) return;
+
+            const ideas = Memory.get('linkedin', 'ideas') || [];
+            ideas.push({ text: idea, date: new Date().toISOString() });
+            Memory.set('linkedin', 'ideas', ideas);
+
+            input.value = '';
+            renderSavedIdeas();
+            showToast('Idea saved!');
+        }
+
+        function deleteIdea(index) {
+            const ideas = Memory.get('linkedin', 'ideas') || [];
+            ideas.splice(index, 1);
+            Memory.set('linkedin', 'ideas', ideas);
+            renderSavedIdeas();
+        }
+
+        function renderSavedIdeas() {
+            const ideas = Memory.get('linkedin', 'ideas') || [];
+            const list = document.getElementById('saved-ideas-list');
+
+            if (ideas.length === 0) {
+                list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">💡</div><p>No saved ideas yet</p></div>';
+                return;
+            }
+
+            list.innerHTML = ideas.map((idea, i) => `
+                <li class="saved-idea">
+                    <span class="idea-text">${idea.text}</span>
+                    <button class="delete-btn" onclick="deleteIdea(${i})">Delete</button>
+                </li>
+            `).join('');
+        }
+
+        // Save job
+        function saveJob() {
+            const input = document.getElementById('job-input');
+            const job = input.value.trim();
+            if (!job) return;
+
+            const jobs = Memory.get('linkedin', 'savedJobs') || [];
+            jobs.push({ text: job, date: new Date().toISOString() });
+            Memory.set('linkedin', 'savedJobs', jobs);
+
+            input.value = '';
+            renderSavedJobs();
+            showToast('Job saved!');
+        }
+
+        function deleteJob(index) {
+            const jobs = Memory.get('linkedin', 'savedJobs') || [];
+            jobs.splice(index, 1);
+            Memory.set('linkedin', 'savedJobs', jobs);
+            renderSavedJobs();
+        }
+
+        function renderSavedJobs() {
+            const jobs = Memory.get('linkedin', 'savedJobs') || [];
+            const list = document.getElementById('saved-jobs-list');
+
+            if (jobs.length === 0) {
+                list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">💼</div><p>No saved jobs yet. Find a job and save it here!</p></div>';
+                return;
+            }
+
+            list.innerHTML = jobs.map((job, i) => `
+                <div class="saved-idea">
+                    <span class="idea-text">${job.text}</span>
+                    <button class="delete-btn" onclick="deleteJob(${i})">Delete</button>
+                </div>
+            `).join('');
+        }
+
+        // Save news article
+        function renderSavedNews() {
+            const news = Memory.get('linkedin', 'savedNews') || [];
+            const list = document.getElementById('saved-news-list');
+
+            if (news.length === 0) {
+                list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📰</div><p>No saved news yet</p></div>';
+                return;
+            }
+
+            list.innerHTML = news.map((item, i) => `
+                <li class="saved-idea">
+                    <span class="idea-text">${item.text}</span>
+                    <button class="delete-btn" onclick="deleteNews(${i})">Delete</button>
+                </li>
+            `).join('');
+        }
+
+        function deleteNews(index) {
+            const news = Memory.get('linkedin', 'savedNews') || [];
+            news.splice(index, 1);
+            Memory.set('linkedin', 'savedNews', news);
+            renderSavedNews();
+        }
+
+        // Click outside modal to close
+        document.getElementById('template-modal').onclick = function(e) {
+            if (e.target === this) closeModal();
+        }
+
+        // Initialize
+        renderSavedIdeas();
+        renderSavedJobs();
+        renderSavedNews();
+    </script>
+</body>
+</html>

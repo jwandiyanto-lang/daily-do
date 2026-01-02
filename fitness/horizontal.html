@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horizontal Day - RPT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: #fff; color: #1a1a1a; padding: 30px 20px; max-width: 500px; margin: 0 auto; }
+        .back-link { color: #888; text-decoration: none; font-size: 0.9em; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 25px; }
+        .back-link:hover { color: #1a1a1a; }
+        .tag { display: inline-block; background: #f5f5f5; color: #666; padding: 6px 14px; border-radius: 20px; font-size: 0.7em; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 12px; }
+        h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 2em; font-weight: 500; margin-bottom: 8px; }
+        .subtitle { color: #888; margin-bottom: 30px; font-size: 0.95em; font-weight: 300; }
+        .protocol { background: #f9f9f9; padding: 16px; border-radius: 12px; margin-bottom: 30px; font-size: 0.85em; }
+        .protocol strong { font-weight: 500; }
+        .section-label { font-size: 0.75em; font-weight: 500; color: #888; text-transform: uppercase; letter-spacing: 1px; margin: 25px 0 12px; padding-top: 15px; border-top: 1px solid #f0f0f0; }
+        .section-label:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+        .exercise { background: #fff; border: 1px solid #f0f0f0; border-radius: 12px; padding: 20px; margin-bottom: 12px; }
+        .exercise-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .exercise-name { font-weight: 500; font-size: 1em; }
+        .exercise-tag { background: #f5f5f5; padding: 4px 10px; border-radius: 4px; font-size: 0.7em; font-weight: 500; text-transform: uppercase; }
+        .set-row { display: flex; gap: 12px; margin-bottom: 10px; align-items: center; }
+        .set-label { width: 50px; font-size: 0.85em; color: #888; }
+        input { background: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px; color: #1a1a1a; width: 80px; text-align: center; font-size: 1em; font-family: inherit; }
+        input:focus { outline: none; border-color: #1a1a1a; background: #fff; }
+        input::placeholder { color: #bbb; }
+        .unit { color: #888; font-size: 0.85em; width: 35px; }
+        .target { color: #888; font-size: 0.8em; margin-top: 10px; }
+        .notes { background: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 12px; padding: 15px; color: #1a1a1a; width: 100%; min-height: 80px; margin-top: 25px; font-family: inherit; font-size: 0.95em; resize: none; }
+        .notes:focus { outline: none; border-color: #1a1a1a; background: #fff; }
+        .btn { background: #1a1a1a; color: #fff; border: none; padding: 16px 30px; border-radius: 8px; font-size: 1em; font-weight: 500; cursor: pointer; width: 100%; margin-top: 20px; font-family: inherit; transition: all 0.2s; }
+        .btn:hover { background: #333; }
+        .copy-area { background: #f9f9f9; padding: 20px; border-radius: 12px; margin-top: 15px; font-family: monospace; font-size: 0.85em; white-space: pre-wrap; display: none; border: 1px solid #e0e0e0; }
+    </style>
+</head>
+<body>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+        <a href="index.html" class="back-link" style="margin-bottom: 0;">← Calendar</a>
+        <a href="../index.html" class="back-link" style="margin-bottom: 0;">Home →</a>
+    </div>
+
+    <span class="tag">Strength • RPT</span>
+    <h1>Horizontal Day</h1>
+    <p class="subtitle">Chest + Back | Push & Pull</p>
+
+    <div class="protocol">
+        <strong>RPT Protocol:</strong> Set 1 heavy (5 reps) → reduce 10% (6 reps) → reduce 10% (8 reps)<br>
+        <strong>Rest:</strong> 3 minutes between sets
+    </div>
+
+    <div class="section-label">Horizontal Push</div>
+
+    <div class="exercise">
+        <div class="exercise-header">
+            <span class="exercise-name">Incline Bench Press</span>
+            <span class="exercise-tag">RPT</span>
+        </div>
+        <div class="set-row">
+            <span class="set-label">Set 1</span>
+            <input type="text" id="bench1w" placeholder="kg"> <span class="unit">kg</span>
+            <input type="text" id="bench1r" placeholder="5"> <span class="unit">reps</span>
+        </div>
+        <div class="set-row">
+            <span class="set-label">Set 2</span>
+            <input type="text" id="bench2w" placeholder="kg"> <span class="unit">kg</span>
+            <input type="text" id="bench2r" placeholder="6"> <span class="unit">reps</span>
+        </div>
+        <div class="set-row">
+            <span class="set-label">Set 3</span>
+            <input type="text" id="bench3w" placeholder="kg"> <span class="unit">kg</span>
+            <input type="text" id="bench3r" placeholder="8"> <span class="unit">reps</span>
+        </div>
+        <div class="target">Target: 5 → 6 → 8 reps</div>
+    </div>
+
+    <div class="exercise">
+        <div class="exercise-header">
+            <span class="exercise-name">Dips</span>
+        </div>
+        <div class="set-row">
+            <span class="set-label">Set 1</span>
+            <input type="text" id="dip1w" placeholder="kg"> <span class="unit">kg</span>
+            <input type="text" id="dip1r" placeholder="10"> <span class="unit">reps</span>
+        </div>
+        <div class="set-row">
+            <span class="set-label">Set 2</span>
+            <input type="text" id="dip2w" placeholder="kg"> <span class="unit">kg</span>
+            <input type="text" id="dip2r" placeholder="10"> <span class="unit">reps</span>
+        </div>
+        <div class="set-row">
+            <span class="set-label">Set 3</span>
+            <input type="text" id="dip3w" placeholder="kg"> <span class="unit">kg</span>
+            <input type="text" id="dip3r" placeholder="10"> <span class="unit">reps</span>
+        </div>
+        <div class="target">Target: 8-12 reps</div>
+    </div>
+
+    <div class="section-label">Horizontal Pull</div>
+
+    <div class="exercise">
+        <div class="exercise-header">
+            <span class="exercise-name">Barbell Rows</span>
+            <span class="exercise-tag">RPT</span>
+        </div>
+        <div class="set-row">
+            <span class="set-label">Set 1</span>
+            <input type="text" id="row1w" placeholder="kg"> <span class="unit">kg</span>
+            <input type="text" id="row1r" placeholder="5"> <span class="unit">reps</span>
+        </div>
+        <div class="set-row">
+            <span class="set-label">Set 2</span>
+            <input type="text" id="row2w" placeholder="kg"> <span class="unit">kg</span>
+            <input type="text" id="row2r" placeholder="6"> <span class="unit">reps</span>
+        </div>
+        <div class="set-row">
+            <span class="set-label">Set 3</span>
+            <input type="text" id="row3w" placeholder="kg"> <span class="unit">kg</span>
+            <input type="text" id="row3r" placeholder="8"> <span class="unit">reps</span>
+        </div>
+        <div class="target">Target: 5 → 6 → 8 reps</div>
+    </div>
+
+    <div class="exercise">
+        <div class="exercise-header">
+            <span class="exercise-name">Barbell Curls</span>
+        </div>
+        <div class="set-row">
+            <span class="set-label">Set 1</span>
+            <input type="text" id="curl1w" placeholder="kg"> <span class="unit">kg</span>
+            <input type="text" id="curl1r" placeholder="8"> <span class="unit">reps</span>
+        </div>
+        <div class="set-row">
+            <span class="set-label">Set 2</span>
+            <input type="text" id="curl2w" placeholder="kg"> <span class="unit">kg</span>
+            <input type="text" id="curl2r" placeholder="8"> <span class="unit">reps</span>
+        </div>
+        <div class="set-row">
+            <span class="set-label">Set 3</span>
+            <input type="text" id="curl3w" placeholder="kg"> <span class="unit">kg</span>
+            <input type="text" id="curl3r" placeholder="8"> <span class="unit">reps</span>
+        </div>
+        <div class="target">Target: 6-10 reps</div>
+    </div>
+
+    <textarea class="notes" id="notes" placeholder="Notes (energy level, form, etc.)"></textarea>
+
+    <button class="btn" onclick="generateLog()">Copy to WhatsApp</button>
+
+    <div class="copy-area" id="output"></div>
+
+    <script>
+        function generateLog() {
+            const today = new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+            const getValue = (id) => document.getElementById(id).value || '-';
+
+            let log = `HORIZONTAL DAY - ${today}
+
+[PUSH] INCLINE BENCH PRESS (RPT)
+Set 1: ${getValue('bench1w')}kg × ${getValue('bench1r')}
+Set 2: ${getValue('bench2w')}kg × ${getValue('bench2r')}
+Set 3: ${getValue('bench3w')}kg × ${getValue('bench3r')}
+
+[PUSH] DIPS
+Set 1: ${getValue('dip1w')}kg × ${getValue('dip1r')}
+Set 2: ${getValue('dip2w')}kg × ${getValue('dip2r')}
+Set 3: ${getValue('dip3w')}kg × ${getValue('dip3r')}
+
+[PULL] BARBELL ROWS (RPT)
+Set 1: ${getValue('row1w')}kg × ${getValue('row1r')}
+Set 2: ${getValue('row2w')}kg × ${getValue('row2r')}
+Set 3: ${getValue('row3w')}kg × ${getValue('row3r')}
+
+[PULL] BARBELL CURLS
+Set 1: ${getValue('curl1w')}kg × ${getValue('curl1r')}
+Set 2: ${getValue('curl2w')}kg × ${getValue('curl2r')}
+Set 3: ${getValue('curl3w')}kg × ${getValue('curl3r')}
+
+NOTES: ${document.getElementById('notes').value || 'None'}`;
+
+            const output = document.getElementById('output');
+            output.textContent = log;
+            output.style.display = 'block';
+
+            navigator.clipboard.writeText(log).then(() => {
+                document.querySelector('.btn').textContent = 'Copied!';
+                setTimeout(() => document.querySelector('.btn').textContent = 'Copy to WhatsApp', 2000);
+            });
+        }
+    </script>
+</body>
+</html>

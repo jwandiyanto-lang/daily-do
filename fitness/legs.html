@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legs Day - RPT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: #fff; color: #1a1a1a; padding: 30px 20px; max-width: 500px; margin: 0 auto; }
+        .back-link { color: #888; text-decoration: none; font-size: 0.9em; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 25px; }
+        .back-link:hover { color: #1a1a1a; }
+        .tag { display: inline-block; background: #f5f5f5; color: #666; padding: 6px 14px; border-radius: 20px; font-size: 0.7em; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 12px; }
+        h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 2em; font-weight: 500; margin-bottom: 8px; }
+        .subtitle { color: #888; margin-bottom: 30px; font-size: 0.95em; font-weight: 300; }
+        .protocol { background: #f9f9f9; padding: 16px; border-radius: 12px; margin-bottom: 30px; font-size: 0.85em; }
+        .protocol strong { font-weight: 500; }
+        .exercise { background: #fff; border: 1px solid #f0f0f0; border-radius: 12px; padding: 20px; margin-bottom: 12px; }
+        .exercise-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .exercise-name { font-weight: 500; font-size: 1em; }
+        .exercise-tag { background: #f5f5f5; padding: 4px 10px; border-radius: 4px; font-size: 0.7em; font-weight: 500; text-transform: uppercase; }
+        .set-row { display: flex; gap: 12px; margin-bottom: 10px; align-items: center; }
+        .set-label { width: 50px; font-size: 0.85em; color: #888; }
+        input { background: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px; color: #1a1a1a; width: 80px; text-align: center; font-size: 1em; font-family: inherit; }
+        input:focus { outline: none; border-color: #1a1a1a; background: #fff; }
+        input::placeholder { color: #bbb; }
+        .unit { color: #888; font-size: 0.85em; width: 35px; }
+        .target { color: #888; font-size: 0.8em; margin-top: 10px; }
+        .notes { background: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 12px; padding: 15px; color: #1a1a1a; width: 100%; min-height: 80px; margin-top: 25px; font-family: inherit; font-size: 0.95em; resize: none; }
+        .notes:focus { outline: none; border-color: #1a1a1a; background: #fff; }
+        .btn { background: #1a1a1a; color: #fff; border: none; padding: 16px 30px; border-radius: 8px; font-size: 1em; font-weight: 500; cursor: pointer; width: 100%; margin-top: 20px; font-family: inherit; transition: all 0.2s; }
+        .btn:hover { background: #333; }
+        .copy-area { background: #f9f9f9; padding: 20px; border-radius: 12px; margin-top: 15px; font-family: monospace; font-size: 0.85em; white-space: pre-wrap; display: none; border: 1px solid #e0e0e0; }
+    </style>
+</head>
+<body>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+        <a href="index.html" class="back-link" style="margin-bottom: 0;">← Calendar</a>
+        <a href="../index.html" class="back-link" style="margin-bottom: 0;">Home →</a>
+    </div>
+
+    <span class="tag">Strength • RPT</span>
+    <h1>Legs Day</h1>
+    <p class="subtitle">Quads + Hamstrings + Calves</p>
+
+    <div class="protocol">
+        <strong>RPT Protocol:</strong> Set 1 heavy (5 reps) → reduce 10% (6 reps) → reduce 10% (8 reps)<br>
+        <strong>Rest:</strong> 3 minutes between sets
+    </div>
+
+    <div class="exercise">
+        <div class="exercise-header">
+            <span class="exercise-name">Sumo Deadlifts</span>
+            <span class="exercise-tag">RPT</span>
+        </div>
+        <div class="set-row">
+            <span class="set-label">Set 1</span>
+            <input type="text" id="dead1w" placeholder="kg"> <span class="unit">kg</span>
+            <input type="text" id="dead1r" placeholder="5"> <span class="unit">reps</span>
+        </div>
+        <div class="set-row">
+            <span class="set-label">Set 2</span>
+            <input type="text" id="dead2w" placeholder="kg"> <span class="unit">kg</span>
+            <input type="text" id="dead2r" placeholder="6"> <span class="unit">reps</span>
+        </div>
+        <div class="set-row">
+            <span class="set-label">Set 3</span>
+            <input type="text" id="dead3w" placeholder="kg"> <span class="unit">kg</span>
+            <input type="text" id="dead3r" placeholder="8"> <span class="unit">reps</span>
+        </div>
+        <div class="target">Target: 5 → 6 → 8 reps</div>
+    </div>
+
+    <div class="exercise">
+        <div class="exercise-header">
+            <span class="exercise-name">Bulgarian Split Squats</span>
+        </div>
+        <div class="set-row">
+            <span class="set-label">Set 1</span>
+            <input type="text" id="split1w" placeholder="kg"> <span class="unit">kg</span>
+            <input type="text" id="split1r" placeholder="8"> <span class="unit">reps</span>
+        </div>
+        <div class="set-row">
+            <span class="set-label">Set 2</span>
+            <input type="text" id="split2w" placeholder="kg"> <span class="unit">kg</span>
+            <input type="text" id="split2r" placeholder="8"> <span class="unit">reps</span>
+        </div>
+        <div class="set-row">
+            <span class="set-label">Set 3</span>
+            <input type="text" id="split3w" placeholder="kg"> <span class="unit">kg</span>
+            <input type="text" id="split3r" placeholder="8"> <span class="unit">reps</span>
+        </div>
+        <div class="target">Target: 8-10 reps each leg</div>
+    </div>
+
+    <div class="exercise">
+        <div class="exercise-header">
+            <span class="exercise-name">Leg Curls</span>
+        </div>
+        <div class="set-row">
+            <span class="set-label">Set 1</span>
+            <input type="text" id="curl1w" placeholder="kg"> <span class="unit">kg</span>
+            <input type="text" id="curl1r" placeholder="10"> <span class="unit">reps</span>
+        </div>
+        <div class="set-row">
+            <span class="set-label">Set 2</span>
+            <input type="text" id="curl2w" placeholder="kg"> <span class="unit">kg</span>
+            <input type="text" id="curl2r" placeholder="10"> <span class="unit">reps</span>
+        </div>
+        <div class="set-row">
+            <span class="set-label">Set 3</span>
+            <input type="text" id="curl3w" placeholder="kg"> <span class="unit">kg</span>
+            <input type="text" id="curl3r" placeholder="10"> <span class="unit">reps</span>
+        </div>
+        <div class="target">Target: 10-12 reps</div>
+    </div>
+
+    <div class="exercise">
+        <div class="exercise-header">
+            <span class="exercise-name">Calf Raises</span>
+        </div>
+        <div class="set-row">
+            <span class="set-label">Set 1</span>
+            <input type="text" id="calf1w" placeholder="kg"> <span class="unit">kg</span>
+            <input type="text" id="calf1r" placeholder="15"> <span class="unit">reps</span>
+        </div>
+        <div class="set-row">
+            <span class="set-label">Set 2</span>
+            <input type="text" id="calf2w" placeholder="kg"> <span class="unit">kg</span>
+            <input type="text" id="calf2r" placeholder="15"> <span class="unit">reps</span>
+        </div>
+        <div class="set-row">
+            <span class="set-label">Set 3</span>
+            <input type="text" id="calf3w" placeholder="kg"> <span class="unit">kg</span>
+            <input type="text" id="calf3r" placeholder="15"> <span class="unit">reps</span>
+        </div>
+        <div class="set-row">
+            <span class="set-label">Set 4</span>
+            <input type="text" id="calf4w" placeholder="kg"> <span class="unit">kg</span>
+            <input type="text" id="calf4r" placeholder="15"> <span class="unit">reps</span>
+        </div>
+        <div class="target">Target: 12-15 reps</div>
+    </div>
+
+    <textarea class="notes" id="notes" placeholder="Notes (energy level, form, etc.)"></textarea>
+
+    <button class="btn" onclick="generateLog()">Copy to WhatsApp</button>
+
+    <div class="copy-area" id="output"></div>
+
+    <script>
+        function generateLog() {
+            const today = new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+            const getValue = (id) => document.getElementById(id).value || '-';
+
+            let log = `LEGS DAY - ${today}
+
+SUMO DEADLIFTS (RPT)
+Set 1: ${getValue('dead1w')}kg × ${getValue('dead1r')}
+Set 2: ${getValue('dead2w')}kg × ${getValue('dead2r')}
+Set 3: ${getValue('dead3w')}kg × ${getValue('dead3r')}
+
+BULGARIAN SPLIT SQUATS
+Set 1: ${getValue('split1w')}kg × ${getValue('split1r')}
+Set 2: ${getValue('split2w')}kg × ${getValue('split2r')}
+Set 3: ${getValue('split3w')}kg × ${getValue('split3r')}
+
+LEG CURLS
+Set 1: ${getValue('curl1w')}kg × ${getValue('curl1r')}
+Set 2: ${getValue('curl2w')}kg × ${getValue('curl2r')}
+Set 3: ${getValue('curl3w')}kg × ${getValue('curl3r')}
+
+CALF RAISES
+Set 1: ${getValue('calf1w')}kg × ${getValue('calf1r')}
+Set 2: ${getValue('calf2w')}kg × ${getValue('calf2r')}
+Set 3: ${getValue('calf3w')}kg × ${getValue('calf3r')}
+Set 4: ${getValue('calf4w')}kg × ${getValue('calf4r')}
+
+NOTES: ${document.getElementById('notes').value || 'None'}`;
+
+            const output = document.getElementById('output');
+            output.textContent = log;
+            output.style.display = 'block';
+
+            navigator.clipboard.writeText(log).then(() => {
+                document.querySelector('.btn').textContent = 'Copied!';
+                setTimeout(() => document.querySelector('.btn').textContent = 'Copy to WhatsApp', 2000);
+            });
+        }
+    </script>
+</body>
+</html>
