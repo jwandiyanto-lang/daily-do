@@ -5,268 +5,215 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#FFFFFF">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <title>Finance</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', -apple-system, sans-serif; background: #FFFFFF; min-height: 100vh; color: #1E293B; padding: 16px; padding-bottom: 100px; }
 
-    body {
-      font-family: 'Inter', -apple-system, sans-serif;
-      background: #FFFFFF;
-      min-height: 100vh;
-      color: #1E293B;
-      padding: 20px;
-      padding-bottom: 100px;
-    }
-
-    .header { margin-bottom: 20px; }
-    .header h1 { font-size: 1.75rem; font-weight: 800; color: #1E293B; margin-bottom: 4px; }
+    .header { margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+    .header h1 { font-size: 1.5rem; font-weight: 800; }
     .header h1 span { color: #10B981; }
-    .header .subtitle { color: #64748B; font-size: 0.85rem; }
+    .header-actions { display: flex; gap: 8px; }
+    .icon-btn { width: 40px; height: 40px; border-radius: 12px; border: 1px solid #E2E8F0; background: #F8FAFC; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.1rem; }
 
     /* Summary Cards */
-    .summary-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
-    .summary-card { background: #F8FAFC; border-radius: 14px; padding: 14px; border: 1px solid #E2E8F0; }
-    .summary-label { font-size: 0.65rem; color: #64748B; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; font-weight: 600; }
-    .summary-value { font-size: 1.1rem; font-weight: 700; }
+    .summary-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+    .summary-card { background: #F8FAFC; border-radius: 12px; padding: 12px; border: 1px solid #E2E8F0; }
+    .summary-label { font-size: 0.6rem; color: #64748B; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; font-weight: 600; }
+    .summary-value { font-size: 1rem; font-weight: 700; }
     .summary-value.green { color: #10B981; }
     .summary-value.red { color: #EF4444; }
     .summary-value.blue { color: #3B82F6; }
 
     /* Tabs */
-    .tabs { display: flex; gap: 8px; margin-bottom: 20px; background: #F1F5F9; padding: 4px; border-radius: 12px; }
-    .tab-btn {
-      flex: 1;
-      padding: 12px 8px;
-      background: transparent;
-      border: none;
-      border-radius: 10px;
-      color: #64748B;
-      font-size: 0.8rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-family: inherit;
-    }
-    .tab-btn.active { background: #FFFFFF; color: #1E293B; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .tabs { display: flex; gap: 4px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 4px; }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab-btn { flex-shrink: 0; padding: 10px 14px; background: #F1F5F9; border: none; border-radius: 10px; color: #64748B; font-size: 0.75rem; font-weight: 600; cursor: pointer; font-family: inherit; }
+    .tab-btn.active { background: #10B981; color: #fff; }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
-    /* Category Filter */
-    .category-filter { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 12px; margin-bottom: 16px; scrollbar-width: none; }
-    .category-filter::-webkit-scrollbar { display: none; }
-    .filter-pill {
-      flex-shrink: 0;
-      padding: 8px 14px;
-      background: #F8FAFC;
-      border: 1px solid #E2E8F0;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      color: #64748B;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-family: inherit;
-    }
-    .filter-pill.active { background: #10B981; border-color: #10B981; color: #fff; font-weight: 600; }
+    /* Search */
+    .search-bar { display: flex; gap: 8px; margin-bottom: 12px; }
+    .search-input { flex: 1; padding: 12px 16px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; font-size: 0.9rem; font-family: inherit; }
+    .search-input:focus { outline: none; border-color: #10B981; }
+
+    /* Filter Pills */
+    .filter-row { display: flex; gap: 6px; overflow-x: auto; margin-bottom: 12px; padding-bottom: 4px; }
+    .filter-row::-webkit-scrollbar { display: none; }
+    .filter-pill { flex-shrink: 0; padding: 6px 12px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 16px; font-size: 0.75rem; color: #64748B; cursor: pointer; font-family: inherit; }
+    .filter-pill.active { background: #10B981; border-color: #10B981; color: #fff; }
 
     /* Transaction List */
-    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-    .section-title { font-size: 0.75rem; font-weight: 700; color: #64748B; text-transform: uppercase; letter-spacing: 0.5px; }
-    .transaction-list { display: flex; flex-direction: column; gap: 8px; }
+    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .section-title { font-size: 0.7rem; font-weight: 700; color: #64748B; text-transform: uppercase; letter-spacing: 0.5px; }
+    .list { display: flex; flex-direction: column; gap: 6px; }
+    .item { background: #F8FAFC; border-radius: 12px; padding: 12px; border: 1px solid #E2E8F0; display: flex; align-items: center; gap: 10px; }
+    .item-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .item-details { flex: 1; min-width: 0; }
+    .item-title { font-size: 0.85rem; font-weight: 600; color: #1E293B; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .item-meta { font-size: 0.7rem; color: #64748B; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .item-tag { padding: 1px 6px; background: #E0F2FE; color: #0284C7; border-radius: 4px; font-size: 0.65rem; font-weight: 500; }
+    .item-amount { font-size: 0.95rem; font-weight: 700; text-align: right; }
+    .item-amount.income { color: #10B981; }
+    .item-amount.expense { color: #EF4444; }
+    .date-header { font-size: 0.65rem; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.5px; margin: 12px 0 6px; font-weight: 600; }
 
-    .transaction-item { position: relative; background: #F8FAFC; border-radius: 14px; overflow: hidden; border: 1px solid #E2E8F0; }
-    .transaction-inner {
-      position: relative;
-      padding: 14px 16px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: inherit;
-      transition: transform 0.15s ease-out;
-      z-index: 2;
-    }
-    .swipe-delete {
-      position: absolute;
-      top: 0; right: 0; bottom: 0;
-      width: 100%;
-      background: #EF4444;
-      z-index: 1;
-      opacity: 0;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      padding-right: 20px;
-      color: white;
-      font-weight: 600;
-    }
-    .transaction-icon { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
-    .transaction-details { flex: 1; min-width: 0; }
-    .transaction-desc { font-size: 0.9rem; font-weight: 600; color: #1E293B; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
-    .transaction-meta { font-size: 0.75rem; color: #64748B; display: flex; align-items: center; gap: 8px; }
-    .transaction-category { padding: 2px 8px; background: #E2E8F0; border-radius: 6px; font-weight: 500; }
-    .transaction-amount { font-size: 1rem; font-weight: 700; text-align: right; }
-    .transaction-amount.income { color: #10B981; }
-    .transaction-amount.expense { color: #EF4444; }
+    /* Budget Card */
+    .budget-card { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 14px; padding: 14px; margin-bottom: 10px; }
+    .budget-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .budget-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+    .budget-info { flex: 1; }
+    .budget-name { font-weight: 600; font-size: 0.9rem; }
+    .budget-spent { font-size: 0.75rem; color: #64748B; }
+    .budget-amount { text-align: right; }
+    .budget-remaining { font-weight: 700; font-size: 0.9rem; }
+    .budget-limit { font-size: 0.7rem; color: #64748B; }
+    .progress-bar { height: 8px; background: #E2E8F0; border-radius: 4px; overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: 4px; transition: width 0.3s; }
+    .progress-fill.safe { background: #10B981; }
+    .progress-fill.warning { background: #F59E0B; }
+    .progress-fill.danger { background: #EF4444; }
 
-    .date-header { font-size: 0.7rem; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.5px; margin: 16px 0 8px; padding-left: 4px; font-weight: 600; }
-    .date-header:first-child { margin-top: 0; }
-
-    /* Funds */
-    .funds-grid { display: flex; flex-direction: column; gap: 12px; }
-    .fund-card { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 16px; padding: 18px; }
-    .fund-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
-    .fund-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+    /* Fund Card */
+    .fund-card { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 14px; padding: 14px; margin-bottom: 10px; }
+    .fund-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .fund-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
     .fund-info { flex: 1; }
-    .fund-name { font-weight: 700; font-size: 1rem; color: #1E293B; margin-bottom: 2px; }
-    .fund-meta { font-size: 0.8rem; color: #64748B; }
-    .fund-progress { margin-bottom: 14px; }
-    .progress-bar { height: 10px; background: #E2E8F0; border-radius: 5px; overflow: hidden; margin-bottom: 8px; }
-    .progress-fill { height: 100%; border-radius: 5px; transition: width 0.3s; }
-    .progress-stats { display: flex; justify-content: space-between; font-size: 0.8rem; color: #64748B; }
+    .fund-name { font-weight: 700; font-size: 0.95rem; }
+    .fund-meta { font-size: 0.75rem; color: #64748B; }
+    .fund-progress { margin-bottom: 10px; }
+    .progress-stats { display: flex; justify-content: space-between; font-size: 0.75rem; color: #64748B; margin-top: 6px; }
     .progress-current { font-weight: 700; color: #10B981; }
-    .fund-actions { display: flex; gap: 8px; }
-    .fund-btn { flex: 1; padding: 12px; border: none; border-radius: 10px; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+    .fund-actions { display: flex; gap: 6px; }
+    .fund-btn { flex: 1; padding: 10px; border: none; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; font-family: inherit; }
     .fund-btn.add { background: #10B981; color: #fff; }
-    .fund-btn.add:hover { background: #059669; }
     .fund-btn.withdraw { background: #E2E8F0; color: #64748B; }
-    .fund-btn.withdraw:hover { background: #CBD5E1; }
 
-    .add-fund-btn {
-      width: 100%;
-      padding: 18px;
-      background: #F0FDF4;
-      border: 2px dashed #86EFAC;
-      border-radius: 16px;
-      color: #10B981;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 12px;
-      transition: all 0.2s;
-    }
-    .add-fund-btn:hover { background: #DCFCE7; }
+    /* Insights */
+    .insight-card { background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%); border: 1px solid #86EFAC; border-radius: 14px; padding: 14px; margin-bottom: 10px; }
+    .insight-card.warning { background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%); border-color: #FCD34D; }
+    .insight-card.info { background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%); border-color: #93C5FD; }
+    .insight-icon { font-size: 1.5rem; margin-bottom: 8px; }
+    .insight-title { font-weight: 700; font-size: 0.9rem; color: #065F46; margin-bottom: 4px; }
+    .insight-card.warning .insight-title { color: #92400E; }
+    .insight-card.info .insight-title { color: #1E40AF; }
+    .insight-text { font-size: 0.8rem; color: #047857; line-height: 1.4; }
+    .insight-card.warning .insight-text { color: #A16207; }
+    .insight-card.info .insight-text { color: #1D4ED8; }
+
+    /* Chart */
+    .chart-container { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 14px; padding: 14px; margin-bottom: 16px; }
+    .chart-title { font-size: 0.8rem; font-weight: 700; color: #64748B; margin-bottom: 12px; }
+    .chart { display: flex; align-items: flex-end; gap: 8px; height: 120px; }
+    .chart-bar { flex: 1; background: #10B981; border-radius: 4px 4px 0 0; min-height: 4px; position: relative; }
+    .chart-bar.expense { background: #EF4444; }
+    .chart-label { position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); font-size: 0.6rem; color: #64748B; white-space: nowrap; }
+    .chart-legend { display: flex; gap: 16px; justify-content: center; margin-top: 24px; }
+    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: #64748B; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+    /* Net Worth */
+    .networth-card { background: linear-gradient(135deg, #1E293B 0%, #334155 100%); border-radius: 16px; padding: 20px; margin-bottom: 16px; color: #fff; }
+    .networth-label { font-size: 0.8rem; color: #94A3B8; margin-bottom: 4px; }
+    .networth-amount { font-size: 2rem; font-weight: 800; margin-bottom: 12px; }
+    .networth-breakdown { display: flex; gap: 16px; }
+    .networth-item { flex: 1; }
+    .networth-item-label { font-size: 0.7rem; color: #94A3B8; }
+    .networth-item-value { font-size: 1rem; font-weight: 700; }
+    .networth-item-value.green { color: #10B981; }
+    .networth-item-value.red { color: #F87171; }
+
+    /* Calculator */
+    .calc-card { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 14px; padding: 16px; margin-bottom: 12px; }
+    .calc-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+    .calc-desc { font-size: 0.8rem; color: #64748B; margin-bottom: 12px; }
+    .calc-inputs { display: flex; flex-direction: column; gap: 10px; }
+    .calc-row { display: flex; gap: 10px; }
+    .calc-field { flex: 1; }
+    .calc-label { font-size: 0.7rem; color: #64748B; margin-bottom: 4px; font-weight: 600; }
+    .calc-input { width: 100%; padding: 10px 12px; background: #fff; border: 1px solid #E2E8F0; border-radius: 8px; font-size: 0.9rem; font-family: inherit; }
+    .calc-input:focus { outline: none; border-color: #10B981; }
+    .calc-result { margin-top: 12px; padding: 12px; background: #F0FDF4; border-radius: 10px; text-align: center; }
+    .calc-result-label { font-size: 0.75rem; color: #047857; margin-bottom: 2px; }
+    .calc-result-value { font-size: 1.3rem; font-weight: 800; color: #10B981; }
 
     /* AI Chat */
-    .chat-container { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 16px; display: flex; flex-direction: column; height: calc(100vh - 280px); min-height: 400px; }
-    .chat-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
-    .message { max-width: 85%; padding: 14px 18px; border-radius: 18px; font-size: 0.9rem; line-height: 1.5; }
-    .ai-message { background: #FFFFFF; align-self: flex-start; border: 1px solid #E2E8F0; border-bottom-left-radius: 4px; color: #1E293B; }
-    .user-message { background: #10B981; color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
-
-    .typing-indicator { display: flex; gap: 4px; padding: 14px 18px; background: #fff; border: 1px solid #E2E8F0; border-radius: 18px; align-self: flex-start; border-bottom-left-radius: 4px; }
-    .typing-dot { width: 8px; height: 8px; background: #94A3B8; border-radius: 50%; animation: bounce 1.4s infinite ease-in-out both; }
-    .typing-dot:nth-child(1) { animation-delay: -0.32s; }
-    .typing-dot:nth-child(2) { animation-delay: -0.16s; }
-    @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
-
-    .chat-input-area { padding: 12px; border-top: 1px solid #E2E8F0; display: flex; gap: 8px; }
-    .chat-input { flex: 1; padding: 14px 18px; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 24px; color: #1E293B; font-size: 0.9rem; font-family: inherit; }
+    .chat-container { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 14px; display: flex; flex-direction: column; height: calc(100vh - 240px); min-height: 350px; }
+    .chat-messages { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+    .message { max-width: 85%; padding: 12px 14px; border-radius: 14px; font-size: 0.85rem; line-height: 1.4; }
+    .ai-message { background: #fff; align-self: flex-start; border: 1px solid #E2E8F0; color: #1E293B; }
+    .user-message { background: #10B981; color: #fff; align-self: flex-end; }
+    .chat-input-area { padding: 10px; border-top: 1px solid #E2E8F0; display: flex; gap: 8px; }
+    .chat-input { flex: 1; padding: 12px 14px; background: #fff; border: 1px solid #E2E8F0; border-radius: 20px; font-size: 0.85rem; font-family: inherit; }
     .chat-input:focus { outline: none; border-color: #10B981; }
-    .chat-input::placeholder { color: #94A3B8; }
-    .chat-send { width: 48px; height: 48px; border-radius: 50%; background: #10B981; border: none; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
-    .chat-send:hover { background: #059669; }
-    .chat-send:disabled { opacity: 0.5; cursor: not-allowed; }
-
-    /* API Setup */
-    .api-setup { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 16px; padding: 20px; margin-bottom: 16px; }
-    .api-setup-title { font-size: 0.9rem; font-weight: 700; color: #1E293B; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-    .api-row { display: flex; gap: 10px; margin-top: 12px; }
-    .api-btn { flex: 1; padding: 12px; border: none; border-radius: 10px; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: inherit; }
-    .api-btn.save { background: #10B981; color: #fff; }
-    .api-btn.clear { background: #E2E8F0; color: #64748B; }
-
-    /* Fund Action from AI */
-    .ai-fund-suggestion { margin-top: 12px; padding: 14px; background: #F0FDF4; border: 1px solid #86EFAC; border-radius: 12px; }
-    .ai-fund-suggestion .fund-title { font-weight: 700; margin-bottom: 4px; color: #059669; }
-    .ai-fund-suggestion .fund-desc { font-size: 0.85rem; color: #047857; margin-bottom: 12px; }
-    .create-fund-btn { width: 100%; padding: 12px; background: #10B981; border: none; border-radius: 10px; color: #fff; font-weight: 700; cursor: pointer; font-family: inherit; }
+    .chat-send { width: 44px; height: 44px; border-radius: 50%; background: #10B981; border: none; color: #fff; cursor: pointer; font-size: 1.1rem; }
+    .quick-prompts { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+    .quick-prompt { padding: 6px 10px; background: #E0F2FE; border: none; border-radius: 12px; font-size: 0.7rem; color: #0284C7; cursor: pointer; font-family: inherit; }
 
     /* Empty State */
-    .empty-state { text-align: center; padding: 40px 20px; }
-    .empty-icon { font-size: 3rem; margin-bottom: 12px; opacity: 0.5; }
-    .empty-state p { color: #64748B; }
+    .empty-state { text-align: center; padding: 30px 20px; }
+    .empty-icon { font-size: 2.5rem; margin-bottom: 10px; opacity: 0.5; }
+    .empty-state p { color: #64748B; font-size: 0.85rem; }
+
+    /* Add Button */
+    .add-btn { width: 100%; padding: 14px; background: #F0FDF4; border: 2px dashed #86EFAC; border-radius: 12px; color: #10B981; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 10px; }
 
     /* FAB */
-    .fab {
-      position: fixed;
-      bottom: 90px;
-      right: 20px;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: #10B981;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
-      z-index: 100;
-      font-size: 1.8rem;
-      font-weight: 300;
-    }
-    .fab:hover { background: #059669; transform: scale(1.05); }
+    .fab { position: fixed; bottom: 85px; right: 16px; width: 54px; height: 54px; border-radius: 50%; background: #10B981; color: #fff; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); z-index: 100; font-size: 1.6rem; }
 
     /* Modal */
     .modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: flex-end; justify-content: center; z-index: 200; }
     .modal.hidden { display: none; }
-    .modal-content { width: 100%; max-width: 500px; background: #fff; border-radius: 24px 24px 0 0; padding: 24px; max-height: 90vh; overflow-y: auto; }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .modal-title { font-size: 1.25rem; font-weight: 800; color: #1E293B; }
-    .modal-close { background: none; border: none; color: #94A3B8; font-size: 1.5rem; cursor: pointer; }
-
-    .type-toggle { display: flex; gap: 8px; margin-bottom: 16px; }
-    .type-btn { flex: 1; padding: 14px; border: 2px solid #E2E8F0; border-radius: 12px; background: transparent; color: #64748B; font-size: 0.9rem; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+    .modal-content { width: 100%; max-width: 500px; background: #fff; border-radius: 20px 20px 0 0; padding: 20px; max-height: 85vh; overflow-y: auto; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .modal-title { font-size: 1.1rem; font-weight: 800; }
+    .modal-close { background: none; border: none; color: #94A3B8; font-size: 1.3rem; cursor: pointer; }
+    .form-group { margin-bottom: 14px; }
+    .form-label { display: block; font-size: 0.7rem; color: #64748B; margin-bottom: 6px; text-transform: uppercase; font-weight: 600; }
+    .form-input { width: 100%; padding: 12px 14px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; font-size: 0.95rem; font-family: inherit; }
+    .form-input:focus { outline: none; border-color: #10B981; }
+    .type-toggle { display: flex; gap: 8px; margin-bottom: 14px; }
+    .type-btn { flex: 1; padding: 12px; border: 2px solid #E2E8F0; border-radius: 10px; background: transparent; color: #64748B; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: inherit; }
     .type-btn.expense.active { border-color: #EF4444; background: #FEF2F2; color: #EF4444; }
     .type-btn.income.active { border-color: #10B981; background: #F0FDF4; color: #10B981; }
-
-    .form-group { margin-bottom: 16px; }
-    .form-label { display: block; font-size: 0.75rem; color: #64748B; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
-    .form-input { width: 100%; padding: 14px 16px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; color: #1E293B; font-size: 1rem; font-family: inherit; }
-    .form-input:focus { outline: none; border-color: #10B981; }
-    .form-input::placeholder { color: #94A3B8; }
-
-    .category-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-    .category-btn { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 12px 8px; background: #F8FAFC; border: 2px solid transparent; border-radius: 12px; cursor: pointer; transition: all 0.2s; }
+    .category-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+    .category-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 10px 6px; background: #F8FAFC; border: 2px solid transparent; border-radius: 10px; cursor: pointer; }
     .category-btn.active { border-color: #10B981; background: #F0FDF4; }
-    .category-btn .emoji { font-size: 1.4rem; }
-    .category-btn .label { font-size: 0.65rem; color: #64748B; font-weight: 500; }
-    .category-btn.active .label { color: #10B981; }
+    .category-btn .emoji { font-size: 1.2rem; }
+    .category-btn .label { font-size: 0.6rem; color: #64748B; }
+    .submit-btn { width: 100%; padding: 14px; background: #10B981; border: none; border-radius: 12px; color: #fff; font-size: 0.95rem; font-weight: 700; cursor: pointer; font-family: inherit; margin-top: 14px; }
+    .tags-input { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; min-height: 44px; }
+    .tag { display: flex; align-items: center; gap: 4px; padding: 4px 8px; background: #E0F2FE; color: #0284C7; border-radius: 6px; font-size: 0.75rem; }
+    .tag-remove { cursor: pointer; font-size: 0.9rem; }
+    .tag-input { border: none; background: none; outline: none; flex: 1; min-width: 60px; font-size: 0.85rem; font-family: inherit; }
 
-    .submit-btn { width: 100%; padding: 16px; background: #10B981; border: none; border-radius: 14px; color: #fff; font-size: 1rem; font-weight: 700; cursor: pointer; font-family: inherit; margin-top: 16px; }
-    .submit-btn:hover { background: #059669; }
+    /* Recurring Badge */
+    .recurring-badge { display: inline-flex; align-items: center; gap: 2px; padding: 2px 6px; background: #F3E8FF; color: #7C3AED; border-radius: 4px; font-size: 0.6rem; font-weight: 600; }
 
-    .emoji-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-bottom: 16px; }
-    .emoji-btn { padding: 12px; background: #F8FAFC; border: 2px solid transparent; border-radius: 12px; font-size: 1.5rem; cursor: pointer; text-align: center; }
-    .emoji-btn.active { border-color: #10B981; background: #F0FDF4; }
-
-    .color-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
-    .color-btn { width: 100%; aspect-ratio: 1; border-radius: 12px; border: 3px solid transparent; cursor: pointer; }
-    .color-btn.active { border-color: #1E293B; }
-
-    /* Bottom nav */
-    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid #E2E8F0; padding: 10px 0 24px; z-index: 50; }
+    /* Bottom Nav */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid #E2E8F0; padding: 8px 0 20px; z-index: 50; }
     .nav-items { display: flex; justify-content: space-around; list-style: none; max-width: 500px; margin: 0 auto; }
-    .nav-link { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #94A3B8; padding: 8px 24px; border-radius: 12px; transition: all 0.2s; }
+    .nav-link { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #94A3B8; padding: 6px 16px; border-radius: 10px; }
     .nav-link.active { color: #10B981; background: rgba(16, 185, 129, 0.1); }
-    .nav-icon { font-size: 1.4rem; margin-bottom: 4px; }
-    .nav-label { font-size: 0.7rem; font-weight: 600; }
+    .nav-icon { font-size: 1.2rem; margin-bottom: 2px; }
+    .nav-label { font-size: 0.65rem; font-weight: 600; }
+
+    /* API Setup */
+    .api-setup { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 14px; padding: 16px; margin-bottom: 12px; }
+    .api-setup-title { font-size: 0.85rem; font-weight: 700; margin-bottom: 10px; }
   </style>
 </head>
 <body>
   <div class="header">
     <h1>💰 <span>Finance</span></h1>
-    <p class="subtitle">Track, save & plan your money</p>
+    <div class="header-actions">
+      <button class="icon-btn" onclick="openImportModal()">📥</button>
+      <button class="icon-btn" onclick="exportData()">📤</button>
+    </div>
   </div>
 
-  <!-- Summary Cards -->
   <div class="summary-row">
     <div class="summary-card">
       <div class="summary-label">Income</div>
@@ -282,75 +229,195 @@
     </div>
   </div>
 
-  <!-- Tabs -->
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('transactions')">Transactions</button>
+    <button class="tab-btn" onclick="switchTab('budgets')">Budgets</button>
     <button class="tab-btn" onclick="switchTab('funds')">Funds</button>
-    <button class="tab-btn" onclick="switchTab('advisor')">AI Advisor</button>
+    <button class="tab-btn" onclick="switchTab('insights')">Insights</button>
+    <button class="tab-btn" onclick="switchTab('tools')">Tools</button>
+    <button class="tab-btn" onclick="switchTab('advisor')">AI</button>
   </div>
 
-  <!-- Transactions Tab -->
+  <!-- TRANSACTIONS TAB -->
   <div id="transactions-tab" class="tab-content active">
-    <div class="category-filter" id="categoryFilter">
-      <button class="filter-pill active" data-filter="all">All</button>
+    <div class="search-bar">
+      <input type="text" class="search-input" id="searchInput" placeholder="Search transactions..." oninput="filterTransactions()">
     </div>
+    <div class="filter-row" id="categoryFilter"></div>
     <div class="section-header">
-      <span class="section-title">Recent Transactions</span>
-      <span class="section-title" id="transactionCount">0 items</span>
+      <span class="section-title">Transactions</span>
+      <span class="section-title" id="transactionCount">0</span>
     </div>
-    <div class="transaction-list" id="transactionList">
-      <div class="empty-state">
-        <div class="empty-icon">💸</div>
-        <p>No transactions yet</p>
-        <p style="font-size: 0.8rem; margin-top: 4px;">Tap + to add your first one</p>
-      </div>
-    </div>
+    <div class="list" id="transactionList"></div>
   </div>
 
-  <!-- Funds Tab -->
+  <!-- BUDGETS TAB -->
+  <div id="budgets-tab" class="tab-content">
+    <div class="section-header">
+      <span class="section-title">Monthly Budgets</span>
+      <span class="section-title" id="budgetMonth"></span>
+    </div>
+    <div id="budgetList"></div>
+    <button class="add-btn" onclick="openBudgetModal()">+ Add Budget</button>
+  </div>
+
+  <!-- FUNDS TAB -->
   <div id="funds-tab" class="tab-content">
     <div class="section-header">
-      <span class="section-title">Your Savings Goals</span>
-      <span class="section-title" id="fundsTotal">$0 saved</span>
+      <span class="section-title">Savings Goals</span>
+      <span class="section-title" id="fundsTotal">$0</span>
     </div>
-    <div class="funds-grid" id="fundsList"></div>
-    <button class="add-fund-btn" onclick="openFundModal()">
-      <span>+</span> Create New Fund
-    </button>
+    <div id="fundsList"></div>
+    <button class="add-btn" onclick="openFundModal()">+ Create Fund</button>
   </div>
 
-  <!-- AI Advisor Tab -->
-  <div id="advisor-tab" class="tab-content">
-    <div id="api-notice" class="api-setup" style="display: none;">
-      <div class="api-setup-title">🔑 API Key Required</div>
-      <p style="font-size: 0.85rem; color: #64748B; margin-bottom: 12px;">
-        Add your Anthropic API key to chat with your AI Financial Advisor.
-      </p>
-      <input type="password" class="form-input" id="api-key-input" placeholder="sk-ant-api...">
-      <div class="api-row">
-        <button class="api-btn save" onclick="saveApiKey()">Save Key</button>
-        <button class="api-btn clear" onclick="clearApiKey()">Clear</button>
+  <!-- INSIGHTS TAB -->
+  <div id="insights-tab" class="tab-content">
+    <div class="networth-card">
+      <div class="networth-label">Net Worth</div>
+      <div class="networth-amount" id="netWorth">$0</div>
+      <div class="networth-breakdown">
+        <div class="networth-item">
+          <div class="networth-item-label">Assets</div>
+          <div class="networth-item-value green" id="totalAssets">$0</div>
+        </div>
+        <div class="networth-item">
+          <div class="networth-item-label">Liabilities</div>
+          <div class="networth-item-value red" id="totalLiabilities">$0</div>
+        </div>
       </div>
     </div>
 
+    <div class="chart-container">
+      <div class="chart-title">Last 6 Months</div>
+      <div class="chart" id="monthlyChart"></div>
+      <div class="chart-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#10B981"></div> Income</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#EF4444"></div> Expenses</div>
+      </div>
+    </div>
+
+    <div class="section-title" style="margin-bottom:10px;">AI Insights</div>
+    <div id="insightsList"></div>
+  </div>
+
+  <!-- TOOLS TAB -->
+  <div id="tools-tab" class="tab-content">
+    <div class="calc-card">
+      <div class="calc-title">🏦 Compound Interest</div>
+      <div class="calc-desc">See how your money grows over time</div>
+      <div class="calc-inputs">
+        <div class="calc-row">
+          <div class="calc-field">
+            <div class="calc-label">Principal ($)</div>
+            <input type="number" class="calc-input" id="ciPrincipal" value="1000" oninput="calcCompound()">
+          </div>
+          <div class="calc-field">
+            <div class="calc-label">Monthly Add ($)</div>
+            <input type="number" class="calc-input" id="ciMonthly" value="100" oninput="calcCompound()">
+          </div>
+        </div>
+        <div class="calc-row">
+          <div class="calc-field">
+            <div class="calc-label">Rate (%/year)</div>
+            <input type="number" class="calc-input" id="ciRate" value="7" oninput="calcCompound()">
+          </div>
+          <div class="calc-field">
+            <div class="calc-label">Years</div>
+            <input type="number" class="calc-input" id="ciYears" value="10" oninput="calcCompound()">
+          </div>
+        </div>
+      </div>
+      <div class="calc-result">
+        <div class="calc-result-label">Future Value</div>
+        <div class="calc-result-value" id="ciResult">$0</div>
+      </div>
+    </div>
+
+    <div class="calc-card">
+      <div class="calc-title">🎯 Financial Freedom</div>
+      <div class="calc-desc">When can you retire?</div>
+      <div class="calc-inputs">
+        <div class="calc-row">
+          <div class="calc-field">
+            <div class="calc-label">Monthly Expenses</div>
+            <input type="number" class="calc-input" id="ffExpenses" value="3000" oninput="calcFreedom()">
+          </div>
+          <div class="calc-field">
+            <div class="calc-label">Current Savings</div>
+            <input type="number" class="calc-input" id="ffSavings" value="10000" oninput="calcFreedom()">
+          </div>
+        </div>
+        <div class="calc-row">
+          <div class="calc-field">
+            <div class="calc-label">Monthly Saving</div>
+            <input type="number" class="calc-input" id="ffMonthlySave" value="500" oninput="calcFreedom()">
+          </div>
+          <div class="calc-field">
+            <div class="calc-label">Return Rate (%)</div>
+            <input type="number" class="calc-input" id="ffReturn" value="7" oninput="calcFreedom()">
+          </div>
+        </div>
+      </div>
+      <div class="calc-result">
+        <div class="calc-result-label">Years to Freedom (4% rule)</div>
+        <div class="calc-result-value" id="ffResult">0 years</div>
+      </div>
+    </div>
+
+    <div class="calc-card">
+      <div class="calc-title">📊 ROI Calculator</div>
+      <div class="calc-desc">Calculate return on investment</div>
+      <div class="calc-inputs">
+        <div class="calc-row">
+          <div class="calc-field">
+            <div class="calc-label">Initial Investment</div>
+            <input type="number" class="calc-input" id="roiInitial" value="1000" oninput="calcROI()">
+          </div>
+          <div class="calc-field">
+            <div class="calc-label">Final Value</div>
+            <input type="number" class="calc-input" id="roiFinal" value="1500" oninput="calcROI()">
+          </div>
+        </div>
+      </div>
+      <div class="calc-result">
+        <div class="calc-result-label">Return on Investment</div>
+        <div class="calc-result-value" id="roiResult">50%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI ADVISOR TAB -->
+  <div id="advisor-tab" class="tab-content">
+    <div id="api-notice" class="api-setup" style="display:none;">
+      <div class="api-setup-title">🔑 API Key Required</div>
+      <p style="font-size:0.8rem;color:#64748B;margin-bottom:10px;">Add your Anthropic API key to use AI.</p>
+      <input type="password" class="form-input" id="api-key-input" placeholder="sk-ant-api...">
+      <button class="submit-btn" onclick="saveApiKey()" style="margin-top:10px;">Save Key</button>
+    </div>
+    <div class="quick-prompts">
+      <button class="quick-prompt" onclick="askAI('How am I doing financially?')">How am I doing?</button>
+      <button class="quick-prompt" onclick="askAI('Where can I cut expenses?')">Cut expenses</button>
+      <button class="quick-prompt" onclick="askAI('Help me create a savings plan')">Savings plan</button>
+      <button class="quick-prompt" onclick="askAI('Analyze my spending patterns')">Spending patterns</button>
+    </div>
     <div class="chat-container" id="chat-container">
       <div class="chat-messages" id="chat-messages"></div>
       <div class="chat-input-area">
-        <input type="text" class="chat-input" id="chat-input" placeholder="Ask about budgeting, saving, investing...">
-        <button class="chat-send" id="chat-send" onclick="sendMessage()">➤</button>
+        <input type="text" class="chat-input" id="chat-input" placeholder="Ask anything...">
+        <button class="chat-send" onclick="sendMessage()">➤</button>
       </div>
     </div>
   </div>
 
-  <!-- FAB for Transactions -->
   <button class="fab" id="fab" onclick="openTransactionModal()">+</button>
 
-  <!-- Transaction Modal -->
-  <div id="transactionModal" class="modal hidden" onclick="closeTransactionModal(event)">
-    <div class="modal-content" onclick="event.stopPropagation()">
+  <!-- TRANSACTION MODAL -->
+  <div id="transactionModal" class="modal hidden">
+    <div class="modal-content">
       <div class="modal-header">
         <span class="modal-title">Add Transaction</span>
-        <button class="modal-close" onclick="closeTransactionModal()">×</button>
+        <button class="modal-close" onclick="closeModal('transactionModal')">×</button>
       </div>
       <div class="type-toggle">
         <button class="type-btn expense active" onclick="setType('expense')">Expense</button>
@@ -358,67 +425,107 @@
       </div>
       <div class="form-group">
         <label class="form-label">Amount</label>
-        <input type="number" id="amountInput" class="form-input" placeholder="0.00" step="0.01" inputmode="decimal">
+        <input type="number" id="txAmount" class="form-input" placeholder="0.00" inputmode="decimal">
       </div>
       <div class="form-group">
         <label class="form-label">Description</label>
-        <input type="text" id="descInput" class="form-input" placeholder="What was this for?">
+        <input type="text" id="txDesc" class="form-input" placeholder="What was this for?">
       </div>
       <div class="form-group">
         <label class="form-label">Category</label>
         <div class="category-grid" id="categoryGrid"></div>
       </div>
+      <div class="form-group">
+        <label class="form-label">Tags (optional)</label>
+        <div class="tags-input" id="tagsInput" onclick="document.getElementById('tagInput').focus()">
+          <input type="text" class="tag-input" id="tagInput" placeholder="Add tag..." onkeydown="handleTagInput(event)">
+        </div>
+      </div>
+      <div class="form-group">
+        <label style="display:flex;align-items:center;gap:8px;font-size:0.85rem;">
+          <input type="checkbox" id="txRecurring"> Recurring monthly
+        </label>
+      </div>
       <button class="submit-btn" onclick="addTransaction()">Add Transaction</button>
     </div>
   </div>
 
-  <!-- Fund Modal -->
-  <div id="fundModal" class="modal hidden" onclick="closeFundModal(event)">
-    <div class="modal-content" onclick="event.stopPropagation()">
+  <!-- BUDGET MODAL -->
+  <div id="budgetModal" class="modal hidden">
+    <div class="modal-content">
       <div class="modal-header">
-        <span class="modal-title" id="fundModalTitle">Create Fund</span>
-        <button class="modal-close" onclick="closeFundModal()">×</button>
+        <span class="modal-title">Add Budget</span>
+        <button class="modal-close" onclick="closeModal('budgetModal')">×</button>
       </div>
       <div class="form-group">
-        <label class="form-label">Fund Name</label>
-        <input type="text" id="fundNameInput" class="form-input" placeholder="e.g., Emergency Fund">
+        <label class="form-label">Category</label>
+        <select id="budgetCategory" class="form-input"></select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Monthly Limit</label>
+        <input type="number" id="budgetLimit" class="form-input" placeholder="500" inputmode="decimal">
+      </div>
+      <button class="submit-btn" onclick="addBudget()">Add Budget</button>
+    </div>
+  </div>
+
+  <!-- FUND MODAL -->
+  <div id="fundModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-title">Create Fund</span>
+        <button class="modal-close" onclick="closeModal('fundModal')">×</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Name</label>
+        <input type="text" id="fundName" class="form-input" placeholder="Emergency Fund">
       </div>
       <div class="form-group">
         <label class="form-label">Target Amount</label>
-        <input type="number" id="fundTargetInput" class="form-input" placeholder="10000" step="100" inputmode="decimal">
+        <input type="number" id="fundTarget" class="form-input" placeholder="10000" inputmode="decimal">
       </div>
       <div class="form-group">
         <label class="form-label">Icon</label>
-        <div class="emoji-grid" id="emojiGrid"></div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Color</label>
-        <div class="color-grid" id="colorGrid"></div>
+        <div class="category-grid" id="fundEmojiGrid"></div>
       </div>
       <button class="submit-btn" onclick="saveFund()">Create Fund</button>
     </div>
   </div>
 
-  <!-- Add to Fund Modal -->
-  <div id="addToFundModal" class="modal hidden" onclick="closeAddToFundModal(event)">
-    <div class="modal-content" onclick="event.stopPropagation()">
+  <!-- FUND ACTION MODAL -->
+  <div id="fundActionModal" class="modal hidden">
+    <div class="modal-content">
       <div class="modal-header">
-        <span class="modal-title" id="addToFundTitle">Add to Fund</span>
-        <button class="modal-close" onclick="closeAddToFundModal()">×</button>
+        <span class="modal-title" id="fundActionTitle">Add to Fund</span>
+        <button class="modal-close" onclick="closeModal('fundActionModal')">×</button>
       </div>
       <div class="form-group">
         <label class="form-label">Amount</label>
-        <input type="number" id="addToFundAmount" class="form-input" placeholder="0.00" step="0.01" inputmode="decimal">
+        <input type="number" id="fundActionAmount" class="form-input" placeholder="100" inputmode="decimal">
       </div>
       <div class="type-toggle">
         <button class="type-btn income active" id="fundAddBtn" onclick="setFundAction('add')">Add</button>
         <button class="type-btn expense" id="fundWithdrawBtn" onclick="setFundAction('withdraw')">Withdraw</button>
       </div>
-      <button class="submit-btn" onclick="updateFundAmount()">Confirm</button>
+      <button class="submit-btn" onclick="updateFund()">Confirm</button>
     </div>
   </div>
 
-  <!-- Bottom Navigation -->
+  <!-- IMPORT MODAL -->
+  <div id="importModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-title">Import Data</span>
+        <button class="modal-close" onclick="closeModal('importModal')">×</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Paste CSV or JSON</label>
+        <textarea id="importData" class="form-input" style="min-height:150px;" placeholder="date,type,amount,description,category&#10;2024-01-15,expense,50,Groceries,groceries"></textarea>
+      </div>
+      <button class="submit-btn" onclick="importData()">Import</button>
+    </div>
+  </div>
+
   <nav class="bottom-nav">
     <ul class="nav-items">
       <li><a href="../index.html" class="nav-link"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></a></li>
@@ -428,12 +535,13 @@
 
   <script src="../scripts/memory.js"></script>
   <script>
+    // ===== DATA =====
     const categories = {
       expense: [
         { id: 'food', emoji: '🍔', label: 'Food', color: '#EF4444' },
         { id: 'transport', emoji: '🚗', label: 'Transport', color: '#F97316' },
         { id: 'shopping', emoji: '🛍️', label: 'Shopping', color: '#A855F7' },
-        { id: 'utilities', emoji: '💡', label: 'Utilities', color: '#3B82F6' },
+        { id: 'utilities', emoji: '💡', label: 'Bills', color: '#3B82F6' },
         { id: 'groceries', emoji: '🛒', label: 'Groceries', color: '#14B8A6' },
         { id: 'entertainment', emoji: '🎬', label: 'Fun', color: '#6366F1' },
         { id: 'health', emoji: '💊', label: 'Health', color: '#EC4899' },
@@ -445,290 +553,666 @@
         { id: 'investment', emoji: '📈', label: 'Investment', color: '#059669' },
         { id: 'gift', emoji: '🎁', label: 'Gift', color: '#34D399' },
         { id: 'refund', emoji: '↩️', label: 'Refund', color: '#6EE7B7' },
-        { id: 'bonus', emoji: '🏆', label: 'Bonus', color: '#047857' },
-        { id: 'rental', emoji: '🏠', label: 'Rental', color: '#10B981' },
         { id: 'other', emoji: '📦', label: 'Other', color: '#64748B' }
       ]
     };
-
     const fundEmojis = ['🛡️', '📈', '🎯', '🏠', '✈️', '🚗', '💍', '📚', '💼', '🎮', '🏥', '👶'];
     const fundColors = ['#10B981', '#3B82F6', '#F59E0B', '#A855F7', '#EF4444', '#EC4899'];
 
-    let currentType = 'expense';
-    let selectedCategory = null;
-    let currentFilter = 'all';
-    let selectedEmoji = '🛡️';
-    let selectedColor = '#10B981';
-    let editingFundId = null;
-    let fundAction = 'add';
-    let currentFundId = null;
+    let state = {
+      type: 'expense',
+      category: null,
+      tags: [],
+      filter: 'all',
+      search: '',
+      fundAction: 'add',
+      currentFundId: null,
+      selectedEmoji: '🛡️'
+    };
 
+    // ===== HELPERS =====
+    const fmt = (n) => '$' + new Intl.NumberFormat('en-US').format(Math.round(n));
+    const get = (k, d) => Memory.get('finance', k) || d;
+    const set = (k, v) => Memory.set('finance', k, v);
+    const getCat = (type, id) => (categories[type] || categories.expense).find(c => c.id === id) || categories.expense[7];
+
+    // ===== INIT =====
     function init() {
+      checkRecurring();
       renderAll();
       checkApiKey();
-      loadChatHistory();
-      renderEmojiGrid();
-      renderColorGrid();
-      checkOpenTab();
+      loadChat();
+      calcCompound();
+      calcFreedom();
+      calcROI();
       document.getElementById('chat-input').addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
-      document.getElementById('descInput').addEventListener('keypress', e => { if (e.key === 'Enter') addTransaction(); });
-    }
-
-    function checkOpenTab() {
-      const tab = localStorage.getItem('openTab');
-      if (tab) {
-        switchTab(tab);
-        localStorage.removeItem('openTab');
-      }
+      document.getElementById('budgetMonth').textContent = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
     }
 
     function switchTab(tab) {
-      document.querySelectorAll('.tab-btn').forEach((btn, i) => {
-        btn.classList.remove('active');
-        if ((tab === 'transactions' && i === 0) || (tab === 'funds' && i === 1) || (tab === 'advisor' && i === 2)) btn.classList.add('active');
-      });
+      document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', b.textContent.toLowerCase().includes(tab.substring(0, 4))));
       document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
       document.getElementById(tab + '-tab').classList.add('active');
       document.getElementById('fab').style.display = tab === 'transactions' ? 'flex' : 'none';
     }
 
-    function getTransactions() { return Memory.get('finance', 'transactions') || []; }
-    function saveTransactions(t) { Memory.set('finance', 'transactions', t); }
-    function formatCurrency(amount) { return '$' + new Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount); }
-
-    function formatDate(dateStr) {
-      const date = new Date(dateStr);
-      const today = new Date();
-      const yesterday = new Date(today);
-      yesterday.setDate(yesterday.getDate() - 1);
-      if (date.toDateString() === today.toDateString()) return 'Today';
-      if (date.toDateString() === yesterday.toDateString()) return 'Yesterday';
-      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-    }
-
-    function getCategoryInfo(type, categoryId) {
-      const cats = categories[type] || categories.expense;
-      return cats.find(c => c.id === categoryId) || cats.find(c => c.id === 'other');
-    }
-
-    function calculateTotals() {
-      const transactions = getTransactions();
-      let income = 0, expense = 0;
-      transactions.forEach(t => { if (t.type === 'income') income += t.amount; else expense += t.amount; });
-      document.getElementById('totalIncome').textContent = formatCurrency(income);
-      document.getElementById('totalExpense').textContent = formatCurrency(expense);
-      document.getElementById('totalBalance').textContent = formatCurrency(income - expense);
-    }
-
-    function renderCategoryFilters() {
-      const container = document.getElementById('categoryFilter');
-      const transactions = getTransactions();
-      const usedCategories = new Set();
-      transactions.forEach(t => {
-        const cat = getCategoryInfo(t.type, t.category);
-        usedCategories.add(JSON.stringify({ id: t.category, emoji: cat.emoji, label: cat.label }));
-      });
-      let html = `<button class="filter-pill ${currentFilter === 'all' ? 'active' : ''}" onclick="setFilter('all')">All</button>`;
-      usedCategories.forEach(catStr => {
-        const cat = JSON.parse(catStr);
-        html += `<button class="filter-pill ${currentFilter === cat.id ? 'active' : ''}" onclick="setFilter('${cat.id}')">${cat.emoji} ${cat.label}</button>`;
-      });
-      container.innerHTML = html;
-    }
-
-    function setFilter(filter) { currentFilter = filter; renderCategoryFilters(); renderTransactions(); }
-
+    // ===== TRANSACTIONS =====
     function renderTransactions() {
-      const container = document.getElementById('transactionList');
-      let transactions = getTransactions();
-      if (currentFilter !== 'all') transactions = transactions.filter(t => t.category === currentFilter);
-      transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
-      document.getElementById('transactionCount').textContent = `${transactions.length} item${transactions.length !== 1 ? 's' : ''}`;
-      if (transactions.length === 0) { container.innerHTML = `<div class="empty-state"><div class="empty-icon">💸</div><p>No transactions yet</p></div>`; return; }
+      let txs = get('transactions', []);
+      if (state.filter !== 'all') txs = txs.filter(t => t.category === state.filter);
+      if (state.search) {
+        const s = state.search.toLowerCase();
+        txs = txs.filter(t => t.description.toLowerCase().includes(s) || (t.tags || []).some(tag => tag.toLowerCase().includes(s)));
+      }
+      txs.sort((a, b) => new Date(b.date) - new Date(a.date));
+      document.getElementById('transactionCount').textContent = txs.length;
+
+      if (!txs.length) {
+        document.getElementById('transactionList').innerHTML = '<div class="empty-state"><div class="empty-icon">💸</div><p>No transactions yet</p></div>';
+        return;
+      }
+
       const grouped = {};
-      transactions.forEach(t => { const dateKey = formatDate(t.date); if (!grouped[dateKey]) grouped[dateKey] = []; grouped[dateKey].push(t); });
+      txs.forEach(t => {
+        const d = formatDate(t.date);
+        if (!grouped[d]) grouped[d] = [];
+        grouped[d].push(t);
+      });
+
       let html = '';
       Object.entries(grouped).forEach(([date, items]) => {
         html += `<div class="date-header">${date}</div>`;
         items.forEach(t => {
-          const cat = getCategoryInfo(t.type, t.category);
-          html += `<div class="transaction-item" data-id="${t.id}"><div class="swipe-delete">Delete</div><div class="transaction-inner" ontouchstart="handleSwipeStart(event)" ontouchmove="handleSwipeMove(event)" ontouchend="handleSwipeEnd(event)"><div class="transaction-icon" style="background: ${cat.color}15;">${cat.emoji}</div><div class="transaction-details"><div class="transaction-desc">${escapeHtml(t.description)}</div><div class="transaction-meta"><span class="transaction-category">${cat.label}</span></div></div><div class="transaction-amount ${t.type}">${t.type === 'income' ? '+' : '-'}${formatCurrency(t.amount)}</div></div></div>`;
+          const cat = getCat(t.type, t.category);
+          const tags = (t.tags || []).map(tag => `<span class="item-tag">${tag}</span>`).join('');
+          const recurring = t.recurring ? '<span class="recurring-badge">🔄 Monthly</span>' : '';
+          html += `<div class="item" onclick="deleteTransaction('${t.id}')">
+            <div class="item-icon" style="background:${cat.color}15">${cat.emoji}</div>
+            <div class="item-details">
+              <div class="item-title">${t.description}</div>
+              <div class="item-meta">${cat.label} ${tags} ${recurring}</div>
+            </div>
+            <div class="item-amount ${t.type}">${t.type === 'income' ? '+' : '-'}${fmt(t.amount)}</div>
+          </div>`;
         });
       });
-      container.innerHTML = html;
+      document.getElementById('transactionList').innerHTML = html;
     }
 
-    function escapeHtml(text) { const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
-
-    let swipeStartX = 0, swipeCurrentX = 0, swipingItem = null, swipingInner = null;
-    function handleSwipeStart(e) { swipeStartX = e.touches[0].clientX; swipingInner = e.currentTarget; swipingItem = swipingInner.closest('.transaction-item'); }
-    function handleSwipeMove(e) {
-      if (!swipingInner) return;
-      swipeCurrentX = e.touches[0].clientX;
-      const diff = swipeCurrentX - swipeStartX;
-      if (diff < 0) { swipingInner.style.transform = `translateX(${Math.max(diff, -100)}px)`; swipingItem.querySelector('.swipe-delete').style.opacity = Math.min(1, Math.abs(diff) / 60); }
-    }
-    function handleSwipeEnd(e) {
-      if (!swipingInner) return;
-      const diff = swipeCurrentX - swipeStartX;
-      if (diff < -80) { swipingItem.style.transition = 'transform 0.3s, opacity 0.3s'; swipingItem.style.transform = 'translateX(-100%)'; swipingItem.style.opacity = '0'; const id = swipingItem.dataset.id; setTimeout(() => deleteTransaction(id), 300); }
-      else { swipingInner.style.transform = 'translateX(0)'; swipingItem.querySelector('.swipe-delete').style.opacity = 0; }
-      swipingItem = null; swipingInner = null;
+    function formatDate(d) {
+      const date = new Date(d);
+      const today = new Date();
+      if (date.toDateString() === today.toDateString()) return 'Today';
+      const yesterday = new Date(today);
+      yesterday.setDate(today.getDate() - 1);
+      if (date.toDateString() === yesterday.toDateString()) return 'Yesterday';
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     }
 
-    function deleteTransaction(id) { const transactions = getTransactions(); const index = transactions.findIndex(t => t.id === id); if (index !== -1) { transactions.splice(index, 1); saveTransactions(transactions); renderAll(); } }
+    function renderFilters() {
+      const txs = get('transactions', []);
+      const used = new Set();
+      txs.forEach(t => used.add(t.category));
+      let html = `<button class="filter-pill ${state.filter === 'all' ? 'active' : ''}" onclick="setFilter('all')">All</button>`;
+      used.forEach(id => {
+        const cat = getCat('expense', id) || getCat('income', id);
+        html += `<button class="filter-pill ${state.filter === id ? 'active' : ''}" onclick="setFilter('${id}')">${cat.emoji} ${cat.label}</button>`;
+      });
+      document.getElementById('categoryFilter').innerHTML = html;
+    }
 
-    function openTransactionModal() { document.getElementById('transactionModal').classList.remove('hidden'); renderCategoryGrid(); document.getElementById('amountInput').focus(); }
-    function closeTransactionModal(e) { if (!e || e.target === e.currentTarget) { document.getElementById('transactionModal').classList.add('hidden'); resetTransactionForm(); } }
-    function resetTransactionForm() { document.getElementById('amountInput').value = ''; document.getElementById('descInput').value = ''; selectedCategory = null; setType('expense'); }
-    function setType(type) { currentType = type; selectedCategory = null; document.querySelectorAll('.type-btn').forEach(btn => { btn.classList.remove('active'); if (btn.classList.contains(type)) btn.classList.add('active'); }); renderCategoryGrid(); }
-    function renderCategoryGrid() { const container = document.getElementById('categoryGrid'); const cats = categories[currentType]; container.innerHTML = cats.map(cat => `<button class="category-btn ${selectedCategory === cat.id ? 'active' : ''}" onclick="selectCategory('${cat.id}')"><span class="emoji">${cat.emoji}</span><span class="label">${cat.label}</span></button>`).join(''); }
-    function selectCategory(id) { selectedCategory = id; renderCategoryGrid(); }
+    function setFilter(f) { state.filter = f; renderFilters(); renderTransactions(); }
+    function filterTransactions() { state.search = document.getElementById('searchInput').value; renderTransactions(); }
 
-    function addTransaction() {
-      const amount = parseFloat(document.getElementById('amountInput').value);
-      const description = document.getElementById('descInput').value.trim();
-      if (!amount || amount <= 0 || !description) return;
-      if (!selectedCategory) selectedCategory = 'other';
-      const transactions = getTransactions();
-      transactions.push({ id: Date.now().toString(), type: currentType, amount, description, category: selectedCategory, date: new Date().toISOString() });
-      saveTransactions(transactions);
-      closeTransactionModal();
+    function deleteTransaction(id) {
+      if (!confirm('Delete this transaction?')) return;
+      const txs = get('transactions', []).filter(t => t.id !== id);
+      set('transactions', txs);
       renderAll();
     }
 
-    function getFunds() { return Memory.get('finance', 'funds') || []; }
-    function saveFunds(f) { Memory.set('finance', 'funds', f); }
+    function openTransactionModal() {
+      document.getElementById('transactionModal').classList.remove('hidden');
+      renderCategoryGrid();
+    }
 
-    function renderFunds() {
-      const container = document.getElementById('fundsList');
-      const funds = getFunds();
-      const totalSaved = funds.reduce((sum, f) => sum + (f.current || 0), 0);
-      document.getElementById('fundsTotal').textContent = formatCurrency(totalSaved) + ' saved';
-      if (funds.length === 0) { container.innerHTML = `<div class="empty-state"><div class="empty-icon">🎯</div><p>No funds yet</p><p style="font-size:0.8rem;margin-top:4px;">Create your first savings goal!</p></div>`; return; }
-      container.innerHTML = funds.map(fund => {
-        const progress = fund.target > 0 ? Math.min(100, (fund.current / fund.target) * 100) : 0;
-        return `<div class="fund-card" data-id="${fund.id}"><div class="fund-header"><div class="fund-icon" style="background: ${fund.color}15;">${fund.emoji}</div><div class="fund-info"><div class="fund-name">${escapeHtml(fund.name)}</div><div class="fund-meta">${progress.toFixed(0)}% complete</div></div></div><div class="fund-progress"><div class="progress-bar"><div class="progress-fill" style="width: ${progress}%; background: ${fund.color};"></div></div><div class="progress-stats"><span class="progress-current">${formatCurrency(fund.current || 0)}</span><span>of ${formatCurrency(fund.target)}</span></div></div><div class="fund-actions"><button class="fund-btn add" onclick="openAddToFund('${fund.id}', 'add')">+ Add</button><button class="fund-btn withdraw" onclick="openAddToFund('${fund.id}', 'withdraw')">- Withdraw</button></div></div>`;
+    function renderCategoryGrid() {
+      const cats = categories[state.type];
+      document.getElementById('categoryGrid').innerHTML = cats.map(c =>
+        `<button class="category-btn ${state.category === c.id ? 'active' : ''}" onclick="state.category='${c.id}';renderCategoryGrid()">
+          <span class="emoji">${c.emoji}</span><span class="label">${c.label}</span>
+        </button>`
+      ).join('');
+    }
+
+    function setType(t) {
+      state.type = t;
+      state.category = null;
+      document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector(`.type-btn.${t}`).classList.add('active');
+      renderCategoryGrid();
+    }
+
+    function handleTagInput(e) {
+      if (e.key === 'Enter' || e.key === ',') {
+        e.preventDefault();
+        const val = e.target.value.trim().replace(',', '');
+        if (val && !state.tags.includes(val)) {
+          state.tags.push(val);
+          renderTags();
+        }
+        e.target.value = '';
+      }
+    }
+
+    function renderTags() {
+      const container = document.getElementById('tagsInput');
+      const input = document.getElementById('tagInput');
+      container.innerHTML = state.tags.map(t => `<span class="tag">${t}<span class="tag-remove" onclick="removeTag('${t}')">×</span></span>`).join('') +
+        '<input type="text" class="tag-input" id="tagInput" placeholder="Add tag..." onkeydown="handleTagInput(event)">';
+    }
+
+    function removeTag(t) { state.tags = state.tags.filter(x => x !== t); renderTags(); }
+
+    function addTransaction() {
+      const amount = parseFloat(document.getElementById('txAmount').value);
+      const desc = document.getElementById('txDesc').value.trim();
+      if (!amount || !desc) return alert('Please fill all fields');
+
+      const txs = get('transactions', []);
+      txs.push({
+        id: Date.now().toString(),
+        type: state.type,
+        amount,
+        description: desc,
+        category: state.category || 'other',
+        tags: [...state.tags],
+        recurring: document.getElementById('txRecurring').checked,
+        date: new Date().toISOString()
+      });
+      set('transactions', txs);
+      closeModal('transactionModal');
+      document.getElementById('txAmount').value = '';
+      document.getElementById('txDesc').value = '';
+      document.getElementById('txRecurring').checked = false;
+      state.tags = [];
+      state.category = null;
+      renderAll();
+    }
+
+    function checkRecurring() {
+      const txs = get('transactions', []);
+      const lastCheck = get('lastRecurringCheck', null);
+      const today = new Date().toDateString();
+      if (lastCheck === today) return;
+
+      const recurring = txs.filter(t => t.recurring);
+      recurring.forEach(t => {
+        const txDate = new Date(t.date);
+        const now = new Date();
+        if (txDate.getMonth() !== now.getMonth() || txDate.getFullYear() !== now.getFullYear()) {
+          txs.push({
+            ...t,
+            id: Date.now().toString() + Math.random(),
+            date: new Date().toISOString()
+          });
+        }
+      });
+      set('transactions', txs);
+      set('lastRecurringCheck', today);
+    }
+
+    // ===== BUDGETS =====
+    function renderBudgets() {
+      const budgets = get('budgets', []);
+      const txs = get('transactions', []);
+      const now = new Date();
+      const monthTxs = txs.filter(t => {
+        const d = new Date(t.date);
+        return t.type === 'expense' && d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+      });
+
+      if (!budgets.length) {
+        document.getElementById('budgetList').innerHTML = '<div class="empty-state"><div class="empty-icon">📊</div><p>No budgets set</p></div>';
+        return;
+      }
+
+      document.getElementById('budgetList').innerHTML = budgets.map(b => {
+        const cat = getCat('expense', b.category);
+        const spent = monthTxs.filter(t => t.category === b.category).reduce((s, t) => s + t.amount, 0);
+        const pct = Math.min(100, (spent / b.limit) * 100);
+        const status = pct >= 100 ? 'danger' : pct >= 80 ? 'warning' : 'safe';
+        const remaining = Math.max(0, b.limit - spent);
+        return `<div class="budget-card">
+          <div class="budget-header">
+            <div class="budget-icon" style="background:${cat.color}15">${cat.emoji}</div>
+            <div class="budget-info">
+              <div class="budget-name">${cat.label}</div>
+              <div class="budget-spent">${fmt(spent)} spent</div>
+            </div>
+            <div class="budget-amount">
+              <div class="budget-remaining" style="color:${status === 'danger' ? '#EF4444' : status === 'warning' ? '#F59E0B' : '#10B981'}">${fmt(remaining)}</div>
+              <div class="budget-limit">of ${fmt(b.limit)}</div>
+            </div>
+          </div>
+          <div class="progress-bar"><div class="progress-fill ${status}" style="width:${pct}%"></div></div>
+        </div>`;
       }).join('');
     }
 
-    function renderEmojiGrid() { document.getElementById('emojiGrid').innerHTML = fundEmojis.map(e => `<button class="emoji-btn ${selectedEmoji === e ? 'active' : ''}" onclick="selectEmoji('${e}')">${e}</button>`).join(''); }
-    function renderColorGrid() { document.getElementById('colorGrid').innerHTML = fundColors.map(c => `<button class="color-btn ${selectedColor === c ? 'active' : ''}" style="background: ${c};" onclick="selectColor('${c}')"></button>`).join(''); }
-    function selectEmoji(e) { selectedEmoji = e; renderEmojiGrid(); }
-    function selectColor(c) { selectedColor = c; renderColorGrid(); }
-
-    function openFundModal(fundId = null) {
-      editingFundId = fundId;
-      if (fundId) { const fund = getFunds().find(f => f.id === fundId); if (fund) { document.getElementById('fundModalTitle').textContent = 'Edit Fund'; document.getElementById('fundNameInput').value = fund.name; document.getElementById('fundTargetInput').value = fund.target; selectedEmoji = fund.emoji; selectedColor = fund.color; } }
-      else { document.getElementById('fundModalTitle').textContent = 'Create Fund'; document.getElementById('fundNameInput').value = ''; document.getElementById('fundTargetInput').value = ''; selectedEmoji = '🛡️'; selectedColor = '#10B981'; }
-      renderEmojiGrid(); renderColorGrid(); document.getElementById('fundModal').classList.remove('hidden');
+    function openBudgetModal() {
+      const existing = get('budgets', []).map(b => b.category);
+      const available = categories.expense.filter(c => !existing.includes(c.id));
+      document.getElementById('budgetCategory').innerHTML = available.map(c => `<option value="${c.id}">${c.emoji} ${c.label}</option>`).join('');
+      document.getElementById('budgetModal').classList.remove('hidden');
     }
 
-    function closeFundModal(e) { if (!e || e.target === e.currentTarget) { document.getElementById('fundModal').classList.add('hidden'); editingFundId = null; } }
+    function addBudget() {
+      const category = document.getElementById('budgetCategory').value;
+      const limit = parseFloat(document.getElementById('budgetLimit').value);
+      if (!limit) return alert('Please enter a limit');
+      const budgets = get('budgets', []);
+      budgets.push({ category, limit });
+      set('budgets', budgets);
+      closeModal('budgetModal');
+      renderBudgets();
+    }
+
+    // ===== FUNDS =====
+    function renderFunds() {
+      const funds = get('funds', []);
+      const total = funds.reduce((s, f) => s + (f.current || 0), 0);
+      document.getElementById('fundsTotal').textContent = fmt(total) + ' saved';
+
+      if (!funds.length) {
+        document.getElementById('fundsList').innerHTML = '<div class="empty-state"><div class="empty-icon">🎯</div><p>No savings goals yet</p></div>';
+        return;
+      }
+
+      document.getElementById('fundsList').innerHTML = funds.map(f => {
+        const pct = f.target > 0 ? Math.min(100, (f.current / f.target) * 100) : 0;
+        return `<div class="fund-card">
+          <div class="fund-header">
+            <div class="fund-icon" style="background:${f.color}15">${f.emoji}</div>
+            <div class="fund-info">
+              <div class="fund-name">${f.name}</div>
+              <div class="fund-meta">${pct.toFixed(0)}% complete</div>
+            </div>
+          </div>
+          <div class="fund-progress">
+            <div class="progress-bar"><div class="progress-fill safe" style="width:${pct}%;background:${f.color}"></div></div>
+            <div class="progress-stats">
+              <span class="progress-current">${fmt(f.current || 0)}</span>
+              <span>of ${fmt(f.target)}</span>
+            </div>
+          </div>
+          <div class="fund-actions">
+            <button class="fund-btn add" onclick="openFundAction('${f.id}','add')">+ Add</button>
+            <button class="fund-btn withdraw" onclick="openFundAction('${f.id}','withdraw')">- Withdraw</button>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    function openFundModal() {
+      document.getElementById('fundEmojiGrid').innerHTML = fundEmojis.map(e =>
+        `<button class="category-btn ${state.selectedEmoji === e ? 'active' : ''}" onclick="state.selectedEmoji='${e}';openFundModal()">
+          <span class="emoji">${e}</span>
+        </button>`
+      ).join('');
+      document.getElementById('fundModal').classList.remove('hidden');
+    }
 
     function saveFund() {
-      const name = document.getElementById('fundNameInput').value.trim();
-      const target = parseFloat(document.getElementById('fundTargetInput').value);
-      if (!name || !target) return;
-      const funds = getFunds();
-      if (editingFundId) { const fund = funds.find(f => f.id === editingFundId); if (fund) { fund.name = name; fund.target = target; fund.emoji = selectedEmoji; fund.color = selectedColor; } }
-      else { funds.push({ id: Date.now().toString(), name, target, current: 0, emoji: selectedEmoji, color: selectedColor, createdAt: new Date().toISOString() }); }
-      saveFunds(funds); closeFundModal(); renderFunds();
+      const name = document.getElementById('fundName').value.trim();
+      const target = parseFloat(document.getElementById('fundTarget').value);
+      if (!name || !target) return alert('Please fill all fields');
+      const funds = get('funds', []);
+      funds.push({ id: Date.now().toString(), name, target, current: 0, emoji: state.selectedEmoji, color: fundColors[funds.length % fundColors.length] });
+      set('funds', funds);
+      closeModal('fundModal');
+      document.getElementById('fundName').value = '';
+      document.getElementById('fundTarget').value = '';
+      renderFunds();
     }
 
-    function openAddToFund(fundId, action) { currentFundId = fundId; fundAction = action; const fund = getFunds().find(f => f.id === fundId); document.getElementById('addToFundTitle').textContent = action === 'add' ? `Add to ${fund.name}` : `Withdraw from ${fund.name}`; document.getElementById('addToFundAmount').value = ''; setFundAction(action); document.getElementById('addToFundModal').classList.remove('hidden'); }
-    function closeAddToFundModal(e) { if (!e || e.target === e.currentTarget) { document.getElementById('addToFundModal').classList.add('hidden'); } }
-    function setFundAction(action) { fundAction = action; document.getElementById('fundAddBtn').classList.toggle('active', action === 'add'); document.getElementById('fundWithdrawBtn').classList.toggle('active', action === 'withdraw'); }
-
-    function updateFundAmount() {
-      const amount = parseFloat(document.getElementById('addToFundAmount').value);
-      if (!amount || amount <= 0) return;
-      const funds = getFunds();
-      const fund = funds.find(f => f.id === currentFundId);
-      if (fund) { if (fundAction === 'add') { fund.current = (fund.current || 0) + amount; } else { fund.current = Math.max(0, (fund.current || 0) - amount); } saveFunds(funds); }
-      closeAddToFundModal(); renderFunds();
+    function openFundAction(id, action) {
+      state.currentFundId = id;
+      state.fundAction = action;
+      const fund = get('funds', []).find(f => f.id === id);
+      document.getElementById('fundActionTitle').textContent = action === 'add' ? `Add to ${fund.name}` : `Withdraw from ${fund.name}`;
+      setFundAction(action);
+      document.getElementById('fundActionModal').classList.remove('hidden');
     }
 
-    function createFundFromAI(name, target, emoji, color) { const funds = getFunds(); funds.push({ id: Date.now().toString(), name, target, current: 0, emoji, color, createdAt: new Date().toISOString() }); saveFunds(funds); renderFunds(); switchTab('funds'); }
+    function setFundAction(a) {
+      state.fundAction = a;
+      document.getElementById('fundAddBtn').classList.toggle('active', a === 'add');
+      document.getElementById('fundWithdrawBtn').classList.toggle('active', a === 'withdraw');
+    }
 
-    function checkApiKey() { const apiKey = Memory.get('settings', 'anthropic_api_key'); document.getElementById('api-notice').style.display = apiKey ? 'none' : 'block'; document.getElementById('chat-container').style.display = apiKey ? 'flex' : 'none'; }
-    function saveApiKey() { const key = document.getElementById('api-key-input').value.trim(); if (!key) return; Memory.set('settings', 'anthropic_api_key', key); document.getElementById('api-key-input').value = ''; checkApiKey(); loadChatHistory(); }
-    function clearApiKey() { Memory.set('settings', 'anthropic_api_key', null); checkApiKey(); }
-    function getChatHistory() { return Memory.get('finance', 'chatHistory') || []; }
-    function saveChatHistory(h) { Memory.set('finance', 'chatHistory', h); }
+    function updateFund() {
+      const amount = parseFloat(document.getElementById('fundActionAmount').value);
+      if (!amount) return;
+      const funds = get('funds', []);
+      const fund = funds.find(f => f.id === state.currentFundId);
+      if (fund) {
+        fund.current = state.fundAction === 'add' ? (fund.current || 0) + amount : Math.max(0, (fund.current || 0) - amount);
+        set('funds', funds);
+      }
+      closeModal('fundActionModal');
+      document.getElementById('fundActionAmount').value = '';
+      renderAll();
+    }
 
-    function loadChatHistory() {
-      const history = getChatHistory();
+    // ===== INSIGHTS =====
+    function renderInsights() {
+      const txs = get('transactions', []);
+      const funds = get('funds', []);
+
+      // Net worth
+      let income = 0, expense = 0;
+      txs.forEach(t => t.type === 'income' ? income += t.amount : expense += t.amount);
+      const fundTotal = funds.reduce((s, f) => s + (f.current || 0), 0);
+      const netWorth = income - expense + fundTotal;
+      document.getElementById('netWorth').textContent = fmt(netWorth);
+      document.getElementById('totalAssets').textContent = fmt(income + fundTotal);
+      document.getElementById('totalLiabilities').textContent = fmt(expense);
+
+      // Chart
+      renderChart();
+
+      // AI Insights
+      generateInsights();
+    }
+
+    function renderChart() {
+      const txs = get('transactions', []);
+      const months = [];
+      for (let i = 5; i >= 0; i--) {
+        const d = new Date();
+        d.setMonth(d.getMonth() - i);
+        months.push({ month: d.toLocaleDateString('en-US', { month: 'short' }), income: 0, expense: 0 });
+      }
+
+      txs.forEach(t => {
+        const d = new Date(t.date);
+        const idx = months.findIndex(m => m.month === d.toLocaleDateString('en-US', { month: 'short' }));
+        if (idx !== -1) {
+          t.type === 'income' ? months[idx].income += t.amount : months[idx].expense += t.amount;
+        }
+      });
+
+      const max = Math.max(...months.flatMap(m => [m.income, m.expense]), 1);
+      document.getElementById('monthlyChart').innerHTML = months.map(m => `
+        <div style="flex:1;display:flex;gap:3px;align-items:flex-end;position:relative;">
+          <div class="chart-bar" style="height:${(m.income / max) * 100}%"></div>
+          <div class="chart-bar expense" style="height:${(m.expense / max) * 100}%"></div>
+          <div class="chart-label">${m.month}</div>
+        </div>
+      `).join('');
+    }
+
+    function generateInsights() {
+      const txs = get('transactions', []);
+      const budgets = get('budgets', []);
+      const insights = [];
+
+      // Spending vs Income
+      let income = 0, expense = 0;
+      txs.forEach(t => t.type === 'income' ? income += t.amount : expense += t.amount);
+      const savings = income - expense;
+      const savingsRate = income > 0 ? (savings / income) * 100 : 0;
+
+      if (savingsRate >= 20) {
+        insights.push({ type: 'success', icon: '🎉', title: 'Great savings rate!', text: `You're saving ${savingsRate.toFixed(0)}% of your income. Keep it up!` });
+      } else if (savingsRate >= 0) {
+        insights.push({ type: 'warning', icon: '💡', title: 'Room for improvement', text: `You're saving ${savingsRate.toFixed(0)}%. Aim for 20%+ to build wealth faster.` });
+      } else {
+        insights.push({ type: 'danger', icon: '⚠️', title: 'Spending exceeds income', text: `You're spending more than you earn. Review your expenses.` });
+      }
+
+      // Budget alerts
+      const now = new Date();
+      const monthTxs = txs.filter(t => {
+        const d = new Date(t.date);
+        return t.type === 'expense' && d.getMonth() === now.getMonth();
+      });
+
+      budgets.forEach(b => {
+        const spent = monthTxs.filter(t => t.category === b.category).reduce((s, t) => s + t.amount, 0);
+        const pct = (spent / b.limit) * 100;
+        if (pct >= 100) {
+          const cat = getCat('expense', b.category);
+          insights.push({ type: 'danger', icon: '🚨', title: `${cat.label} over budget!`, text: `You've spent ${fmt(spent)} of your ${fmt(b.limit)} budget.` });
+        } else if (pct >= 80) {
+          const cat = getCat('expense', b.category);
+          insights.push({ type: 'warning', icon: '⚡', title: `${cat.label} almost maxed`, text: `${pct.toFixed(0)}% of budget used. ${fmt(b.limit - spent)} remaining.` });
+        }
+      });
+
+      // Top spending category
+      const byCategory = {};
+      monthTxs.forEach(t => { byCategory[t.category] = (byCategory[t.category] || 0) + t.amount; });
+      const sorted = Object.entries(byCategory).sort((a, b) => b[1] - a[1]);
+      if (sorted.length) {
+        const [topCat, topAmount] = sorted[0];
+        const cat = getCat('expense', topCat);
+        insights.push({ type: 'info', icon: '📊', title: `Top spending: ${cat.label}`, text: `You've spent ${fmt(topAmount)} on ${cat.label} this month.` });
+      }
+
+      document.getElementById('insightsList').innerHTML = insights.map(i => `
+        <div class="insight-card ${i.type === 'danger' ? 'warning' : i.type === 'info' ? 'info' : ''}">
+          <div class="insight-icon">${i.icon}</div>
+          <div class="insight-title">${i.title}</div>
+          <div class="insight-text">${i.text}</div>
+        </div>
+      `).join('') || '<div class="empty-state"><p>Add more transactions to see insights</p></div>';
+    }
+
+    // ===== CALCULATORS =====
+    function calcCompound() {
+      const p = parseFloat(document.getElementById('ciPrincipal').value) || 0;
+      const m = parseFloat(document.getElementById('ciMonthly').value) || 0;
+      const r = (parseFloat(document.getElementById('ciRate').value) || 0) / 100 / 12;
+      const n = (parseFloat(document.getElementById('ciYears').value) || 0) * 12;
+      const fv = p * Math.pow(1 + r, n) + m * ((Math.pow(1 + r, n) - 1) / r);
+      document.getElementById('ciResult').textContent = fmt(fv);
+    }
+
+    function calcFreedom() {
+      const expenses = parseFloat(document.getElementById('ffExpenses').value) || 1;
+      const savings = parseFloat(document.getElementById('ffSavings').value) || 0;
+      const monthly = parseFloat(document.getElementById('ffMonthlySave').value) || 0;
+      const rate = (parseFloat(document.getElementById('ffReturn').value) || 0) / 100 / 12;
+      const target = expenses * 12 * 25; // 4% rule
+
+      let current = savings;
+      let months = 0;
+      while (current < target && months < 1200) {
+        current = current * (1 + rate) + monthly;
+        months++;
+      }
+      document.getElementById('ffResult').textContent = months < 1200 ? `${(months / 12).toFixed(1)} years` : '100+ years';
+    }
+
+    function calcROI() {
+      const initial = parseFloat(document.getElementById('roiInitial').value) || 1;
+      const final = parseFloat(document.getElementById('roiFinal').value) || 0;
+      const roi = ((final - initial) / initial) * 100;
+      document.getElementById('roiResult').textContent = roi.toFixed(1) + '%';
+    }
+
+    // ===== AI =====
+    function checkApiKey() {
+      const key = Memory.get('settings', 'anthropic_api_key');
+      document.getElementById('api-notice').style.display = key ? 'none' : 'block';
+      document.getElementById('chat-container').style.display = key ? 'flex' : 'none';
+    }
+
+    function saveApiKey() {
+      const key = document.getElementById('api-key-input').value.trim();
+      if (!key) return;
+      Memory.set('settings', 'anthropic_api_key', key);
+      checkApiKey();
+      loadChat();
+    }
+
+    function loadChat() {
+      const history = get('chatHistory', []);
       const container = document.getElementById('chat-messages');
-      if (history.length === 0) { container.innerHTML = `<div class="ai-message"><strong>👋 Hi! I'm your AI Financial Advisor.</strong><br><br>I can help you with:<br>• Planning your financial goals<br>• Creating savings funds<br>• Budgeting advice<br>• Investment basics<br><br>What would you like to work on today?</div>`; return; }
+      if (!history.length) {
+        container.innerHTML = `<div class="ai-message">👋 Hi! I'm your AI Financial Advisor. Ask me anything about your finances, budgeting, or saving strategies!</div>`;
+        return;
+      }
       container.innerHTML = history.map(m => `<div class="${m.role === 'user' ? 'user-message' : 'ai-message'} message">${m.content}</div>`).join('');
       container.scrollTop = container.scrollHeight;
     }
 
+    function askAI(q) { document.getElementById('chat-input').value = q; sendMessage(); }
+
     async function sendMessage() {
       const input = document.getElementById('chat-input');
-      const message = input.value.trim();
-      if (!message) return;
+      const msg = input.value.trim();
+      if (!msg) return;
+
       const apiKey = Memory.get('settings', 'anthropic_api_key');
-      if (!apiKey) { checkApiKey(); return; }
-      const history = getChatHistory();
-      history.push({ role: 'user', content: message });
-      saveChatHistory(history);
+      if (!apiKey) return checkApiKey();
+
+      const history = get('chatHistory', []);
+      history.push({ role: 'user', content: msg });
+      set('chatHistory', history);
       input.value = '';
-      loadChatHistory();
+      loadChat();
+
       const container = document.getElementById('chat-messages');
-      container.innerHTML += `<div class="typing-indicator" id="typing"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
+      container.innerHTML += `<div class="ai-message">...</div>`;
       container.scrollTop = container.scrollHeight;
 
-      const transactions = getTransactions();
-      const funds = getFunds();
+      const txs = get('transactions', []);
+      const funds = get('funds', []);
+      const budgets = get('budgets', []);
       let income = 0, expense = 0;
-      transactions.forEach(t => { if (t.type === 'income') income += t.amount; else expense += t.amount; });
+      txs.forEach(t => t.type === 'income' ? income += t.amount : expense += t.amount);
 
-      const systemPrompt = `You are a friendly, personalized AI Financial Advisor. You help users plan their finances, create savings goals, and give practical advice.
+      const system = `You are a helpful AI Financial Advisor. Be concise and practical.
 
-USER'S FINANCIAL CONTEXT:
-- Total Income: ${formatCurrency(income)}
-- Total Expenses: ${formatCurrency(expense)}
-- Balance: ${formatCurrency(income - expense)}
-- Current Funds: ${funds.length > 0 ? funds.map(f => `${f.name}: ${formatCurrency(f.current)}/${formatCurrency(f.target)}`).join(', ') : 'None yet'}
+USER DATA:
+- Income: ${fmt(income)}
+- Expenses: ${fmt(expense)}
+- Balance: ${fmt(income - expense)}
+- Savings Rate: ${income > 0 ? ((income - expense) / income * 100).toFixed(1) : 0}%
+- Funds: ${funds.length ? funds.map(f => `${f.name}: ${fmt(f.current)}/${fmt(f.target)}`).join(', ') : 'None'}
+- Budgets: ${budgets.length ? budgets.map(b => `${getCat('expense', b.category).label}: ${fmt(b.limit)}/mo`).join(', ') : 'None'}
+- Recent transactions: ${txs.slice(0, 10).map(t => `${t.description}: ${t.type === 'expense' ? '-' : '+'}${fmt(t.amount)}`).join(', ')}
 
-IMPORTANT CAPABILITIES:
-1. When the user wants to create a savings fund/goal, suggest one and include this EXACT format in your response:
-   [CREATE_FUND:name|target|emoji|color]
-   Example: [CREATE_FUND:Emergency Fund|50000|🛡️|#10B981]
+If user wants to create a fund, include: [CREATE_FUND:name|target|emoji|color]
+Emojis: 🛡️📈🎯🏠✈️🚗💍📚💼🎮🏥👶
+Colors: #10B981,#3B82F6,#F59E0B,#A855F7,#EF4444,#EC4899`;
 
-2. Available emojis: 🛡️ 📈 🎯 🏠 ✈️ 🚗 💍 📚 💼 🎮 🏥 👶
-3. Available colors: #10B981 (green), #3B82F6 (blue), #F59E0B (amber), #A855F7 (purple), #EF4444 (red), #EC4899 (pink)
-
-Be conversational, encouraging, and practical. Give specific, actionable advice based on their numbers.`;
-
-      const messages = history.map(m => ({ role: m.role, content: m.content }));
       try {
-        const response = await fetch('https://api.anthropic.com/v1/messages', {
+        const res = await fetch('https://api.anthropic.com/v1/messages', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
-          body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, system: systemPrompt, messages })
+          body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 800, system, messages: history.map(m => ({ role: m.role, content: m.content })) })
         });
-        if (!response.ok) throw new Error(`API error: ${response.status}`);
-        const data = await response.json();
-        let aiResponse = data.content[0].text;
-        const fundMatch = aiResponse.match(/\[CREATE_FUND:(.+?)\|(\d+)\|(.+?)\|(.+?)\]/);
-        if (fundMatch) {
-          const [, name, target, emoji, color] = fundMatch;
-          aiResponse = aiResponse.replace(/\[CREATE_FUND:.+?\]/, '');
-          aiResponse += `<div class="ai-fund-suggestion"><div class="fund-title">${emoji} ${name}</div><div class="fund-desc">Target: ${formatCurrency(parseFloat(target))}</div><button class="create-fund-btn" onclick="createFundFromAI('${name}', ${target}, '${emoji}', '${color}')">✓ Create This Fund</button></div>`;
+        if (!res.ok) throw new Error('API error');
+        const data = await res.json();
+        let reply = data.content[0].text;
+
+        const match = reply.match(/\[CREATE_FUND:(.+?)\|(\d+)\|(.+?)\|(.+?)\]/);
+        if (match) {
+          const [, name, target, emoji, color] = match;
+          reply = reply.replace(/\[CREATE_FUND:.+?\]/, '') + `<button class="quick-prompt" style="margin-top:8px" onclick="createFundFromAI('${name}',${target},'${emoji}','${color}')">✓ Create ${name}</button>`;
         }
-        history.push({ role: 'assistant', content: aiResponse });
-        saveChatHistory(history);
-      } catch (error) {
-        history.push({ role: 'assistant', content: `Sorry, I encountered an error: ${error.message}. Please check your API key.` });
-        saveChatHistory(history);
+
+        history.push({ role: 'assistant', content: reply });
+        set('chatHistory', history);
+      } catch (e) {
+        history.push({ role: 'assistant', content: 'Sorry, something went wrong. Please try again.' });
+        set('chatHistory', history);
       }
-      loadChatHistory();
+      loadChat();
     }
 
-    function renderAll() { calculateTotals(); renderCategoryFilters(); renderTransactions(); renderFunds(); }
+    function createFundFromAI(name, target, emoji, color) {
+      const funds = get('funds', []);
+      funds.push({ id: Date.now().toString(), name, target, current: 0, emoji, color });
+      set('funds', funds);
+      renderFunds();
+      switchTab('funds');
+    }
+
+    // ===== IMPORT/EXPORT =====
+    function openImportModal() { document.getElementById('importModal').classList.remove('hidden'); }
+
+    function importData() {
+      const data = document.getElementById('importData').value.trim();
+      if (!data) return;
+
+      try {
+        if (data.startsWith('[') || data.startsWith('{')) {
+          const json = JSON.parse(data);
+          if (Array.isArray(json)) {
+            const txs = get('transactions', []);
+            json.forEach(t => txs.push({ ...t, id: Date.now().toString() + Math.random() }));
+            set('transactions', txs);
+          }
+        } else {
+          const lines = data.split('\n').filter(l => l.trim());
+          const txs = get('transactions', []);
+          lines.slice(1).forEach(line => {
+            const [date, type, amount, description, category] = line.split(',').map(s => s.trim());
+            if (date && amount) {
+              txs.push({ id: Date.now().toString() + Math.random(), date: new Date(date).toISOString(), type: type || 'expense', amount: parseFloat(amount), description: description || 'Imported', category: category || 'other', tags: [] });
+            }
+          });
+          set('transactions', txs);
+        }
+        closeModal('importModal');
+        document.getElementById('importData').value = '';
+        renderAll();
+        alert('Import successful!');
+      } catch (e) {
+        alert('Invalid format. Use CSV or JSON.');
+      }
+    }
+
+    function exportData() {
+      const txs = get('transactions', []);
+      const csv = 'date,type,amount,description,category,tags\n' + txs.map(t =>
+        `${new Date(t.date).toISOString().split('T')[0]},${t.type},${t.amount},${t.description},${t.category},${(t.tags || []).join(';')}`
+      ).join('\n');
+
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'finance-export.csv';
+      a.click();
+    }
+
+    // ===== UTILS =====
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+    function renderTotals() {
+      const txs = get('transactions', []);
+      let income = 0, expense = 0;
+      txs.forEach(t => t.type === 'income' ? income += t.amount : expense += t.amount);
+      document.getElementById('totalIncome').textContent = fmt(income);
+      document.getElementById('totalExpense').textContent = fmt(expense);
+      document.getElementById('totalBalance').textContent = fmt(income - expense);
+    }
+
+    function renderAll() {
+      renderTotals();
+      renderFilters();
+      renderTransactions();
+      renderBudgets();
+      renderFunds();
+      renderInsights();
+    }
+
     document.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
