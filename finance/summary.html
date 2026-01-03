@@ -3,150 +3,79 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#0E121A">
+  <meta name="theme-color" content="#FFFFFF">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>Finance - Money Manager</title>
-  <link rel="stylesheet" href="../styles/app.css">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>Finance</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Inter', -apple-system, sans-serif;
-      background: #0E121A;
+      background: #FFFFFF;
       min-height: 100vh;
-      color: #fff;
+      color: #1E293B;
       padding: 20px;
       padding-bottom: 100px;
-      transition: background 0.3s, color 0.3s;
     }
-
-    body.light-theme { background: #F5F5F7; color: #1a1a1a; }
-    body.light-theme .summary-card { background: #fff; border-color: rgba(0,0,0,0.1); }
-    body.light-theme .summary-label { color: #666; }
-    body.light-theme .tab-btn { background: rgba(0,0,0,0.05); color: #666; }
-    body.light-theme .tab-btn.active { background: #F7C846; color: #0E121A; }
-    body.light-theme .transaction-item { background: #fff; }
-    body.light-theme .transaction-desc { color: #333; }
-    body.light-theme .transaction-category { color: #888; background: rgba(0,0,0,0.05); }
-    body.light-theme .filter-pill { background: #fff; color: #666; border-color: rgba(0,0,0,0.1); }
-    body.light-theme .fund-card { background: #fff; border-color: rgba(0,0,0,0.1); }
-    body.light-theme .fund-name { color: #333; }
-    body.light-theme .fund-meta { color: #666; }
-    body.light-theme .chat-container { background: #fff; border-color: rgba(0,0,0,0.1); }
-    body.light-theme .ai-message { background: rgba(0,0,0,0.03); }
-    body.light-theme .user-message { background: rgba(247,200,70,0.15); }
-    body.light-theme .chat-input { background: #f5f5f5; color: #333; border-color: rgba(0,0,0,0.1); }
-    body.light-theme .chat-input::placeholder { color: #999; }
-    body.light-theme .modal-content { background: #fff; }
-    body.light-theme .form-input { background: #f5f5f5; color: #333; border-color: rgba(0,0,0,0.1); }
-    body.light-theme .empty-state p { color: #888; }
-    body.light-theme .section-title { color: #666; }
-    body.light-theme .api-setup { background: #fff; border-color: rgba(0,0,0,0.1); }
 
     .header { margin-bottom: 20px; }
-    .header h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 4px; }
-    .header .subtitle { color: #888; font-size: 0.85rem; }
+    .header h1 { font-size: 1.75rem; font-weight: 800; color: #1E293B; margin-bottom: 4px; }
+    .header h1 span { color: #10B981; }
+    .header .subtitle { color: #64748B; font-size: 0.85rem; }
 
     /* Summary Cards */
-    .summary-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .summary-card {
-      background: rgba(255,255,255,0.05);
-      border-radius: 12px;
-      padding: 14px;
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .summary-label {
-      font-size: 0.7rem;
-      color: #888;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 4px;
-    }
-
-    .summary-value {
-      font-size: 1.1rem;
-      font-weight: 700;
-    }
-
-    .summary-value.green { color: #8AE98D; }
-    .summary-value.red { color: #E74C3C; }
-    .summary-value.yellow { color: #F7C846; }
+    .summary-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+    .summary-card { background: #F8FAFC; border-radius: 14px; padding: 14px; border: 1px solid #E2E8F0; }
+    .summary-label { font-size: 0.65rem; color: #64748B; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; font-weight: 600; }
+    .summary-value { font-size: 1.1rem; font-weight: 700; }
+    .summary-value.green { color: #10B981; }
+    .summary-value.red { color: #EF4444; }
+    .summary-value.blue { color: #3B82F6; }
 
     /* Tabs */
-    .tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+    .tabs { display: flex; gap: 8px; margin-bottom: 20px; background: #F1F5F9; padding: 4px; border-radius: 12px; }
     .tab-btn {
       flex: 1;
       padding: 12px 8px;
-      background: rgba(255,255,255,0.05);
+      background: transparent;
       border: none;
       border-radius: 10px;
-      color: #888;
+      color: #64748B;
       font-size: 0.8rem;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
       transition: all 0.2s;
       font-family: inherit;
     }
-    .tab-btn.active { background: #F7C846; color: #0E121A; }
+    .tab-btn.active { background: #FFFFFF; color: #1E293B; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
     /* Category Filter */
-    .category-filter {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 12px;
-      margin-bottom: 16px;
-      scrollbar-width: none;
-    }
+    .category-filter { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 12px; margin-bottom: 16px; scrollbar-width: none; }
     .category-filter::-webkit-scrollbar { display: none; }
-
     .filter-pill {
       flex-shrink: 0;
       padding: 8px 14px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
       border-radius: 20px;
       font-size: 0.8rem;
-      color: #888;
+      color: #64748B;
       cursor: pointer;
       transition: all 0.2s;
       font-family: inherit;
     }
-    .filter-pill.active {
-      background: #F7C846;
-      border-color: #F7C846;
-      color: #0E121A;
-      font-weight: 600;
-    }
+    .filter-pill.active { background: #10B981; border-color: #10B981; color: #fff; font-weight: 600; }
 
     /* Transaction List */
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-    .section-title { font-size: 0.85rem; font-weight: 600; color: #888; }
-
+    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .section-title { font-size: 0.75rem; font-weight: 700; color: #64748B; text-transform: uppercase; letter-spacing: 0.5px; }
     .transaction-list { display: flex; flex-direction: column; gap: 8px; }
 
-    .transaction-item {
-      position: relative;
-      background: rgba(255,255,255,0.05);
-      border-radius: 12px;
-      overflow: hidden;
-    }
-
+    .transaction-item { position: relative; background: #F8FAFC; border-radius: 14px; overflow: hidden; border: 1px solid #E2E8F0; }
     .transaction-inner {
       position: relative;
       padding: 14px 16px;
@@ -157,12 +86,11 @@
       transition: transform 0.15s ease-out;
       z-index: 2;
     }
-
     .swipe-delete {
       position: absolute;
       top: 0; right: 0; bottom: 0;
       width: 100%;
-      background: #E74C3C;
+      background: #EF4444;
       z-index: 1;
       opacity: 0;
       display: flex;
@@ -172,115 +100,47 @@
       color: white;
       font-weight: 600;
     }
-
-    .transaction-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      flex-shrink: 0;
-    }
-
+    .transaction-icon { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
     .transaction-details { flex: 1; min-width: 0; }
-    .transaction-desc {
-      font-size: 0.9rem;
-      font-weight: 500;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin-bottom: 2px;
-    }
-    .transaction-meta { font-size: 0.75rem; color: #888; display: flex; align-items: center; gap: 8px; }
-    .transaction-category { padding: 2px 6px; background: rgba(255,255,255,0.1); border-radius: 4px; }
-    .transaction-amount { font-size: 1rem; font-weight: 600; text-align: right; }
-    .transaction-amount.income { color: #8AE98D; }
-    .transaction-amount.expense { color: #E74C3C; }
+    .transaction-desc { font-size: 0.9rem; font-weight: 600; color: #1E293B; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
+    .transaction-meta { font-size: 0.75rem; color: #64748B; display: flex; align-items: center; gap: 8px; }
+    .transaction-category { padding: 2px 8px; background: #E2E8F0; border-radius: 6px; font-weight: 500; }
+    .transaction-amount { font-size: 1rem; font-weight: 700; text-align: right; }
+    .transaction-amount.income { color: #10B981; }
+    .transaction-amount.expense { color: #EF4444; }
 
-    .date-header {
-      font-size: 0.75rem;
-      color: #888;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin: 16px 0 8px;
-      padding-left: 4px;
-    }
+    .date-header { font-size: 0.7rem; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.5px; margin: 16px 0 8px; padding-left: 4px; font-weight: 600; }
     .date-header:first-child { margin-top: 0; }
 
     /* Funds */
     .funds-grid { display: flex; flex-direction: column; gap: 12px; }
-
-    .fund-card {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 16px;
-      padding: 16px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .fund-card:hover { border-color: rgba(255,255,255,0.2); }
-
-    .fund-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-    .fund-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-    }
+    .fund-card { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 16px; padding: 18px; }
+    .fund-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .fund-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
     .fund-info { flex: 1; }
-    .fund-name { font-weight: 600; font-size: 1rem; margin-bottom: 2px; }
-    .fund-meta { font-size: 0.8rem; color: #888; }
-
-    .fund-progress { margin-bottom: 12px; }
-    .progress-bar {
-      height: 8px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 4px;
-      overflow: hidden;
-      margin-bottom: 6px;
-    }
-    .progress-fill {
-      height: 100%;
-      border-radius: 4px;
-      transition: width 0.3s;
-    }
-    .progress-stats {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.75rem;
-      color: #888;
-    }
-    .progress-current { font-weight: 600; color: #8AE98D; }
-
+    .fund-name { font-weight: 700; font-size: 1rem; color: #1E293B; margin-bottom: 2px; }
+    .fund-meta { font-size: 0.8rem; color: #64748B; }
+    .fund-progress { margin-bottom: 14px; }
+    .progress-bar { height: 10px; background: #E2E8F0; border-radius: 5px; overflow: hidden; margin-bottom: 8px; }
+    .progress-fill { height: 100%; border-radius: 5px; transition: width 0.3s; }
+    .progress-stats { display: flex; justify-content: space-between; font-size: 0.8rem; color: #64748B; }
+    .progress-current { font-weight: 700; color: #10B981; }
     .fund-actions { display: flex; gap: 8px; }
-    .fund-btn {
-      flex: 1;
-      padding: 10px;
-      border: none;
-      border-radius: 8px;
-      font-size: 0.85rem;
-      font-weight: 500;
-      cursor: pointer;
-      font-family: inherit;
-      transition: all 0.2s;
-    }
-    .fund-btn.add { background: #8AE98D; color: #0E121A; }
-    .fund-btn.withdraw { background: rgba(255,255,255,0.1); color: #fff; }
+    .fund-btn { flex: 1; padding: 12px; border: none; border-radius: 10px; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+    .fund-btn.add { background: #10B981; color: #fff; }
+    .fund-btn.add:hover { background: #059669; }
+    .fund-btn.withdraw { background: #E2E8F0; color: #64748B; }
+    .fund-btn.withdraw:hover { background: #CBD5E1; }
 
     .add-fund-btn {
       width: 100%;
-      padding: 16px;
-      background: rgba(247,200,70,0.1);
-      border: 2px dashed rgba(247,200,70,0.3);
+      padding: 18px;
+      background: #F0FDF4;
+      border: 2px dashed #86EFAC;
       border-radius: 16px;
-      color: #F7C846;
+      color: #10B981;
       font-size: 0.9rem;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
       font-family: inherit;
       display: flex;
@@ -288,377 +148,121 @@
       justify-content: center;
       gap: 8px;
       margin-top: 12px;
+      transition: all 0.2s;
     }
+    .add-fund-btn:hover { background: #DCFCE7; }
 
     /* AI Chat */
-    .chat-container {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 16px;
-      display: flex;
-      flex-direction: column;
-      height: calc(100vh - 280px);
-      min-height: 400px;
-    }
+    .chat-container { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 16px; display: flex; flex-direction: column; height: calc(100vh - 280px); min-height: 400px; }
+    .chat-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+    .message { max-width: 85%; padding: 14px 18px; border-radius: 18px; font-size: 0.9rem; line-height: 1.5; }
+    .ai-message { background: #FFFFFF; align-self: flex-start; border: 1px solid #E2E8F0; border-bottom-left-radius: 4px; color: #1E293B; }
+    .user-message { background: #10B981; color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
 
-    .chat-messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .message {
-      max-width: 85%;
-      padding: 12px 16px;
-      border-radius: 16px;
-      font-size: 0.9rem;
-      line-height: 1.5;
-    }
-
-    .ai-message {
-      background: rgba(255,255,255,0.08);
-      align-self: flex-start;
-      border-bottom-left-radius: 4px;
-    }
-
-    .user-message {
-      background: rgba(247,200,70,0.2);
-      align-self: flex-end;
-      border-bottom-right-radius: 4px;
-    }
-
-    .message-time {
-      font-size: 0.7rem;
-      color: #666;
-      margin-top: 4px;
-    }
-
-    .typing-indicator {
-      display: flex;
-      gap: 4px;
-      padding: 12px 16px;
-      background: rgba(255,255,255,0.08);
-      border-radius: 16px;
-      align-self: flex-start;
-      border-bottom-left-radius: 4px;
-    }
-    .typing-dot {
-      width: 8px;
-      height: 8px;
-      background: #888;
-      border-radius: 50%;
-      animation: bounce 1.4s infinite ease-in-out both;
-    }
+    .typing-indicator { display: flex; gap: 4px; padding: 14px 18px; background: #fff; border: 1px solid #E2E8F0; border-radius: 18px; align-self: flex-start; border-bottom-left-radius: 4px; }
+    .typing-dot { width: 8px; height: 8px; background: #94A3B8; border-radius: 50%; animation: bounce 1.4s infinite ease-in-out both; }
     .typing-dot:nth-child(1) { animation-delay: -0.32s; }
     .typing-dot:nth-child(2) { animation-delay: -0.16s; }
-    @keyframes bounce {
-      0%, 80%, 100% { transform: scale(0); }
-      40% { transform: scale(1); }
-    }
+    @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
 
-    .chat-input-area {
-      padding: 12px;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      display: flex;
-      gap: 8px;
-    }
-
-    .chat-input {
-      flex: 1;
-      padding: 12px 16px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 24px;
-      color: #fff;
-      font-size: 0.9rem;
-      font-family: inherit;
-    }
-    .chat-input:focus { outline: none; border-color: #F7C846; }
-    .chat-input::placeholder { color: #666; }
-
-    .chat-send {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: #F7C846;
-      border: none;
-      color: #0E121A;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-    }
+    .chat-input-area { padding: 12px; border-top: 1px solid #E2E8F0; display: flex; gap: 8px; }
+    .chat-input { flex: 1; padding: 14px 18px; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 24px; color: #1E293B; font-size: 0.9rem; font-family: inherit; }
+    .chat-input:focus { outline: none; border-color: #10B981; }
+    .chat-input::placeholder { color: #94A3B8; }
+    .chat-send { width: 48px; height: 48px; border-radius: 50%; background: #10B981; border: none; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+    .chat-send:hover { background: #059669; }
     .chat-send:disabled { opacity: 0.5; cursor: not-allowed; }
 
     /* API Setup */
-    .api-setup {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 16px;
-    }
-    .api-setup-title {
-      font-size: 0.9rem;
-      font-weight: 600;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .api-setup { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 16px; padding: 20px; margin-bottom: 16px; }
+    .api-setup-title { font-size: 0.9rem; font-weight: 700; color: #1E293B; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
     .api-row { display: flex; gap: 10px; margin-top: 12px; }
-    .api-btn {
-      flex: 1;
-      padding: 12px;
-      border: none;
-      border-radius: 10px;
-      font-size: 0.85rem;
-      font-weight: 500;
-      cursor: pointer;
-      font-family: inherit;
-    }
-    .api-btn.save { background: #8AE98D; color: #0E121A; }
-    .api-btn.clear { background: rgba(255,255,255,0.1); color: #fff; }
+    .api-btn { flex: 1; padding: 12px; border: none; border-radius: 10px; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: inherit; }
+    .api-btn.save { background: #10B981; color: #fff; }
+    .api-btn.clear { background: #E2E8F0; color: #64748B; }
 
-    /* Fund Action Buttons from AI */
-    .ai-fund-suggestion {
-      margin-top: 12px;
-      padding: 12px;
-      background: rgba(138,233,141,0.1);
-      border: 1px solid rgba(138,233,141,0.3);
-      border-radius: 12px;
-    }
-    .ai-fund-suggestion .fund-title {
-      font-weight: 600;
-      margin-bottom: 4px;
-      color: #8AE98D;
-    }
-    .ai-fund-suggestion .fund-desc {
-      font-size: 0.85rem;
-      color: #aaa;
-      margin-bottom: 10px;
-    }
-    .create-fund-btn {
-      width: 100%;
-      padding: 10px;
-      background: #8AE98D;
-      border: none;
-      border-radius: 8px;
-      color: #0E121A;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
-    }
+    /* Fund Action from AI */
+    .ai-fund-suggestion { margin-top: 12px; padding: 14px; background: #F0FDF4; border: 1px solid #86EFAC; border-radius: 12px; }
+    .ai-fund-suggestion .fund-title { font-weight: 700; margin-bottom: 4px; color: #059669; }
+    .ai-fund-suggestion .fund-desc { font-size: 0.85rem; color: #047857; margin-bottom: 12px; }
+    .create-fund-btn { width: 100%; padding: 12px; background: #10B981; border: none; border-radius: 10px; color: #fff; font-weight: 700; cursor: pointer; font-family: inherit; }
 
     /* Empty State */
-    .empty-state {
-      text-align: center;
-      padding: 40px 20px;
-      color: #888;
-    }
+    .empty-state { text-align: center; padding: 40px 20px; }
     .empty-icon { font-size: 3rem; margin-bottom: 12px; opacity: 0.5; }
+    .empty-state p { color: #64748B; }
 
     /* FAB */
     .fab {
       position: fixed;
       bottom: 90px;
       right: 20px;
-      width: 56px;
-      height: 56px;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
-      background: #F7C846;
-      color: #0E121A;
+      background: #10B981;
+      color: #fff;
       border: none;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 12px rgba(247, 200, 70, 0.4);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
       z-index: 100;
-      font-size: 1.5rem;
+      font-size: 1.8rem;
+      font-weight: 300;
     }
+    .fab:hover { background: #059669; transform: scale(1.05); }
 
     /* Modal */
-    .modal {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.85);
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      z-index: 200;
-    }
+    .modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: flex-end; justify-content: center; z-index: 200; }
     .modal.hidden { display: none; }
-
-    .modal-content {
-      width: 100%;
-      max-width: 500px;
-      background: #1a1f2e;
-      border-radius: 20px 20px 0 0;
-      padding: 24px;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-    .modal-title { font-size: 1.25rem; font-weight: 700; }
-    .modal-close {
-      background: none;
-      border: none;
-      color: #888;
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
+    .modal-content { width: 100%; max-width: 500px; background: #fff; border-radius: 24px 24px 0 0; padding: 24px; max-height: 90vh; overflow-y: auto; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .modal-title { font-size: 1.25rem; font-weight: 800; color: #1E293B; }
+    .modal-close { background: none; border: none; color: #94A3B8; font-size: 1.5rem; cursor: pointer; }
 
     .type-toggle { display: flex; gap: 8px; margin-bottom: 16px; }
-    .type-btn {
-      flex: 1;
-      padding: 12px;
-      border: 2px solid rgba(255,255,255,0.1);
-      border-radius: 10px;
-      background: transparent;
-      color: #888;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
-    }
-    .type-btn.expense.active { border-color: #E74C3C; background: rgba(231,76,60,0.15); color: #E74C3C; }
-    .type-btn.income.active { border-color: #8AE98D; background: rgba(138,233,141,0.15); color: #8AE98D; }
+    .type-btn { flex: 1; padding: 14px; border: 2px solid #E2E8F0; border-radius: 12px; background: transparent; color: #64748B; font-size: 0.9rem; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+    .type-btn.expense.active { border-color: #EF4444; background: #FEF2F2; color: #EF4444; }
+    .type-btn.income.active { border-color: #10B981; background: #F0FDF4; color: #10B981; }
 
     .form-group { margin-bottom: 16px; }
-    .form-label {
-      display: block;
-      font-size: 0.8rem;
-      color: #888;
-      margin-bottom: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .form-input {
-      width: 100%;
-      padding: 14px 16px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 10px;
-      color: #fff;
-      font-size: 1rem;
-      font-family: inherit;
-    }
-    .form-input:focus { outline: none; border-color: #F7C846; }
-    .form-input::placeholder { color: #666; }
+    .form-label { display: block; font-size: 0.75rem; color: #64748B; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+    .form-input { width: 100%; padding: 14px 16px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; color: #1E293B; font-size: 1rem; font-family: inherit; }
+    .form-input:focus { outline: none; border-color: #10B981; }
+    .form-input::placeholder { color: #94A3B8; }
 
-    .category-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-    }
-    .category-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      padding: 12px 8px;
-      background: rgba(255,255,255,0.05);
-      border: 2px solid transparent;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-    .category-btn.active { border-color: #F7C846; background: rgba(247,200,70,0.15); }
+    .category-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .category-btn { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 12px 8px; background: #F8FAFC; border: 2px solid transparent; border-radius: 12px; cursor: pointer; transition: all 0.2s; }
+    .category-btn.active { border-color: #10B981; background: #F0FDF4; }
     .category-btn .emoji { font-size: 1.4rem; }
-    .category-btn .label { font-size: 0.65rem; color: #888; }
-    .category-btn.active .label { color: #F7C846; }
+    .category-btn .label { font-size: 0.65rem; color: #64748B; font-weight: 500; }
+    .category-btn.active .label { color: #10B981; }
 
-    .submit-btn {
-      width: 100%;
-      padding: 16px;
-      background: #F7C846;
-      border: none;
-      border-radius: 12px;
-      color: #0E121A;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: inherit;
-      margin-top: 16px;
-    }
+    .submit-btn { width: 100%; padding: 16px; background: #10B981; border: none; border-radius: 14px; color: #fff; font-size: 1rem; font-weight: 700; cursor: pointer; font-family: inherit; margin-top: 16px; }
+    .submit-btn:hover { background: #059669; }
 
-    .emoji-grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-    .emoji-btn {
-      padding: 12px;
-      background: rgba(255,255,255,0.05);
-      border: 2px solid transparent;
-      border-radius: 10px;
-      font-size: 1.5rem;
-      cursor: pointer;
-      text-align: center;
-    }
-    .emoji-btn.active { border-color: #F7C846; background: rgba(247,200,70,0.15); }
+    .emoji-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-bottom: 16px; }
+    .emoji-btn { padding: 12px; background: #F8FAFC; border: 2px solid transparent; border-radius: 12px; font-size: 1.5rem; cursor: pointer; text-align: center; }
+    .emoji-btn.active { border-color: #10B981; background: #F0FDF4; }
 
-    .color-grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 8px;
-    }
-    .color-btn {
-      width: 100%;
-      aspect-ratio: 1;
-      border-radius: 10px;
-      border: 3px solid transparent;
-      cursor: pointer;
-    }
-    .color-btn.active { border-color: #fff; }
+    .color-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+    .color-btn { width: 100%; aspect-ratio: 1; border-radius: 12px; border: 3px solid transparent; cursor: pointer; }
+    .color-btn.active { border-color: #1E293B; }
 
     /* Bottom nav */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: #0E121A;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      padding: 8px 0 20px;
-      z-index: 50;
-    }
-    body.light-theme .bottom-nav { background: #fff; border-color: rgba(0,0,0,0.1); }
-
-    .nav-items {
-      display: flex;
-      justify-content: space-around;
-      list-style: none;
-      max-width: 500px;
-      margin: 0 auto;
-    }
-    .nav-link {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-decoration: none;
-      color: #888;
-      padding: 8px 16px;
-    }
-    .nav-link.active { color: #F7C846; }
-    .nav-icon { font-size: 1.3rem; margin-bottom: 4px; }
-    .nav-label { font-size: 0.7rem; }
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid #E2E8F0; padding: 10px 0 24px; z-index: 50; }
+    .nav-items { display: flex; justify-content: space-around; list-style: none; max-width: 500px; margin: 0 auto; }
+    .nav-link { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #94A3B8; padding: 8px 24px; border-radius: 12px; transition: all 0.2s; }
+    .nav-link.active { color: #10B981; background: rgba(16, 185, 129, 0.1); }
+    .nav-icon { font-size: 1.4rem; margin-bottom: 4px; }
+    .nav-label { font-size: 0.7rem; font-weight: 600; }
   </style>
 </head>
 <body>
   <div class="header">
-    <h1>💰 Finance</h1>
+    <h1>💰 <span>Finance</span></h1>
     <p class="subtitle">Track, save & plan your money</p>
   </div>
 
@@ -666,15 +270,15 @@
   <div class="summary-row">
     <div class="summary-card">
       <div class="summary-label">Income</div>
-      <div class="summary-value green" id="totalIncome">0</div>
+      <div class="summary-value green" id="totalIncome">$0</div>
     </div>
     <div class="summary-card">
       <div class="summary-label">Expenses</div>
-      <div class="summary-value red" id="totalExpense">0</div>
+      <div class="summary-value red" id="totalExpense">$0</div>
     </div>
     <div class="summary-card">
       <div class="summary-label">Balance</div>
-      <div class="summary-value yellow" id="totalBalance">0</div>
+      <div class="summary-value blue" id="totalBalance">$0</div>
     </div>
   </div>
 
@@ -707,7 +311,7 @@
   <div id="funds-tab" class="tab-content">
     <div class="section-header">
       <span class="section-title">Your Savings Goals</span>
-      <span class="section-title" id="fundsTotal">0 saved</span>
+      <span class="section-title" id="fundsTotal">$0 saved</span>
     </div>
     <div class="funds-grid" id="fundsList"></div>
     <button class="add-fund-btn" onclick="openFundModal()">
@@ -719,7 +323,7 @@
   <div id="advisor-tab" class="tab-content">
     <div id="api-notice" class="api-setup" style="display: none;">
       <div class="api-setup-title">🔑 API Key Required</div>
-      <p style="font-size: 0.85rem; color: #888; margin-bottom: 12px;">
+      <p style="font-size: 0.85rem; color: #64748B; margin-bottom: 12px;">
         Add your Anthropic API key to chat with your AI Financial Advisor.
       </p>
       <input type="password" class="form-input" id="api-key-input" placeholder="sk-ant-api...">
@@ -746,7 +350,7 @@
     <div class="modal-content" onclick="event.stopPropagation()">
       <div class="modal-header">
         <span class="modal-title">Add Transaction</span>
-        <button class="modal-close" onclick="closeTransactionModal()">&times;</button>
+        <button class="modal-close" onclick="closeTransactionModal()">×</button>
       </div>
       <div class="type-toggle">
         <button class="type-btn expense active" onclick="setType('expense')">Expense</button>
@@ -773,7 +377,7 @@
     <div class="modal-content" onclick="event.stopPropagation()">
       <div class="modal-header">
         <span class="modal-title" id="fundModalTitle">Create Fund</span>
-        <button class="modal-close" onclick="closeFundModal()">&times;</button>
+        <button class="modal-close" onclick="closeFundModal()">×</button>
       </div>
       <div class="form-group">
         <label class="form-label">Fund Name</label>
@@ -800,7 +404,7 @@
     <div class="modal-content" onclick="event.stopPropagation()">
       <div class="modal-header">
         <span class="modal-title" id="addToFundTitle">Add to Fund</span>
-        <button class="modal-close" onclick="closeAddToFundModal()">&times;</button>
+        <button class="modal-close" onclick="closeAddToFundModal()">×</button>
       </div>
       <div class="form-group">
         <label class="form-label">Amount</label>
@@ -824,86 +428,73 @@
 
   <script src="../scripts/memory.js"></script>
   <script>
-    // Categories
     const categories = {
       expense: [
-        { id: 'food', emoji: '🍔', label: 'Food', color: '#ef5350' },
-        { id: 'transport', emoji: '🚗', label: 'Transport', color: '#ff7043' },
-        { id: 'shopping', emoji: '🛍️', label: 'Shopping', color: '#ab47bc' },
-        { id: 'utilities', emoji: '💡', label: 'Utilities', color: '#42a5f5' },
-        { id: 'groceries', emoji: '🛒', label: 'Groceries', color: '#26a69a' },
-        { id: 'entertainment', emoji: '🎬', label: 'Fun', color: '#5c6bc0' },
-        { id: 'health', emoji: '💊', label: 'Health', color: '#ec407a' },
-        { id: 'other', emoji: '📦', label: 'Other', color: '#78909c' }
+        { id: 'food', emoji: '🍔', label: 'Food', color: '#EF4444' },
+        { id: 'transport', emoji: '🚗', label: 'Transport', color: '#F97316' },
+        { id: 'shopping', emoji: '🛍️', label: 'Shopping', color: '#A855F7' },
+        { id: 'utilities', emoji: '💡', label: 'Utilities', color: '#3B82F6' },
+        { id: 'groceries', emoji: '🛒', label: 'Groceries', color: '#14B8A6' },
+        { id: 'entertainment', emoji: '🎬', label: 'Fun', color: '#6366F1' },
+        { id: 'health', emoji: '💊', label: 'Health', color: '#EC4899' },
+        { id: 'other', emoji: '📦', label: 'Other', color: '#64748B' }
       ],
       income: [
-        { id: 'salary', emoji: '💵', label: 'Salary', color: '#4caf50' },
-        { id: 'freelance', emoji: '💻', label: 'Freelance', color: '#66bb6a' },
-        { id: 'investment', emoji: '📈', label: 'Investment', color: '#43a047' },
-        { id: 'gift', emoji: '🎁', label: 'Gift', color: '#81c784' },
-        { id: 'refund', emoji: '↩️', label: 'Refund', color: '#a5d6a7' },
-        { id: 'bonus', emoji: '🏆', label: 'Bonus', color: '#2e7d32' },
-        { id: 'rental', emoji: '🏠', label: 'Rental', color: '#388e3c' },
-        { id: 'other', emoji: '📦', label: 'Other', color: '#78909c' }
+        { id: 'salary', emoji: '💵', label: 'Salary', color: '#10B981' },
+        { id: 'freelance', emoji: '💻', label: 'Freelance', color: '#22C55E' },
+        { id: 'investment', emoji: '📈', label: 'Investment', color: '#059669' },
+        { id: 'gift', emoji: '🎁', label: 'Gift', color: '#34D399' },
+        { id: 'refund', emoji: '↩️', label: 'Refund', color: '#6EE7B7' },
+        { id: 'bonus', emoji: '🏆', label: 'Bonus', color: '#047857' },
+        { id: 'rental', emoji: '🏠', label: 'Rental', color: '#10B981' },
+        { id: 'other', emoji: '📦', label: 'Other', color: '#64748B' }
       ]
     };
 
     const fundEmojis = ['🛡️', '📈', '🎯', '🏠', '✈️', '🚗', '💍', '📚', '💼', '🎮', '🏥', '👶'];
-    const fundColors = ['#8AE98D', '#F7C846', '#42a5f5', '#ab47bc', '#ef5350', '#ff7043'];
+    const fundColors = ['#10B981', '#3B82F6', '#F59E0B', '#A855F7', '#EF4444', '#EC4899'];
 
     let currentType = 'expense';
     let selectedCategory = null;
     let currentFilter = 'all';
     let selectedEmoji = '🛡️';
-    let selectedColor = '#8AE98D';
+    let selectedColor = '#10B981';
     let editingFundId = null;
     let fundAction = 'add';
     let currentFundId = null;
 
-    // Initialize
     function init() {
-      loadTheme();
       renderAll();
       checkApiKey();
       loadChatHistory();
       renderEmojiGrid();
       renderColorGrid();
-
-      document.getElementById('chat-input').addEventListener('keypress', e => {
-        if (e.key === 'Enter') sendMessage();
-      });
-      document.getElementById('descInput').addEventListener('keypress', e => {
-        if (e.key === 'Enter') addTransaction();
-      });
+      checkOpenTab();
+      document.getElementById('chat-input').addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
+      document.getElementById('descInput').addEventListener('keypress', e => { if (e.key === 'Enter') addTransaction(); });
     }
 
-    function loadTheme() {
-      const savedTheme = Memory.get('settings', 'theme');
-      if (savedTheme === 'light') document.body.classList.add('light-theme');
+    function checkOpenTab() {
+      const tab = localStorage.getItem('openTab');
+      if (tab) {
+        switchTab(tab);
+        localStorage.removeItem('openTab');
+      }
     }
 
-    // Tab switching
     function switchTab(tab) {
       document.querySelectorAll('.tab-btn').forEach((btn, i) => {
         btn.classList.remove('active');
-        if ((tab === 'transactions' && i === 0) || (tab === 'funds' && i === 1) || (tab === 'advisor' && i === 2)) {
-          btn.classList.add('active');
-        }
+        if ((tab === 'transactions' && i === 0) || (tab === 'funds' && i === 1) || (tab === 'advisor' && i === 2)) btn.classList.add('active');
       });
       document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
       document.getElementById(tab + '-tab').classList.add('active');
-
-      // Show/hide FAB
       document.getElementById('fab').style.display = tab === 'transactions' ? 'flex' : 'none';
     }
 
-    // Transactions
     function getTransactions() { return Memory.get('finance', 'transactions') || []; }
     function saveTransactions(t) { Memory.set('finance', 'transactions', t); }
-
-    function formatCurrency(amount) {
-      return new Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount);
-    }
+    function formatCurrency(amount) { return '$' + new Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount); }
 
     function formatDate(dateStr) {
       const date = new Date(dateStr);
@@ -923,10 +514,7 @@
     function calculateTotals() {
       const transactions = getTransactions();
       let income = 0, expense = 0;
-      transactions.forEach(t => {
-        if (t.type === 'income') income += t.amount;
-        else expense += t.amount;
-      });
+      transactions.forEach(t => { if (t.type === 'income') income += t.amount; else expense += t.amount; });
       document.getElementById('totalIncome').textContent = formatCurrency(income);
       document.getElementById('totalExpense').textContent = formatCurrency(expense);
       document.getElementById('totalBalance').textContent = formatCurrency(income - expense);
@@ -940,7 +528,6 @@
         const cat = getCategoryInfo(t.type, t.category);
         usedCategories.add(JSON.stringify({ id: t.category, emoji: cat.emoji, label: cat.label }));
       });
-
       let html = `<button class="filter-pill ${currentFilter === 'all' ? 'active' : ''}" onclick="setFilter('all')">All</button>`;
       usedCategories.forEach(catStr => {
         const cat = JSON.parse(catStr);
@@ -949,11 +536,7 @@
       container.innerHTML = html;
     }
 
-    function setFilter(filter) {
-      currentFilter = filter;
-      renderCategoryFilters();
-      renderTransactions();
-    }
+    function setFilter(filter) { currentFilter = filter; renderCategoryFilters(); renderTransactions(); }
 
     function renderTransactions() {
       const container = document.getElementById('transactionList');
@@ -961,385 +544,124 @@
       if (currentFilter !== 'all') transactions = transactions.filter(t => t.category === currentFilter);
       transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
       document.getElementById('transactionCount').textContent = `${transactions.length} item${transactions.length !== 1 ? 's' : ''}`;
-
-      if (transactions.length === 0) {
-        container.innerHTML = `<div class="empty-state"><div class="empty-icon">💸</div><p>No transactions yet</p></div>`;
-        return;
-      }
-
+      if (transactions.length === 0) { container.innerHTML = `<div class="empty-state"><div class="empty-icon">💸</div><p>No transactions yet</p></div>`; return; }
       const grouped = {};
-      transactions.forEach(t => {
-        const dateKey = formatDate(t.date);
-        if (!grouped[dateKey]) grouped[dateKey] = [];
-        grouped[dateKey].push(t);
-      });
-
+      transactions.forEach(t => { const dateKey = formatDate(t.date); if (!grouped[dateKey]) grouped[dateKey] = []; grouped[dateKey].push(t); });
       let html = '';
       Object.entries(grouped).forEach(([date, items]) => {
         html += `<div class="date-header">${date}</div>`;
         items.forEach(t => {
           const cat = getCategoryInfo(t.type, t.category);
-          html += `
-            <div class="transaction-item" data-id="${t.id}">
-              <div class="swipe-delete">Delete</div>
-              <div class="transaction-inner" ontouchstart="handleSwipeStart(event)" ontouchmove="handleSwipeMove(event)" ontouchend="handleSwipeEnd(event)">
-                <div class="transaction-icon" style="background: ${cat.color}20;">${cat.emoji}</div>
-                <div class="transaction-details">
-                  <div class="transaction-desc">${escapeHtml(t.description)}</div>
-                  <div class="transaction-meta"><span class="transaction-category">${cat.label}</span></div>
-                </div>
-                <div class="transaction-amount ${t.type}">${t.type === 'income' ? '+' : '-'}${formatCurrency(t.amount)}</div>
-              </div>
-            </div>`;
+          html += `<div class="transaction-item" data-id="${t.id}"><div class="swipe-delete">Delete</div><div class="transaction-inner" ontouchstart="handleSwipeStart(event)" ontouchmove="handleSwipeMove(event)" ontouchend="handleSwipeEnd(event)"><div class="transaction-icon" style="background: ${cat.color}15;">${cat.emoji}</div><div class="transaction-details"><div class="transaction-desc">${escapeHtml(t.description)}</div><div class="transaction-meta"><span class="transaction-category">${cat.label}</span></div></div><div class="transaction-amount ${t.type}">${t.type === 'income' ? '+' : '-'}${formatCurrency(t.amount)}</div></div></div>`;
         });
       });
       container.innerHTML = html;
     }
 
-    function escapeHtml(text) {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
-    }
+    function escapeHtml(text) { const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
 
-    // Swipe handling
     let swipeStartX = 0, swipeCurrentX = 0, swipingItem = null, swipingInner = null;
-
-    function handleSwipeStart(e) {
-      swipeStartX = e.touches[0].clientX;
-      swipingInner = e.currentTarget;
-      swipingItem = swipingInner.closest('.transaction-item');
-    }
-
+    function handleSwipeStart(e) { swipeStartX = e.touches[0].clientX; swipingInner = e.currentTarget; swipingItem = swipingInner.closest('.transaction-item'); }
     function handleSwipeMove(e) {
       if (!swipingInner) return;
       swipeCurrentX = e.touches[0].clientX;
       const diff = swipeCurrentX - swipeStartX;
-      if (diff < 0) {
-        swipingInner.style.transform = `translateX(${Math.max(diff, -100)}px)`;
-        swipingItem.querySelector('.swipe-delete').style.opacity = Math.min(1, Math.abs(diff) / 60);
-      }
+      if (diff < 0) { swipingInner.style.transform = `translateX(${Math.max(diff, -100)}px)`; swipingItem.querySelector('.swipe-delete').style.opacity = Math.min(1, Math.abs(diff) / 60); }
     }
-
     function handleSwipeEnd(e) {
       if (!swipingInner) return;
       const diff = swipeCurrentX - swipeStartX;
-      if (diff < -80) {
-        swipingItem.style.transition = 'transform 0.3s, opacity 0.3s';
-        swipingItem.style.transform = 'translateX(-100%)';
-        swipingItem.style.opacity = '0';
-        const id = swipingItem.dataset.id;
-        setTimeout(() => deleteTransaction(id), 300);
-      } else {
-        swipingInner.style.transform = 'translateX(0)';
-        swipingItem.querySelector('.swipe-delete').style.opacity = 0;
-      }
-      swipingItem = null;
-      swipingInner = null;
+      if (diff < -80) { swipingItem.style.transition = 'transform 0.3s, opacity 0.3s'; swipingItem.style.transform = 'translateX(-100%)'; swipingItem.style.opacity = '0'; const id = swipingItem.dataset.id; setTimeout(() => deleteTransaction(id), 300); }
+      else { swipingInner.style.transform = 'translateX(0)'; swipingItem.querySelector('.swipe-delete').style.opacity = 0; }
+      swipingItem = null; swipingInner = null;
     }
 
-    function deleteTransaction(id) {
-      const transactions = getTransactions();
-      const index = transactions.findIndex(t => t.id === id);
-      if (index !== -1) {
-        transactions.splice(index, 1);
-        saveTransactions(transactions);
-        renderAll();
-      }
-    }
+    function deleteTransaction(id) { const transactions = getTransactions(); const index = transactions.findIndex(t => t.id === id); if (index !== -1) { transactions.splice(index, 1); saveTransactions(transactions); renderAll(); } }
 
-    // Transaction Modal
-    function openTransactionModal() {
-      document.getElementById('transactionModal').classList.remove('hidden');
-      renderCategoryGrid();
-      document.getElementById('amountInput').focus();
-    }
-
-    function closeTransactionModal(e) {
-      if (!e || e.target === e.currentTarget) {
-        document.getElementById('transactionModal').classList.add('hidden');
-        resetTransactionForm();
-      }
-    }
-
-    function resetTransactionForm() {
-      document.getElementById('amountInput').value = '';
-      document.getElementById('descInput').value = '';
-      selectedCategory = null;
-      setType('expense');
-    }
-
-    function setType(type) {
-      currentType = type;
-      selectedCategory = null;
-      document.querySelectorAll('.type-btn').forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.classList.contains(type)) btn.classList.add('active');
-      });
-      renderCategoryGrid();
-    }
-
-    function renderCategoryGrid() {
-      const container = document.getElementById('categoryGrid');
-      const cats = categories[currentType];
-      container.innerHTML = cats.map(cat => `
-        <button class="category-btn ${selectedCategory === cat.id ? 'active' : ''}" onclick="selectCategory('${cat.id}')">
-          <span class="emoji">${cat.emoji}</span>
-          <span class="label">${cat.label}</span>
-        </button>
-      `).join('');
-    }
-
-    function selectCategory(id) {
-      selectedCategory = id;
-      renderCategoryGrid();
-    }
+    function openTransactionModal() { document.getElementById('transactionModal').classList.remove('hidden'); renderCategoryGrid(); document.getElementById('amountInput').focus(); }
+    function closeTransactionModal(e) { if (!e || e.target === e.currentTarget) { document.getElementById('transactionModal').classList.add('hidden'); resetTransactionForm(); } }
+    function resetTransactionForm() { document.getElementById('amountInput').value = ''; document.getElementById('descInput').value = ''; selectedCategory = null; setType('expense'); }
+    function setType(type) { currentType = type; selectedCategory = null; document.querySelectorAll('.type-btn').forEach(btn => { btn.classList.remove('active'); if (btn.classList.contains(type)) btn.classList.add('active'); }); renderCategoryGrid(); }
+    function renderCategoryGrid() { const container = document.getElementById('categoryGrid'); const cats = categories[currentType]; container.innerHTML = cats.map(cat => `<button class="category-btn ${selectedCategory === cat.id ? 'active' : ''}" onclick="selectCategory('${cat.id}')"><span class="emoji">${cat.emoji}</span><span class="label">${cat.label}</span></button>`).join(''); }
+    function selectCategory(id) { selectedCategory = id; renderCategoryGrid(); }
 
     function addTransaction() {
       const amount = parseFloat(document.getElementById('amountInput').value);
       const description = document.getElementById('descInput').value.trim();
       if (!amount || amount <= 0 || !description) return;
       if (!selectedCategory) selectedCategory = 'other';
-
       const transactions = getTransactions();
-      transactions.push({
-        id: Date.now().toString(),
-        type: currentType,
-        amount,
-        description,
-        category: selectedCategory,
-        date: new Date().toISOString()
-      });
+      transactions.push({ id: Date.now().toString(), type: currentType, amount, description, category: selectedCategory, date: new Date().toISOString() });
       saveTransactions(transactions);
       closeTransactionModal();
       renderAll();
     }
 
-    // Funds
     function getFunds() { return Memory.get('finance', 'funds') || []; }
     function saveFunds(f) { Memory.set('finance', 'funds', f); }
 
     function renderFunds() {
       const container = document.getElementById('fundsList');
       const funds = getFunds();
-
       const totalSaved = funds.reduce((sum, f) => sum + (f.current || 0), 0);
       document.getElementById('fundsTotal').textContent = formatCurrency(totalSaved) + ' saved';
-
-      if (funds.length === 0) {
-        container.innerHTML = `<div class="empty-state"><div class="empty-icon">🎯</div><p>No funds yet</p><p style="font-size:0.8rem;margin-top:4px;">Create your first savings goal!</p></div>`;
-        return;
-      }
-
+      if (funds.length === 0) { container.innerHTML = `<div class="empty-state"><div class="empty-icon">🎯</div><p>No funds yet</p><p style="font-size:0.8rem;margin-top:4px;">Create your first savings goal!</p></div>`; return; }
       container.innerHTML = funds.map(fund => {
         const progress = fund.target > 0 ? Math.min(100, (fund.current / fund.target) * 100) : 0;
-        return `
-          <div class="fund-card" data-id="${fund.id}">
-            <div class="fund-header">
-              <div class="fund-icon" style="background: ${fund.color}20;">${fund.emoji}</div>
-              <div class="fund-info">
-                <div class="fund-name">${escapeHtml(fund.name)}</div>
-                <div class="fund-meta">${progress.toFixed(0)}% complete</div>
-              </div>
-            </div>
-            <div class="fund-progress">
-              <div class="progress-bar">
-                <div class="progress-fill" style="width: ${progress}%; background: ${fund.color};"></div>
-              </div>
-              <div class="progress-stats">
-                <span class="progress-current">${formatCurrency(fund.current || 0)}</span>
-                <span>of ${formatCurrency(fund.target)}</span>
-              </div>
-            </div>
-            <div class="fund-actions">
-              <button class="fund-btn add" onclick="openAddToFund('${fund.id}', 'add')">+ Add</button>
-              <button class="fund-btn withdraw" onclick="openAddToFund('${fund.id}', 'withdraw')">- Withdraw</button>
-            </div>
-          </div>
-        `;
+        return `<div class="fund-card" data-id="${fund.id}"><div class="fund-header"><div class="fund-icon" style="background: ${fund.color}15;">${fund.emoji}</div><div class="fund-info"><div class="fund-name">${escapeHtml(fund.name)}</div><div class="fund-meta">${progress.toFixed(0)}% complete</div></div></div><div class="fund-progress"><div class="progress-bar"><div class="progress-fill" style="width: ${progress}%; background: ${fund.color};"></div></div><div class="progress-stats"><span class="progress-current">${formatCurrency(fund.current || 0)}</span><span>of ${formatCurrency(fund.target)}</span></div></div><div class="fund-actions"><button class="fund-btn add" onclick="openAddToFund('${fund.id}', 'add')">+ Add</button><button class="fund-btn withdraw" onclick="openAddToFund('${fund.id}', 'withdraw')">- Withdraw</button></div></div>`;
       }).join('');
     }
 
-    function renderEmojiGrid() {
-      document.getElementById('emojiGrid').innerHTML = fundEmojis.map(e =>
-        `<button class="emoji-btn ${selectedEmoji === e ? 'active' : ''}" onclick="selectEmoji('${e}')">${e}</button>`
-      ).join('');
-    }
-
-    function renderColorGrid() {
-      document.getElementById('colorGrid').innerHTML = fundColors.map(c =>
-        `<button class="color-btn ${selectedColor === c ? 'active' : ''}" style="background: ${c};" onclick="selectColor('${c}')"></button>`
-      ).join('');
-    }
-
+    function renderEmojiGrid() { document.getElementById('emojiGrid').innerHTML = fundEmojis.map(e => `<button class="emoji-btn ${selectedEmoji === e ? 'active' : ''}" onclick="selectEmoji('${e}')">${e}</button>`).join(''); }
+    function renderColorGrid() { document.getElementById('colorGrid').innerHTML = fundColors.map(c => `<button class="color-btn ${selectedColor === c ? 'active' : ''}" style="background: ${c};" onclick="selectColor('${c}')"></button>`).join(''); }
     function selectEmoji(e) { selectedEmoji = e; renderEmojiGrid(); }
     function selectColor(c) { selectedColor = c; renderColorGrid(); }
 
     function openFundModal(fundId = null) {
       editingFundId = fundId;
-      if (fundId) {
-        const fund = getFunds().find(f => f.id === fundId);
-        if (fund) {
-          document.getElementById('fundModalTitle').textContent = 'Edit Fund';
-          document.getElementById('fundNameInput').value = fund.name;
-          document.getElementById('fundTargetInput').value = fund.target;
-          selectedEmoji = fund.emoji;
-          selectedColor = fund.color;
-        }
-      } else {
-        document.getElementById('fundModalTitle').textContent = 'Create Fund';
-        document.getElementById('fundNameInput').value = '';
-        document.getElementById('fundTargetInput').value = '';
-        selectedEmoji = '🛡️';
-        selectedColor = '#8AE98D';
-      }
-      renderEmojiGrid();
-      renderColorGrid();
-      document.getElementById('fundModal').classList.remove('hidden');
+      if (fundId) { const fund = getFunds().find(f => f.id === fundId); if (fund) { document.getElementById('fundModalTitle').textContent = 'Edit Fund'; document.getElementById('fundNameInput').value = fund.name; document.getElementById('fundTargetInput').value = fund.target; selectedEmoji = fund.emoji; selectedColor = fund.color; } }
+      else { document.getElementById('fundModalTitle').textContent = 'Create Fund'; document.getElementById('fundNameInput').value = ''; document.getElementById('fundTargetInput').value = ''; selectedEmoji = '🛡️'; selectedColor = '#10B981'; }
+      renderEmojiGrid(); renderColorGrid(); document.getElementById('fundModal').classList.remove('hidden');
     }
 
-    function closeFundModal(e) {
-      if (!e || e.target === e.currentTarget) {
-        document.getElementById('fundModal').classList.add('hidden');
-        editingFundId = null;
-      }
-    }
+    function closeFundModal(e) { if (!e || e.target === e.currentTarget) { document.getElementById('fundModal').classList.add('hidden'); editingFundId = null; } }
 
     function saveFund() {
       const name = document.getElementById('fundNameInput').value.trim();
       const target = parseFloat(document.getElementById('fundTargetInput').value);
       if (!name || !target) return;
-
       const funds = getFunds();
-      if (editingFundId) {
-        const fund = funds.find(f => f.id === editingFundId);
-        if (fund) {
-          fund.name = name;
-          fund.target = target;
-          fund.emoji = selectedEmoji;
-          fund.color = selectedColor;
-        }
-      } else {
-        funds.push({
-          id: Date.now().toString(),
-          name,
-          target,
-          current: 0,
-          emoji: selectedEmoji,
-          color: selectedColor,
-          createdAt: new Date().toISOString()
-        });
-      }
-      saveFunds(funds);
-      closeFundModal();
-      renderFunds();
+      if (editingFundId) { const fund = funds.find(f => f.id === editingFundId); if (fund) { fund.name = name; fund.target = target; fund.emoji = selectedEmoji; fund.color = selectedColor; } }
+      else { funds.push({ id: Date.now().toString(), name, target, current: 0, emoji: selectedEmoji, color: selectedColor, createdAt: new Date().toISOString() }); }
+      saveFunds(funds); closeFundModal(); renderFunds();
     }
 
-    function openAddToFund(fundId, action) {
-      currentFundId = fundId;
-      fundAction = action;
-      const fund = getFunds().find(f => f.id === fundId);
-      document.getElementById('addToFundTitle').textContent = action === 'add' ? `Add to ${fund.name}` : `Withdraw from ${fund.name}`;
-      document.getElementById('addToFundAmount').value = '';
-      setFundAction(action);
-      document.getElementById('addToFundModal').classList.remove('hidden');
-    }
-
-    function closeAddToFundModal(e) {
-      if (!e || e.target === e.currentTarget) {
-        document.getElementById('addToFundModal').classList.add('hidden');
-      }
-    }
-
-    function setFundAction(action) {
-      fundAction = action;
-      document.getElementById('fundAddBtn').classList.toggle('active', action === 'add');
-      document.getElementById('fundWithdrawBtn').classList.toggle('active', action === 'withdraw');
-    }
+    function openAddToFund(fundId, action) { currentFundId = fundId; fundAction = action; const fund = getFunds().find(f => f.id === fundId); document.getElementById('addToFundTitle').textContent = action === 'add' ? `Add to ${fund.name}` : `Withdraw from ${fund.name}`; document.getElementById('addToFundAmount').value = ''; setFundAction(action); document.getElementById('addToFundModal').classList.remove('hidden'); }
+    function closeAddToFundModal(e) { if (!e || e.target === e.currentTarget) { document.getElementById('addToFundModal').classList.add('hidden'); } }
+    function setFundAction(action) { fundAction = action; document.getElementById('fundAddBtn').classList.toggle('active', action === 'add'); document.getElementById('fundWithdrawBtn').classList.toggle('active', action === 'withdraw'); }
 
     function updateFundAmount() {
       const amount = parseFloat(document.getElementById('addToFundAmount').value);
       if (!amount || amount <= 0) return;
-
       const funds = getFunds();
       const fund = funds.find(f => f.id === currentFundId);
-      if (fund) {
-        if (fundAction === 'add') {
-          fund.current = (fund.current || 0) + amount;
-        } else {
-          fund.current = Math.max(0, (fund.current || 0) - amount);
-        }
-        saveFunds(funds);
-      }
-      closeAddToFundModal();
-      renderFunds();
+      if (fund) { if (fundAction === 'add') { fund.current = (fund.current || 0) + amount; } else { fund.current = Math.max(0, (fund.current || 0) - amount); } saveFunds(funds); }
+      closeAddToFundModal(); renderFunds();
     }
 
-    // Create fund from AI suggestion
-    function createFundFromAI(name, target, emoji, color) {
-      const funds = getFunds();
-      funds.push({
-        id: Date.now().toString(),
-        name,
-        target,
-        current: 0,
-        emoji,
-        color,
-        createdAt: new Date().toISOString()
-      });
-      saveFunds(funds);
-      renderFunds();
-      switchTab('funds');
-    }
+    function createFundFromAI(name, target, emoji, color) { const funds = getFunds(); funds.push({ id: Date.now().toString(), name, target, current: 0, emoji, color, createdAt: new Date().toISOString() }); saveFunds(funds); renderFunds(); switchTab('funds'); }
 
-    // AI Chat
-    function checkApiKey() {
-      const apiKey = Memory.get('settings', 'anthropic_api_key');
-      document.getElementById('api-notice').style.display = apiKey ? 'none' : 'block';
-      document.getElementById('chat-container').style.display = apiKey ? 'flex' : 'none';
-    }
-
-    function saveApiKey() {
-      const key = document.getElementById('api-key-input').value.trim();
-      if (!key) return;
-      Memory.set('settings', 'anthropic_api_key', key);
-      document.getElementById('api-key-input').value = '';
-      checkApiKey();
-      loadChatHistory();
-    }
-
-    function clearApiKey() {
-      Memory.set('settings', 'anthropic_api_key', null);
-      checkApiKey();
-    }
-
+    function checkApiKey() { const apiKey = Memory.get('settings', 'anthropic_api_key'); document.getElementById('api-notice').style.display = apiKey ? 'none' : 'block'; document.getElementById('chat-container').style.display = apiKey ? 'flex' : 'none'; }
+    function saveApiKey() { const key = document.getElementById('api-key-input').value.trim(); if (!key) return; Memory.set('settings', 'anthropic_api_key', key); document.getElementById('api-key-input').value = ''; checkApiKey(); loadChatHistory(); }
+    function clearApiKey() { Memory.set('settings', 'anthropic_api_key', null); checkApiKey(); }
     function getChatHistory() { return Memory.get('finance', 'chatHistory') || []; }
     function saveChatHistory(h) { Memory.set('finance', 'chatHistory', h); }
 
     function loadChatHistory() {
       const history = getChatHistory();
       const container = document.getElementById('chat-messages');
-
-      if (history.length === 0) {
-        container.innerHTML = `
-          <div class="ai-message">
-            <strong>👋 Hi! I'm your AI Financial Advisor.</strong><br><br>
-            I can help you with:<br>
-            • Planning your financial goals<br>
-            • Creating savings funds<br>
-            • Budgeting advice<br>
-            • Investment basics<br><br>
-            What would you like to work on today?
-          </div>
-        `;
-        return;
-      }
-
-      container.innerHTML = history.map(m => `
-        <div class="${m.role === 'user' ? 'user-message' : 'ai-message'} message">
-          ${m.content}
-        </div>
-      `).join('');
+      if (history.length === 0) { container.innerHTML = `<div class="ai-message"><strong>👋 Hi! I'm your AI Financial Advisor.</strong><br><br>I can help you with:<br>• Planning your financial goals<br>• Creating savings funds<br>• Budgeting advice<br>• Investment basics<br><br>What would you like to work on today?</div>`; return; }
+      container.innerHTML = history.map(m => `<div class="${m.role === 'user' ? 'user-message' : 'ai-message'} message">${m.content}</div>`).join('');
       container.scrollTop = container.scrollHeight;
     }
 
@@ -1347,34 +669,21 @@
       const input = document.getElementById('chat-input');
       const message = input.value.trim();
       if (!message) return;
-
       const apiKey = Memory.get('settings', 'anthropic_api_key');
-      if (!apiKey) {
-        checkApiKey();
-        return;
-      }
-
-      // Add user message
+      if (!apiKey) { checkApiKey(); return; }
       const history = getChatHistory();
       history.push({ role: 'user', content: message });
       saveChatHistory(history);
-
       input.value = '';
       loadChatHistory();
-
-      // Show typing indicator
       const container = document.getElementById('chat-messages');
       container.innerHTML += `<div class="typing-indicator" id="typing"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
       container.scrollTop = container.scrollHeight;
 
-      // Get financial context
       const transactions = getTransactions();
       const funds = getFunds();
       let income = 0, expense = 0;
-      transactions.forEach(t => {
-        if (t.type === 'income') income += t.amount;
-        else expense += t.amount;
-      });
+      transactions.forEach(t => { if (t.type === 'income') income += t.amount; else expense += t.amount; });
 
       const systemPrompt = `You are a friendly, personalized AI Financial Advisor. You help users plan their finances, create savings goals, and give practical advice.
 
@@ -1387,68 +696,39 @@ USER'S FINANCIAL CONTEXT:
 IMPORTANT CAPABILITIES:
 1. When the user wants to create a savings fund/goal, suggest one and include this EXACT format in your response:
    [CREATE_FUND:name|target|emoji|color]
-   Example: [CREATE_FUND:Emergency Fund|50000|🛡️|#8AE98D]
+   Example: [CREATE_FUND:Emergency Fund|50000|🛡️|#10B981]
 
 2. Available emojis: 🛡️ 📈 🎯 🏠 ✈️ 🚗 💍 📚 💼 🎮 🏥 👶
-3. Available colors: #8AE98D (green), #F7C846 (yellow), #42a5f5 (blue), #ab47bc (purple), #ef5350 (red), #ff7043 (orange)
+3. Available colors: #10B981 (green), #3B82F6 (blue), #F59E0B (amber), #A855F7 (purple), #EF4444 (red), #EC4899 (pink)
 
 Be conversational, encouraging, and practical. Give specific, actionable advice based on their numbers.`;
 
       const messages = history.map(m => ({ role: m.role, content: m.content }));
-
       try {
         const response = await fetch('https://api.anthropic.com/v1/messages', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': apiKey,
-            'anthropic-version': '2023-06-01',
-            'anthropic-dangerous-direct-browser-access': 'true'
-          },
-          body: JSON.stringify({
-            model: 'claude-sonnet-4-20250514',
-            max_tokens: 1000,
-            system: systemPrompt,
-            messages
-          })
+          headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+          body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, system: systemPrompt, messages })
         });
-
         if (!response.ok) throw new Error(`API error: ${response.status}`);
-
         const data = await response.json();
         let aiResponse = data.content[0].text;
-
-        // Check for fund creation command
         const fundMatch = aiResponse.match(/\[CREATE_FUND:(.+?)\|(\d+)\|(.+?)\|(.+?)\]/);
         if (fundMatch) {
           const [, name, target, emoji, color] = fundMatch;
           aiResponse = aiResponse.replace(/\[CREATE_FUND:.+?\]/, '');
-          aiResponse += `<div class="ai-fund-suggestion">
-            <div class="fund-title">${emoji} ${name}</div>
-            <div class="fund-desc">Target: ${formatCurrency(parseFloat(target))}</div>
-            <button class="create-fund-btn" onclick="createFundFromAI('${name}', ${target}, '${emoji}', '${color}')">✓ Create This Fund</button>
-          </div>`;
+          aiResponse += `<div class="ai-fund-suggestion"><div class="fund-title">${emoji} ${name}</div><div class="fund-desc">Target: ${formatCurrency(parseFloat(target))}</div><button class="create-fund-btn" onclick="createFundFromAI('${name}', ${target}, '${emoji}', '${color}')">✓ Create This Fund</button></div>`;
         }
-
         history.push({ role: 'assistant', content: aiResponse });
         saveChatHistory(history);
-
       } catch (error) {
         history.push({ role: 'assistant', content: `Sorry, I encountered an error: ${error.message}. Please check your API key.` });
         saveChatHistory(history);
       }
-
       loadChatHistory();
     }
 
-    function renderAll() {
-      calculateTotals();
-      renderCategoryFilters();
-      renderTransactions();
-      renderFunds();
-    }
-
-    // Init
+    function renderAll() { calculateTotals(); renderCategoryFilters(); renderTransactions(); renderFunds(); }
     document.addEventListener('DOMContentLoaded', init);
   </script>
 </body>

@@ -3,153 +3,134 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#0E121A">
+  <meta name="theme-color" content="#FFFFFF">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="description" content="Your personal AI-powered finance manager">
   <title>Finance App</title>
 
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-  <link rel="stylesheet" href="styles/app.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Inter', -apple-system, sans-serif;
-      background: #0E121A;
+      background: #FFFFFF;
       min-height: 100vh;
-      color: #fff;
+      color: #1a1a1a;
       padding: 20px;
       padding-bottom: 100px;
-      transition: background 0.3s, color 0.3s;
     }
 
-    body.light-theme { background: #F5F5F7; color: #1a1a1a; }
-    body.light-theme .balance-card { background: linear-gradient(135deg, #F7C846 0%, #ff9500 100%); }
-    body.light-theme .stat-card { background: #fff; border-color: rgba(0,0,0,0.1); }
-    body.light-theme .stat-label { color: #666; }
-    body.light-theme .quick-action { background: #fff; border-color: rgba(0,0,0,0.1); }
-    body.light-theme .quick-action span:last-child { color: #666; }
-    body.light-theme .tip-card { background: #fff; border-color: rgba(0,0,0,0.1); }
-    body.light-theme .tip-text { color: #666; }
-
-    .theme-toggle {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: none;
-      background: rgba(255,255,255,0.1);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.3rem;
-      transition: all 0.3s;
-    }
-    .theme-toggle:hover { background: rgba(255,255,255,0.2); }
-    body.light-theme .theme-toggle { background: rgba(0,0,0,0.08); }
-
-    .header { text-align: center; padding: 40px 0 30px; }
-    .greeting { color: #888; font-size: 0.9rem; margin-bottom: 8px; }
-    .app-title { font-size: 2rem; font-weight: 800; }
-    .app-title span { color: #F7C846; }
+    .header { text-align: center; padding: 30px 0 24px; }
+    .greeting { color: #666; font-size: 0.9rem; margin-bottom: 6px; }
+    .app-title { font-size: 2rem; font-weight: 800; color: #1a1a1a; }
+    .app-title span { color: #10B981; }
 
     .balance-card {
-      background: linear-gradient(135deg, #1a2a1a 0%, #0E121A 100%);
-      border-radius: 20px;
-      padding: 28px;
+      background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+      border-radius: 24px;
+      padding: 32px 24px;
       margin-bottom: 20px;
       text-align: center;
-      border: 1px solid rgba(138,233,141,0.2);
+      box-shadow: 0 10px 40px rgba(16, 185, 129, 0.3);
     }
-    .balance-label { font-size: 0.85rem; color: #888; margin-bottom: 8px; }
-    .balance-amount { font-size: 2.5rem; font-weight: 800; color: #8AE98D; }
-    .balance-trend { margin-top: 8px; font-size: 0.85rem; color: #8AE98D; }
+    .balance-label { font-size: 0.85rem; color: rgba(255,255,255,0.8); margin-bottom: 8px; font-weight: 500; }
+    .balance-amount { font-size: 2.8rem; font-weight: 800; color: #fff; }
+    .balance-trend { margin-top: 10px; font-size: 0.85rem; color: rgba(255,255,255,0.9); font-weight: 500; }
 
     .stats-row {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 12px;
-      margin-bottom: 24px;
+      margin-bottom: 28px;
     }
 
     .stat-card {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 14px;
-      padding: 16px;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 18px;
     }
-    .stat-label { font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-    .stat-value { font-size: 1.3rem; font-weight: 700; }
-    .stat-value.green { color: #8AE98D; }
-    .stat-value.red { color: #E74C3C; }
-    .stat-value.yellow { color: #F7C846; }
+    .stat-label { font-size: 0.7rem; color: #64748B; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; font-weight: 600; }
+    .stat-value { font-size: 1.4rem; font-weight: 700; color: #1E293B; }
+    .stat-value.green { color: #10B981; }
+    .stat-value.red { color: #EF4444; }
+    .stat-value.blue { color: #3B82F6; }
 
     .section-title {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: #888;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #64748B;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .quick-actions {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      margin-bottom: 24px;
+      gap: 12px;
+      margin-bottom: 28px;
     }
 
     .quick-action {
       display: flex;
       align-items: center;
-      gap: 14px;
-      padding: 16px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 14px;
+      gap: 16px;
+      padding: 18px;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 16px;
       text-decoration: none;
       color: inherit;
       transition: all 0.2s;
     }
-    .quick-action:hover { border-color: rgba(255,255,255,0.2); transform: translateX(4px); }
-    .quick-action .icon { font-size: 1.5rem; }
+    .quick-action:hover { background: #F1F5F9; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    .quick-action:active { transform: translateY(0); }
+    .quick-action .icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+    }
+    .quick-action .icon.green { background: rgba(16, 185, 129, 0.1); }
+    .quick-action .icon.blue { background: rgba(59, 130, 246, 0.1); }
+    .quick-action .icon.purple { background: rgba(139, 92, 246, 0.1); }
     .quick-action .text { flex: 1; }
-    .quick-action .title { font-weight: 600; font-size: 1rem; margin-bottom: 2px; }
-    .quick-action .desc { font-size: 0.8rem; color: #888; }
-    .quick-action .arrow { color: #888; font-size: 1.2rem; }
+    .quick-action .title { font-weight: 600; font-size: 1rem; color: #1E293B; margin-bottom: 2px; }
+    .quick-action .desc { font-size: 0.8rem; color: #64748B; }
+    .quick-action .arrow { color: #94A3B8; font-size: 1.2rem; }
 
     .tip-card {
-      background: rgba(247,200,70,0.1);
-      border: 1px solid rgba(247,200,70,0.2);
-      border-radius: 14px;
-      padding: 16px;
+      background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+      border-radius: 16px;
+      padding: 18px;
       display: flex;
       align-items: flex-start;
-      gap: 12px;
+      gap: 14px;
     }
-    .tip-icon { font-size: 1.3rem; }
+    .tip-icon { font-size: 1.5rem; }
     .tip-content { flex: 1; }
-    .tip-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; color: #F7C846; }
-    .tip-text { font-size: 0.85rem; color: #aaa; line-height: 1.4; }
+    .tip-title { font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #92400E; }
+    .tip-text { font-size: 0.85rem; color: #A16207; line-height: 1.5; }
 
     .bottom-nav {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      background: #0E121A;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      padding: 8px 0 20px;
+      background: #FFFFFF;
+      border-top: 1px solid #E2E8F0;
+      padding: 10px 0 24px;
       z-index: 50;
     }
-    body.light-theme .bottom-nav { background: #fff; border-color: rgba(0,0,0,0.1); }
 
     .nav-items {
       display: flex;
@@ -163,17 +144,17 @@
       flex-direction: column;
       align-items: center;
       text-decoration: none;
-      color: #888;
-      padding: 8px 16px;
+      color: #94A3B8;
+      padding: 8px 24px;
+      border-radius: 12px;
+      transition: all 0.2s;
     }
-    .nav-link.active { color: #F7C846; }
-    .nav-icon { font-size: 1.3rem; margin-bottom: 4px; }
-    .nav-label { font-size: 0.7rem; }
+    .nav-link.active { color: #10B981; background: rgba(16, 185, 129, 0.1); }
+    .nav-icon { font-size: 1.4rem; margin-bottom: 4px; }
+    .nav-label { font-size: 0.7rem; font-weight: 600; }
   </style>
 </head>
 <body>
-  <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">🌙</button>
-
   <div class="header">
     <p class="greeting" id="greeting">Good morning</p>
     <h1 class="app-title">My <span>Finance</span></h1>
@@ -182,7 +163,7 @@
   <!-- Balance Card -->
   <div class="balance-card">
     <div class="balance-label">Current Balance</div>
-    <div class="balance-amount" id="balance">0</div>
+    <div class="balance-amount" id="balance">$0</div>
     <div class="balance-trend" id="trend"></div>
   </div>
 
@@ -190,18 +171,18 @@
   <div class="stats-row">
     <div class="stat-card">
       <div class="stat-label">Income</div>
-      <div class="stat-value green" id="income">0</div>
+      <div class="stat-value green" id="income">$0</div>
     </div>
     <div class="stat-card">
       <div class="stat-label">Expenses</div>
-      <div class="stat-value red" id="expenses">0</div>
+      <div class="stat-value red" id="expenses">$0</div>
     </div>
     <div class="stat-card">
       <div class="stat-label">Funds Saved</div>
-      <div class="stat-value yellow" id="fundsSaved">0</div>
+      <div class="stat-value blue" id="fundsSaved">$0</div>
     </div>
     <div class="stat-card">
-      <div class="stat-label">Active Funds</div>
+      <div class="stat-label">Active Goals</div>
       <div class="stat-value" id="fundsCount">0</div>
     </div>
   </div>
@@ -210,23 +191,23 @@
   <div class="section-title">Quick Actions</div>
   <div class="quick-actions">
     <a href="finance/summary.html" class="quick-action">
-      <span class="icon">💸</span>
+      <span class="icon green">💸</span>
       <div class="text">
         <div class="title">Add Transaction</div>
         <div class="desc">Record income or expense</div>
       </div>
       <span class="arrow">→</span>
     </a>
-    <a href="finance/summary.html#funds" class="quick-action" onclick="localStorage.setItem('openTab', 'funds')">
-      <span class="icon">🎯</span>
+    <a href="finance/summary.html" class="quick-action" onclick="localStorage.setItem('openTab', 'funds')">
+      <span class="icon blue">🎯</span>
       <div class="text">
         <div class="title">Manage Funds</div>
         <div class="desc">Track your savings goals</div>
       </div>
       <span class="arrow">→</span>
     </a>
-    <a href="finance/summary.html#advisor" class="quick-action" onclick="localStorage.setItem('openTab', 'advisor')">
-      <span class="icon">🤖</span>
+    <a href="finance/summary.html" class="quick-action" onclick="localStorage.setItem('openTab', 'advisor')">
+      <span class="icon purple">🤖</span>
       <div class="text">
         <div class="title">AI Financial Advisor</div>
         <div class="desc">Get personalized guidance</div>
@@ -236,7 +217,7 @@
   </div>
 
   <!-- Tip -->
-  <div class="tip-card" id="tipCard">
+  <div class="tip-card">
     <span class="tip-icon">💡</span>
     <div class="tip-content">
       <div class="tip-title">Financial Tip</div>
@@ -264,27 +245,9 @@
     }
     setGreeting();
 
-    // Theme toggle
-    function toggleTheme() {
-      const body = document.body;
-      const btn = document.getElementById('themeToggle');
-      const isLight = body.classList.toggle('light-theme');
-      btn.textContent = isLight ? '☀️' : '🌙';
-      Memory.set('settings', 'theme', isLight ? 'light' : 'dark');
-    }
-
-    function loadTheme() {
-      const savedTheme = Memory.get('settings', 'theme');
-      if (savedTheme === 'light') {
-        document.body.classList.add('light-theme');
-        document.getElementById('themeToggle').textContent = '☀️';
-      }
-    }
-    loadTheme();
-
     // Format currency
     function formatCurrency(amount) {
-      return new Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount);
+      return '$' + new Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount);
     }
 
     // Load financial data
@@ -311,16 +274,12 @@
       const trend = document.getElementById('trend');
       if (transactions.length === 0) {
         trend.textContent = 'Start tracking to see trends';
-        trend.style.color = '#888';
       } else if (balance > 0) {
         trend.textContent = '↑ You\'re in the green!';
-        trend.style.color = '#8AE98D';
       } else if (balance < 0) {
         trend.textContent = '↓ Spending exceeds income';
-        trend.style.color = '#E74C3C';
       } else {
         trend.textContent = 'Breaking even';
-        trend.style.color = '#F7C846';
       }
     }
     loadFinancialData();
@@ -334,9 +293,7 @@
       'Pay yourself first: set aside savings before spending.',
       'Use the 50/30/20 rule: 50% needs, 30% wants, 20% savings.',
       'Automate your savings to make it effortless.',
-      'Track your net worth monthly to see your progress.',
-      'Avoid lifestyle inflation when your income increases.',
-      'Start investing early - compound interest is powerful.'
+      'Track your net worth monthly to see your progress.'
     ];
     document.getElementById('tipText').textContent = tips[Math.floor(Math.random() * tips.length)];
 
