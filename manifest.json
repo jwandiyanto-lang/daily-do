@@ -1,7 +1,7 @@
 {
-  "name": "Daily Do",
-  "short_name": "DailyDo",
-  "description": "Your personal command center - Finance, Fitness & LinkedIn",
+  "name": "Finance App",
+  "short_name": "Finance",
+  "description": "Your personal AI-powered finance manager",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
@@ -22,27 +22,20 @@
       "purpose": "any maskable"
     }
   ],
-  "categories": ["productivity", "lifestyle", "health"],
+  "categories": ["finance", "productivity"],
   "shortcuts": [
     {
-      "name": "Finance",
-      "short_name": "Finance",
-      "description": "Track your cashflow",
+      "name": "Add Transaction",
+      "short_name": "Transaction",
+      "description": "Record income or expense",
       "url": "./finance/summary.html",
       "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
     },
     {
-      "name": "Fitness",
-      "short_name": "Fitness",
-      "description": "Plan your workouts",
-      "url": "./fitness/index.html",
-      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
-    },
-    {
-      "name": "LinkedIn",
-      "short_name": "LinkedIn",
-      "description": "Content inspiration",
-      "url": "./linkedin/index.html",
+      "name": "AI Advisor",
+      "short_name": "Advisor",
+      "description": "Get financial guidance",
+      "url": "./finance/summary.html#advisor",
       "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
     }
   ]

@@ -6,42 +6,35 @@
   <meta name="theme-color" content="#0E121A">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="description" content="Your personal command center - Finance, Fitness & News">
-  <title>Daily Do</title>
+  <meta name="description" content="Your personal AI-powered finance manager">
+  <title>Finance App</title>
 
-  <!-- PWA Manifest -->
   <link rel="manifest" href="manifest.json">
-
-  <!-- Icons -->
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-
   <link rel="stylesheet" href="styles/app.css">
   <style>
-    /* Page-specific styles */
-    .hero {
-      text-align: center;
-      padding: var(--spacing-xl) 0;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #0E121A;
+      min-height: 100vh;
+      color: #fff;
+      padding: 20px;
+      padding-bottom: 100px;
+      transition: background 0.3s, color 0.3s;
     }
 
-    .hero-title {
-      font-size: 2.5rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      margin-bottom: var(--spacing-sm);
-    }
+    body.light-theme { background: #F5F5F7; color: #1a1a1a; }
+    body.light-theme .balance-card { background: linear-gradient(135deg, #F7C846 0%, #ff9500 100%); }
+    body.light-theme .stat-card { background: #fff; border-color: rgba(0,0,0,0.1); }
+    body.light-theme .stat-label { color: #666; }
+    body.light-theme .quick-action { background: #fff; border-color: rgba(0,0,0,0.1); }
+    body.light-theme .quick-action span:last-child { color: #666; }
+    body.light-theme .tip-card { background: #fff; border-color: rgba(0,0,0,0.1); }
+    body.light-theme .tip-text { color: #666; }
 
-    .hero-title span {
-      color: var(--accent-yellow);
-    }
-
-    .hero-subtitle {
-      color: var(--text-gray);
-      font-size: 1rem;
-    }
-
-    /* Theme Toggle */
     .theme-toggle {
       position: absolute;
       top: 20px;
@@ -58,525 +51,218 @@
       font-size: 1.3rem;
       transition: all 0.3s;
     }
+    .theme-toggle:hover { background: rgba(255,255,255,0.2); }
+    body.light-theme .theme-toggle { background: rgba(0,0,0,0.08); }
 
-    .theme-toggle:hover {
-      background: rgba(255,255,255,0.2);
-      transform: scale(1.1);
-    }
+    .header { text-align: center; padding: 40px 0 30px; }
+    .greeting { color: #888; font-size: 0.9rem; margin-bottom: 8px; }
+    .app-title { font-size: 2rem; font-weight: 800; }
+    .app-title span { color: #F7C846; }
 
-    body.light-theme .theme-toggle {
-      background: rgba(0,0,0,0.08);
-    }
-
-    body.light-theme .theme-toggle:hover {
-      background: rgba(0,0,0,0.15);
-    }
-
-    .date-display {
+    .balance-card {
+      background: linear-gradient(135deg, #1a2a1a 0%, #0E121A 100%);
+      border-radius: 20px;
+      padding: 28px;
+      margin-bottom: 20px;
       text-align: center;
-      margin-bottom: var(--spacing-md);
-      color: var(--text-gray);
-      font-size: 0.875rem;
+      border: 1px solid rgba(138,233,141,0.2);
     }
+    .balance-label { font-size: 0.85rem; color: #888; margin-bottom: 8px; }
+    .balance-amount { font-size: 2.5rem; font-weight: 800; color: #8AE98D; }
+    .balance-trend { margin-top: 8px; font-size: 0.85rem; color: #8AE98D; }
 
-
-    /* Todo Pages Container */
-    .todo-container {
-      margin-top: var(--spacing-lg);
-      margin-bottom: var(--spacing-md);
-      overflow: hidden;
-    }
-
-    /* Tab Navigation */
-    .page-tabs {
-      display: flex;
-      gap: 8px;
-      margin-bottom: var(--spacing-md);
-      padding: 4px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 12px;
-    }
-
-    .page-tab {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      padding: 12px 8px;
-      background: transparent;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.3s;
-      font-family: inherit;
-    }
-
-    .page-tab .tab-icon {
-      font-size: 1.2rem;
-      opacity: 0.5;
-      transition: all 0.3s;
-    }
-
-    .page-tab .tab-label {
-      font-size: 0.7rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      opacity: 0.5;
-      transition: all 0.3s;
-    }
-
-    .page-tab.pending .tab-label { color: var(--accent-yellow); }
-    .page-tab.current .tab-label { color: var(--text-white); }
-    .page-tab.done .tab-label { color: var(--accent-mint); }
-
-    .page-tab:hover {
-      background: rgba(255,255,255,0.05);
-    }
-
-    .page-tab:hover .tab-icon,
-    .page-tab:hover .tab-label {
-      opacity: 0.8;
-    }
-
-    .page-tab.active {
-      background: rgba(255,255,255,0.1);
-    }
-
-    .page-tab.active .tab-icon,
-    .page-tab.active .tab-label {
-      opacity: 1;
-    }
-
-    .page-tab.pending.active {
-      background: rgba(247, 200, 70, 0.15);
-    }
-
-    .page-tab.current.active {
-      background: rgba(255,255,255,0.1);
-    }
-
-    .page-tab.done.active {
-      background: rgba(138, 233, 141, 0.15);
-    }
-
-    /* Horizontal Scroll Container */
-    .pages-wrapper {
-      display: flex;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      scroll-behavior: smooth;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
-
-    .pages-wrapper::-webkit-scrollbar {
-      display: none;
-    }
-
-    /* Individual Page */
-    .todo-page {
-      min-width: 100%;
-      scroll-snap-align: center;
-      padding: 0 var(--spacing-xs);
-      box-sizing: border-box;
-    }
-
-    .page-title {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text-gray);
-      margin-bottom: var(--spacing-sm);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .page-title .count {
-      background: rgba(255,255,255,0.1);
-      padding: 2px 8px;
-      border-radius: 10px;
-      font-size: 0.75rem;
-    }
-
-    .todo-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      min-height: 120px;
-    }
-
-    .todo-empty {
-      text-align: center;
-      padding: var(--spacing-lg);
-      color: var(--text-gray);
-      font-size: 0.85rem;
-      opacity: 0.6;
-    }
-
-    .todo-empty-icon {
-      font-size: 2rem;
-      margin-bottom: 8px;
-    }
-
-    /* Todo Item */
-    .todo-item {
-      position: relative;
-      background: var(--card-bg);
-      border-radius: 12px;
-      overflow: hidden;
-      touch-action: pan-x;
-      user-select: none;
-    }
-
-    .todo-item-inner {
-      position: relative;
-      padding: 16px;
-      display: flex;
-      align-items: center;
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
       gap: 12px;
-      background: var(--card-bg);
-      transition: transform 0.15s ease-out;
-      z-index: 2;
+      margin-bottom: 24px;
     }
 
-    /* Swipe backgrounds - hidden by default */
-    .swipe-bg {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 100%;
-      z-index: 1;
-      opacity: 0;
-      transition: opacity 0.15s ease-out;
-    }
-
-    .swipe-bg.left {
-      left: 0;
-      background: var(--accent-mint);
-    }
-
-    .swipe-bg.right {
-      right: 0;
-      background: var(--accent-yellow);
-    }
-
-    .todo-text {
-      flex: 1;
-      font-size: 0.95rem;
-      color: var(--text-white);
-    }
-
-
-    /* Completed item styling */
-    .todo-item.completed .todo-text {
-      text-decoration: line-through;
-      opacity: 0.6;
-    }
-
-    .todo-item.completed .todo-inner {
-      opacity: 0.7;
-    }
-
-
-    /* FAB */
-    .fab {
-      position: fixed;
-      bottom: 90px;
-      right: 20px;
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: var(--accent-yellow);
-      color: var(--bg-dark);
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 12px rgba(247, 200, 70, 0.4);
-      transition: all 0.2s;
-      z-index: 100;
-    }
-
-    .fab:hover {
-      transform: scale(1.1);
-      box-shadow: 0 6px 20px rgba(247, 200, 70, 0.5);
-    }
-
-    .fab:active {
-      transform: scale(0.95);
-    }
-
-    /* Task Input Modal */
-    .task-input {
-      width: 100%;
-      padding: 16px;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 8px;
-      color: var(--text-white);
-      font-size: 1rem;
-      margin-bottom: var(--spacing-md);
-      font-family: inherit;
-    }
-
-    .task-input:focus {
-      outline: none;
-      border-color: var(--accent-yellow);
-    }
-
-    .task-input::placeholder {
-      color: var(--text-gray);
-    }
-
-    .due-options {
-      display: flex;
-      gap: 8px;
-    }
-
-    .due-btn {
-      flex: 1;
-      padding: 12px;
+    .stat-card {
       background: rgba(255,255,255,0.05);
       border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 8px;
-      color: var(--text-gray);
+      border-radius: 14px;
+      padding: 16px;
+    }
+    .stat-label { font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+    .stat-value { font-size: 1.3rem; font-weight: 700; }
+    .stat-value.green { color: #8AE98D; }
+    .stat-value.red { color: #E74C3C; }
+    .stat-value.yellow { color: #F7C846; }
+
+    .section-title {
       font-size: 0.85rem;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-family: inherit;
-    }
-
-    .due-btn:hover {
-      background: rgba(255,255,255,0.1);
-    }
-
-    .due-btn.active {
-      background: var(--accent-yellow);
-      border-color: var(--accent-yellow);
-      color: var(--bg-dark);
       font-weight: 600;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
     }
 
-    .modal-actions {
+    .quick-actions {
       display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .quick-action {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.2s;
+    }
+    .quick-action:hover { border-color: rgba(255,255,255,0.2); transform: translateX(4px); }
+    .quick-action .icon { font-size: 1.5rem; }
+    .quick-action .text { flex: 1; }
+    .quick-action .title { font-weight: 600; font-size: 1rem; margin-bottom: 2px; }
+    .quick-action .desc { font-size: 0.8rem; color: #888; }
+    .quick-action .arrow { color: #888; font-size: 1.2rem; }
+
+    .tip-card {
+      background: rgba(247,200,70,0.1);
+      border: 1px solid rgba(247,200,70,0.2);
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      align-items: flex-start;
       gap: 12px;
-      justify-content: flex-end;
     }
+    .tip-icon { font-size: 1.3rem; }
+    .tip-content { flex: 1; }
+    .tip-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; color: #F7C846; }
+    .tip-text { font-size: 0.85rem; color: #aaa; line-height: 1.4; }
 
-    .mt-lg {
-      margin-top: var(--spacing-lg);
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #0E121A;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 8px 0 20px;
+      z-index: 50;
     }
+    body.light-theme .bottom-nav { background: #fff; border-color: rgba(0,0,0,0.1); }
 
-    /* Completed task meta */
-    .completed-meta {
-      font-size: 0.7rem;
-      color: var(--text-gray);
-      margin-top: 4px;
+    .nav-items {
+      display: flex;
+      justify-content: space-around;
+      list-style: none;
+      max-width: 500px;
+      margin: 0 auto;
     }
+    .nav-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #888;
+      padding: 8px 16px;
+    }
+    .nav-link.active { color: #F7C846; }
+    .nav-icon { font-size: 1.3rem; margin-bottom: 4px; }
+    .nav-label { font-size: 0.7rem; }
   </style>
 </head>
 <body>
-  <div class="app-container">
-    <!-- Theme Toggle -->
-    <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">🌙</button>
+  <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">🌙</button>
 
-    <div class="page-content">
-
-      <section class="hero animate-fade-in">
-        <p class="date-display" id="currentDate"></p>
-        <h1 class="hero-title">Daily<span>Do</span></h1>
-        <p class="hero-subtitle">Your personal command center</p>
-      </section>
-
-      <!-- Todo Pages Container -->
-      <section class="todo-container animate-slide-up">
-        <!-- Tab Navigation (clickable) -->
-        <div class="page-tabs">
-          <button class="page-tab pending" data-page="0" onclick="goToPage(0)">
-            <span class="tab-icon">⏰</span>
-            <span class="tab-label">Pending</span>
-          </button>
-          <button class="page-tab current active" data-page="1" onclick="goToPage(1)">
-            <span class="tab-icon">📋</span>
-            <span class="tab-label">Current</span>
-          </button>
-          <button class="page-tab done" data-page="2" onclick="goToPage(2)">
-            <span class="tab-icon">✓</span>
-            <span class="tab-label">Done</span>
-          </button>
-        </div>
-
-        <!-- Swipeable Pages -->
-        <div class="pages-wrapper" id="pagesWrapper">
-          <!-- Pending Page (Snoozed) -->
-          <div class="todo-page" data-page="pending">
-            <div class="todo-list" id="pendingList">
-              <div class="todo-empty">
-                <div class="todo-empty-icon">⏰</div>
-                <p>No snoozed tasks</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Current Page (Active) -->
-          <div class="todo-page" data-page="current">
-            <div class="todo-list" id="currentList">
-              <div class="todo-empty">
-                <div class="todo-empty-icon">✨</div>
-                <p>No tasks yet. Tap + to add one!</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Done Page (Completed) -->
-          <div class="todo-page" data-page="done">
-            <div class="todo-list" id="doneList">
-              <div class="todo-empty">
-                <div class="todo-empty-icon">🎉</div>
-                <p>Completed tasks will appear here</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-    </div>
-
-    <!-- Bottom Navigation -->
-    <nav class="bottom-nav">
-      <ul class="nav-items">
-        <li class="nav-item">
-          <a href="index.html" class="nav-link active">
-            <span class="nav-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                <polyline points="9,22 9,12 15,12 15,22"/>
-              </svg>
-            </span>
-            <span class="nav-label">Home</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="finance/summary.html" class="nav-link">
-            <span class="nav-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="12" y1="1" x2="12" y2="23"/>
-                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-              </svg>
-            </span>
-            <span class="nav-label">Finance</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="fitness/index.html" class="nav-link">
-            <span class="nav-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M6.5 6.5m-2.5 0a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0 -5 0"/>
-                <path d="M3 12h4l3 8 4-16 3 8h4"/>
-              </svg>
-            </span>
-            <span class="nav-label">Fitness</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="linkedin/index.html" class="nav-link">
-            <span class="nav-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2z"/>
-                <path d="M18 14H2"/>
-                <path d="M18 10H2"/>
-                <path d="M18 6H2"/>
-              </svg>
-            </span>
-            <span class="nav-label">News</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="research/index.html" class="nav-link">
-            <span class="nav-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8"/>
-                <path d="M21 21l-4.35-4.35"/>
-              </svg>
-            </span>
-            <span class="nav-label">Research</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
+  <div class="header">
+    <p class="greeting" id="greeting">Good morning</p>
+    <h1 class="app-title">My <span>Finance</span></h1>
   </div>
 
-  <!-- FAB Button -->
-  <button class="fab" id="fabBtn" onclick="openAddTask()">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-      <line x1="12" y1="5" x2="12" y2="19"/>
-      <line x1="5" y1="12" x2="19" y2="12"/>
-    </svg>
-  </button>
+  <!-- Balance Card -->
+  <div class="balance-card">
+    <div class="balance-label">Current Balance</div>
+    <div class="balance-amount" id="balance">0</div>
+    <div class="balance-trend" id="trend"></div>
+  </div>
 
-  <!-- Add Task Modal -->
-  <div id="addTaskModal" class="modal hidden" onclick="closeAddTask(event)">
-    <div class="modal-content card" onclick="event.stopPropagation()">
-      <h2 class="text-title mb-lg">New Task</h2>
-
-      <input type="text" id="taskInput" class="task-input" placeholder="What needs to be done?" autofocus>
-
-      <div class="due-options mb-lg">
-        <button class="due-btn active" data-due="today" onclick="selectDue(this)">Today</button>
-        <button class="due-btn" data-due="later" onclick="selectDue(this)">Later</button>
-        <button class="due-btn" data-due="2days" onclick="selectDue(this)">In 2 Days</button>
-      </div>
-
-      <div class="modal-actions">
-        <button class="btn btn-ghost" onclick="closeAddTask()">Cancel</button>
-        <button class="btn btn-primary" onclick="addTask()">Add Task</button>
-      </div>
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Income</div>
+      <div class="stat-value green" id="income">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Expenses</div>
+      <div class="stat-value red" id="expenses">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Funds Saved</div>
+      <div class="stat-value yellow" id="fundsSaved">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Active Funds</div>
+      <div class="stat-value" id="fundsCount">0</div>
     </div>
   </div>
 
+  <!-- Quick Actions -->
+  <div class="section-title">Quick Actions</div>
+  <div class="quick-actions">
+    <a href="finance/summary.html" class="quick-action">
+      <span class="icon">💸</span>
+      <div class="text">
+        <div class="title">Add Transaction</div>
+        <div class="desc">Record income or expense</div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="finance/summary.html#funds" class="quick-action" onclick="localStorage.setItem('openTab', 'funds')">
+      <span class="icon">🎯</span>
+      <div class="text">
+        <div class="title">Manage Funds</div>
+        <div class="desc">Track your savings goals</div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="finance/summary.html#advisor" class="quick-action" onclick="localStorage.setItem('openTab', 'advisor')">
+      <span class="icon">🤖</span>
+      <div class="text">
+        <div class="title">AI Financial Advisor</div>
+        <div class="desc">Get personalized guidance</div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+  </div>
 
+  <!-- Tip -->
+  <div class="tip-card" id="tipCard">
+    <span class="tip-icon">💡</span>
+    <div class="tip-content">
+      <div class="tip-title">Financial Tip</div>
+      <div class="tip-text" id="tipText">Start by tracking all your expenses for a week to understand your spending patterns.</div>
+    </div>
+  </div>
 
-  <style>
-    .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: var(--spacing-md);
-      z-index: 200;
-    }
-
-    .modal.hidden {
-      display: none;
-    }
-
-    .modal-content {
-      width: 100%;
-      max-width: 360px;
-    }
-  </style>
+  <!-- Bottom Nav -->
+  <nav class="bottom-nav">
+    <ul class="nav-items">
+      <li><a href="index.html" class="nav-link active"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></a></li>
+      <li><a href="finance/summary.html" class="nav-link"><span class="nav-icon">💰</span><span class="nav-label">Finance</span></a></li>
+    </ul>
+  </nav>
 
   <script src="scripts/memory.js"></script>
   <script>
-    // Set current date
-    document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-
-    // Track home visit
-    Memory.setLastVisited('home');
+    // Set greeting based on time
+    function setGreeting() {
+      const hour = new Date().getHours();
+      let greeting = 'Good evening';
+      if (hour < 12) greeting = 'Good morning';
+      else if (hour < 18) greeting = 'Good afternoon';
+      document.getElementById('greeting').textContent = greeting;
+    }
+    setGreeting();
 
     // Theme toggle
     function toggleTheme() {
@@ -585,509 +271,78 @@
       const isLight = body.classList.toggle('light-theme');
       btn.textContent = isLight ? '☀️' : '🌙';
       Memory.set('settings', 'theme', isLight ? 'light' : 'dark');
-
-      // Update meta theme color
-      document.querySelector('meta[name="theme-color"]').content = isLight ? '#F5F5F7' : '#0E121A';
     }
 
-    // Load saved theme
     function loadTheme() {
       const savedTheme = Memory.get('settings', 'theme');
-      const btn = document.getElementById('themeToggle');
       if (savedTheme === 'light') {
         document.body.classList.add('light-theme');
-        btn.textContent = '☀️';
-        document.querySelector('meta[name="theme-color"]').content = '#F5F5F7';
+        document.getElementById('themeToggle').textContent = '☀️';
       }
     }
     loadTheme();
 
-    // ========================================
-    // Todo List with 3 Pages
-    // ========================================
-
-    let selectedDue = 'today';
-    let currentPage = 1; // 0=pending, 1=current, 2=done
-
-    // Get todos from memory
-    function getTodos() {
-      return Memory.get('todos', 'active') || [];
+    // Format currency
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount);
     }
 
-    function getCompletedTodos() {
-      return Memory.get('todos', 'completed') || [];
-    }
+    // Load financial data
+    function loadFinancialData() {
+      const transactions = Memory.get('finance', 'transactions') || [];
+      const funds = Memory.get('finance', 'funds') || [];
 
-    function saveTodos(todos) {
-      Memory.set('todos', 'active', todos);
-    }
-
-    function saveCompletedTodos(completed) {
-      Memory.set('todos', 'completed', completed);
-    }
-
-    // Calculate due date
-    function calculateDueDate(type) {
-      const now = new Date();
-      switch(type) {
-        case 'today':
-          return new Date(now.setHours(23, 59, 59, 999)).toISOString();
-        case 'later':
-          now.setDate(now.getDate() + 2);
-          return now.toISOString();
-        case '2days':
-          now.setDate(now.getDate() + 2);
-          return now.toISOString();
-        default:
-          return new Date().toISOString();
-      }
-    }
-
-    // Get due label
-    function getDueLabel(dueDate) {
-      const due = new Date(dueDate);
-      const now = new Date();
-      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      const tomorrow = new Date(today);
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      const dueDay = new Date(due.getFullYear(), due.getMonth(), due.getDate());
-
-      if (dueDay <= today) return { text: 'Today', class: 'today' };
-      if (dueDay.getTime() === tomorrow.getTime()) return { text: 'Tomorrow', class: 'later' };
-      return { text: 'Later', class: 'future' };
-    }
-
-    // Get time until snooze ends
-    function getSnoozeTimeLeft(snoozedUntil) {
-      const until = new Date(snoozedUntil);
-      const now = new Date();
-      const diff = until - now;
-      if (diff <= 0) return null;
-      const hours = Math.floor(diff / (1000 * 60 * 60));
-      const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      if (hours > 0) return `${hours}h ${mins}m left`;
-      return `${mins}m left`;
-    }
-
-    // Separate todos into pending (snoozed) and current (active)
-    function getPendingTodos() {
-      const todos = getTodos();
-      const now = new Date().getTime();
-      return todos.filter(t => t.snoozedUntil && new Date(t.snoozedUntil).getTime() > now);
-    }
-
-    function getCurrentTodos() {
-      const todos = getTodos();
-      const now = new Date().getTime();
-      return todos.filter(t => !t.snoozedUntil || new Date(t.snoozedUntil).getTime() <= now);
-    }
-
-    function escapeHtml(text) {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
-    }
-
-    // Render all three pages
-    function renderAllPages() {
-      renderPendingPage();
-      renderCurrentPage();
-      renderDonePage();
-    }
-
-    function renderPendingPage() {
-      const pending = getPendingTodos();
-      const listEl = document.getElementById('pendingList');
-
-      if (pending.length === 0) {
-        listEl.innerHTML = `
-          <div class="todo-empty">
-            <div class="todo-empty-icon">⏰</div>
-            <p>No snoozed tasks</p>
-          </div>
-        `;
-        return;
-      }
-
-      listEl.innerHTML = pending.map(todo => {
-        return `
-          <div class="todo-item snoozed" data-id="${todo.id}" data-page="pending">
-            <div class="swipe-bg left"></div>
-            <div class="swipe-bg right"></div>
-            <div class="todo-item-inner"
-                 ontouchstart="handleSwipeStart(event)"
-                 ontouchmove="handleSwipeMove(event)"
-                 ontouchend="handleSwipeEnd(event, 'pending')">
-              <span class="todo-text">${escapeHtml(todo.text)}</span>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function renderCurrentPage() {
-      const current = getCurrentTodos();
-      const listEl = document.getElementById('currentList');
-
-      if (current.length === 0) {
-        listEl.innerHTML = `
-          <div class="todo-empty">
-            <div class="todo-empty-icon">✨</div>
-            <p>No tasks yet. Tap + to add one!</p>
-          </div>
-        `;
-        return;
-      }
-
-      // Sort by due date
-      current.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
-
-      listEl.innerHTML = current.map(todo => {
-        return `
-          <div class="todo-item" data-id="${todo.id}" data-page="current">
-            <div class="swipe-bg left"></div>
-            <div class="swipe-bg right"></div>
-            <div class="todo-item-inner"
-                 ontouchstart="handleSwipeStart(event)"
-                 ontouchmove="handleSwipeMove(event)"
-                 ontouchend="handleSwipeEnd(event, 'current')">
-              <span class="todo-text">${escapeHtml(todo.text)}</span>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function renderDonePage() {
-      const done = getCompletedTodos();
-      const listEl = document.getElementById('doneList');
-
-      if (done.length === 0) {
-        listEl.innerHTML = `
-          <div class="todo-empty">
-            <div class="todo-empty-icon">🎉</div>
-            <p>Completed tasks will appear here</p>
-          </div>
-        `;
-        return;
-      }
-
-      listEl.innerHTML = done.map(task => {
-        return `
-          <div class="todo-item completed" data-id="${task.id}" data-page="done">
-            <div class="swipe-bg left"></div>
-            <div class="swipe-bg right"></div>
-            <div class="todo-item-inner"
-                 ontouchstart="handleSwipeStart(event)"
-                 ontouchmove="handleSwipeMove(event)"
-                 ontouchend="handleSwipeEnd(event, 'done')">
-              <span class="todo-text">${escapeHtml(task.text)}</span>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    // Page navigation
-    function goToPage(pageIndex) {
-      const wrapper = document.getElementById('pagesWrapper');
-      const pageWidth = wrapper.offsetWidth;
-      wrapper.scrollTo({ left: pageWidth * pageIndex, behavior: 'smooth' });
-      updatePageIndicators(pageIndex);
-    }
-
-    function updatePageIndicators(pageIndex) {
-      currentPage = pageIndex;
-      const tabs = document.querySelectorAll('.page-tab');
-
-      tabs.forEach((tab, i) => {
-        tab.classList.toggle('active', i === pageIndex);
-      });
-    }
-
-    // Handle scroll to update indicators
-    function setupPageScroll() {
-      const wrapper = document.getElementById('pagesWrapper');
-      let scrollTimeout;
-
-      wrapper.addEventListener('scroll', () => {
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(() => {
-          const pageWidth = wrapper.offsetWidth;
-          const scrollLeft = wrapper.scrollLeft;
-          const pageIndex = Math.round(scrollLeft / pageWidth);
-          updatePageIndicators(pageIndex);
-        }, 50);
+      let income = 0, expense = 0;
+      transactions.forEach(t => {
+        if (t.type === 'income') income += t.amount;
+        else expense += t.amount;
       });
 
-      // Start on current page (middle)
-      setTimeout(() => goToPage(1), 100);
-    }
+      const balance = income - expense;
+      const fundsSaved = funds.reduce((sum, f) => sum + (f.current || 0), 0);
 
-    // Swipe handling for individual tasks
-    let swipeStartX = 0;
-    let swipeCurrentX = 0;
-    let swipingItem = null;
-    let swipingInner = null;
+      document.getElementById('balance').textContent = formatCurrency(balance);
+      document.getElementById('income').textContent = formatCurrency(income);
+      document.getElementById('expenses').textContent = formatCurrency(expense);
+      document.getElementById('fundsSaved').textContent = formatCurrency(fundsSaved);
+      document.getElementById('fundsCount').textContent = funds.length;
 
-    function handleSwipeStart(e) {
-      swipeStartX = e.touches[0].clientX;
-      swipeCurrentX = swipeStartX;
-      swipingInner = e.currentTarget;
-      swipingItem = swipingInner.closest('.todo-item');
-
-      // Disable page scrolling while swiping item
-      document.getElementById('pagesWrapper').style.overflowX = 'hidden';
-    }
-
-    function handleSwipeMove(e) {
-      if (!swipingInner || !swipingItem) return;
-
-      swipeCurrentX = e.touches[0].clientX;
-      const diff = swipeCurrentX - swipeStartX;
-
-      // Limit swipe distance with resistance
-      const maxSwipe = 120;
-      let clampedDiff = diff;
-      if (Math.abs(diff) > maxSwipe) {
-        const overflow = Math.abs(diff) - maxSwipe;
-        clampedDiff = (diff > 0 ? 1 : -1) * (maxSwipe + overflow * 0.2);
-      }
-
-      swipingInner.style.transform = `translateX(${clampedDiff}px)`;
-
-      // Show background colors progressively
-      const leftBg = swipingItem.querySelector('.swipe-bg.left');
-      const rightBg = swipingItem.querySelector('.swipe-bg.right');
-
-      if (diff > 10) {
-        // Swiping right - show left background (complete/activate/restore)
-        leftBg.style.opacity = Math.min(1, diff / 80);
-        rightBg.style.opacity = 0;
-      } else if (diff < -10) {
-        // Swiping left - show right background (snooze/delete)
-        rightBg.style.opacity = Math.min(1, Math.abs(diff) / 80);
-        leftBg.style.opacity = 0;
+      // Set trend
+      const trend = document.getElementById('trend');
+      if (transactions.length === 0) {
+        trend.textContent = 'Start tracking to see trends';
+        trend.style.color = '#888';
+      } else if (balance > 0) {
+        trend.textContent = '↑ You\'re in the green!';
+        trend.style.color = '#8AE98D';
+      } else if (balance < 0) {
+        trend.textContent = '↓ Spending exceeds income';
+        trend.style.color = '#E74C3C';
       } else {
-        leftBg.style.opacity = 0;
-        rightBg.style.opacity = 0;
+        trend.textContent = 'Breaking even';
+        trend.style.color = '#F7C846';
       }
     }
+    loadFinancialData();
 
-    function handleSwipeEnd(e, pageType) {
-      if (!swipingInner || !swipingItem) return;
+    // Random financial tips
+    const tips = [
+      'Start by tracking all your expenses for a week to understand your spending patterns.',
+      'Aim to save at least 20% of your income each month.',
+      'Build an emergency fund that covers 3-6 months of expenses.',
+      'Review your subscriptions monthly - cancel what you don\'t use.',
+      'Pay yourself first: set aside savings before spending.',
+      'Use the 50/30/20 rule: 50% needs, 30% wants, 20% savings.',
+      'Automate your savings to make it effortless.',
+      'Track your net worth monthly to see your progress.',
+      'Avoid lifestyle inflation when your income increases.',
+      'Start investing early - compound interest is powerful.'
+    ];
+    document.getElementById('tipText').textContent = tips[Math.floor(Math.random() * tips.length)];
 
-      // Re-enable page scrolling
-      document.getElementById('pagesWrapper').style.overflowX = 'auto';
-
-      const diff = swipeCurrentX - swipeStartX;
-      const id = swipingItem.dataset.id;
-      const leftBg = swipingItem.querySelector('.swipe-bg.left');
-      const rightBg = swipingItem.querySelector('.swipe-bg.right');
-      const threshold = 80;
-
-      if (Math.abs(diff) >= threshold) {
-        // Action triggered
-        swipingItem.style.transition = 'transform 0.3s, opacity 0.3s';
-        swipingItem.style.transform = `translateX(${diff > 0 ? '100%' : '-100%'})`;
-        swipingItem.style.opacity = '0';
-
-        setTimeout(() => {
-          if (pageType === 'current') {
-            if (diff > 0) completeTask(id);
-            else snoozeTask(id);
-          } else if (pageType === 'pending') {
-            if (diff > 0) activateTask(id);
-            else deleteTask(id);
-          } else if (pageType === 'done') {
-            if (diff > 0) restoreTask(id);
-            else permanentlyDeleteTask(id);
-          }
-        }, 300);
-      } else {
-        // Reset position smoothly
-        swipingInner.style.transition = 'transform 0.2s ease-out';
-        swipingInner.style.transform = 'translateX(0)';
-        leftBg.style.opacity = 0;
-        rightBg.style.opacity = 0;
-
-        setTimeout(() => {
-          if (swipingInner) swipingInner.style.transition = '';
-        }, 200);
-      }
-
-      swipingItem = null;
-      swipingInner = null;
-      swipeStartX = 0;
-      swipeCurrentX = 0;
-    }
-
-    // Task actions
-    function completeTask(id) {
-      const todos = getTodos();
-      const taskIndex = todos.findIndex(t => t.id === id);
-      if (taskIndex === -1) return;
-
-      const task = todos[taskIndex];
-      todos.splice(taskIndex, 1);
-      saveTodos(todos);
-
-      // Add to completed
-      const completed = getCompletedTodos();
-      completed.unshift({
-        id: task.id,
-        text: task.text,
-        completedAt: new Date().toISOString(),
-        originalDueDate: task.dueDate
-      });
-      saveCompletedTodos(completed);
-
-      renderAllPages();
-    }
-
-    function snoozeTask(id) {
-      const todos = getTodos();
-      const task = todos.find(t => t.id === id);
-      if (!task) return;
-
-      const snoozeUntil = new Date();
-      snoozeUntil.setHours(snoozeUntil.getHours() + 6);
-      task.snoozedUntil = snoozeUntil.toISOString();
-      task.snoozedCount = (task.snoozedCount || 0) + 1;
-
-      saveTodos(todos);
-      renderAllPages();
-
-      // Go to pending page to show snoozed task
-      setTimeout(() => goToPage(0), 100);
-    }
-
-    function activateTask(id) {
-      const todos = getTodos();
-      const task = todos.find(t => t.id === id);
-      if (!task) return;
-
-      // Remove snooze
-      delete task.snoozedUntil;
-      saveTodos(todos);
-      renderAllPages();
-
-      // Go to current page
-      setTimeout(() => goToPage(1), 100);
-    }
-
-    function deleteTask(id) {
-      const todos = getTodos();
-      const taskIndex = todos.findIndex(t => t.id === id);
-      if (taskIndex === -1) return;
-
-      todos.splice(taskIndex, 1);
-      saveTodos(todos);
-      renderAllPages();
-    }
-
-    function restoreTask(id) {
-      const completed = getCompletedTodos();
-      const taskIndex = completed.findIndex(t => t.id === id);
-      if (taskIndex === -1) return;
-
-      const task = completed[taskIndex];
-      completed.splice(taskIndex, 1);
-      saveCompletedTodos(completed);
-
-      // Add back to active
-      const todos = getTodos();
-      todos.push({
-        id: task.id,
-        text: task.text,
-        dueDate: task.originalDueDate || new Date().toISOString(),
-        createdAt: new Date().toISOString(),
-        snoozedCount: 0
-      });
-      saveTodos(todos);
-      renderAllPages();
-
-      // Go to current page
-      setTimeout(() => goToPage(1), 100);
-    }
-
-    function permanentlyDeleteTask(id) {
-      const completed = getCompletedTodos();
-      const taskIndex = completed.findIndex(t => t.id === id);
-      if (taskIndex === -1) return;
-
-      completed.splice(taskIndex, 1);
-      saveCompletedTodos(completed);
-      renderAllPages();
-    }
-
-    // Add task modal
-    function openAddTask() {
-      document.getElementById('addTaskModal').classList.remove('hidden');
-      document.getElementById('taskInput').focus();
-    }
-
-    function closeAddTask(event) {
-      if (!event || event.target === event.currentTarget) {
-        document.getElementById('addTaskModal').classList.add('hidden');
-        document.getElementById('taskInput').value = '';
-        selectedDue = 'today';
-        document.querySelectorAll('.due-btn').forEach(btn => {
-          btn.classList.toggle('active', btn.dataset.due === 'today');
-        });
-      }
-    }
-
-    function selectDue(btn) {
-      selectedDue = btn.dataset.due;
-      document.querySelectorAll('.due-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    }
-
-    function addTask() {
-      const input = document.getElementById('taskInput');
-      const text = input.value.trim();
-      if (!text) return;
-
-      const todos = getTodos();
-      const newTodo = {
-        id: Date.now().toString(),
-        text: text,
-        dueDate: calculateDueDate(selectedDue),
-        createdAt: new Date().toISOString(),
-        snoozedCount: 0
-      };
-
-      todos.push(newTodo);
-      saveTodos(todos);
-      closeAddTask();
-      renderAllPages();
-
-      // Ensure we're on current page
-      goToPage(1);
-    }
-
-    // Enter key to add task
-    document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('taskInput').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') addTask();
-      });
-
-      renderAllPages();
-      setupPageScroll();
-    });
-
-    // Register Service Worker for PWA
+    // Register Service Worker
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
-          .then((registration) => {
-            console.log('SW registered:', registration.scope);
-          })
-          .catch((error) => {
-            console.log('SW registration failed:', error);
-          });
-      });
+      navigator.serviceWorker.register('./sw.js');
     }
   </script>
 </body>

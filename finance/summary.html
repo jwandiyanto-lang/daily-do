@@ -6,108 +6,109 @@
   <meta name="theme-color" content="#0E121A">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>Finance - Daily Do</title>
+  <title>Finance - Money Manager</title>
   <link rel="stylesheet" href="../styles/app.css">
   <style>
-    .finance-container {
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #0E121A;
+      min-height: 100vh;
+      color: #fff;
+      padding: 20px;
       padding-bottom: 100px;
+      transition: background 0.3s, color 0.3s;
     }
 
-    /* Light theme overrides */
-    body.light-theme .summary-card,
-    body.light-theme .transaction-item,
-    body.light-theme .modal-content,
-    body.light-theme .filter-pill {
-      background: #fff;
-      border-color: rgba(0,0,0,0.1);
-    }
-
-    body.light-theme .filter-pill { color: #666; }
+    body.light-theme { background: #F5F5F7; color: #1a1a1a; }
+    body.light-theme .summary-card { background: #fff; border-color: rgba(0,0,0,0.1); }
     body.light-theme .summary-label { color: #666; }
+    body.light-theme .tab-btn { background: rgba(0,0,0,0.05); color: #666; }
+    body.light-theme .tab-btn.active { background: #F7C846; color: #0E121A; }
+    body.light-theme .transaction-item { background: #fff; }
     body.light-theme .transaction-desc { color: #333; }
-    body.light-theme .transaction-category { color: #888; }
+    body.light-theme .transaction-category { color: #888; background: rgba(0,0,0,0.05); }
+    body.light-theme .filter-pill { background: #fff; color: #666; border-color: rgba(0,0,0,0.1); }
+    body.light-theme .fund-card { background: #fff; border-color: rgba(0,0,0,0.1); }
+    body.light-theme .fund-name { color: #333; }
+    body.light-theme .fund-meta { color: #666; }
+    body.light-theme .chat-container { background: #fff; border-color: rgba(0,0,0,0.1); }
+    body.light-theme .ai-message { background: rgba(0,0,0,0.03); }
+    body.light-theme .user-message { background: rgba(247,200,70,0.15); }
+    body.light-theme .chat-input { background: #f5f5f5; color: #333; border-color: rgba(0,0,0,0.1); }
+    body.light-theme .chat-input::placeholder { color: #999; }
+    body.light-theme .modal-content { background: #fff; }
+    body.light-theme .form-input { background: #f5f5f5; color: #333; border-color: rgba(0,0,0,0.1); }
     body.light-theme .empty-state p { color: #888; }
-    body.light-theme .modal-overlay { background: rgba(0,0,0,0.4); }
-    body.light-theme .type-toggle { background: rgba(0,0,0,0.05); }
-    body.light-theme .type-btn { color: #666; }
-    body.light-theme .category-grid button { background: rgba(0,0,0,0.03); border-color: rgba(0,0,0,0.1); color: #333; }
-    body.light-theme .form-input { background: #f5f5f5; border-color: rgba(0,0,0,0.1); color: #333; }
-    body.light-theme .form-input::placeholder { color: #999; }
+    body.light-theme .section-title { color: #666; }
+    body.light-theme .api-setup { background: #fff; border-color: rgba(0,0,0,0.1); }
 
-    .finance-header {
-      text-align: center;
-      padding: var(--spacing-lg) 0 var(--spacing-md);
-    }
-
-    .finance-header h1 {
-      font-size: 1.75rem;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-
-    .finance-header .subtitle {
-      color: var(--text-gray);
-      font-size: 0.85rem;
-    }
+    .header { margin-bottom: 20px; }
+    .header h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 4px; }
+    .header .subtitle { color: #888; font-size: 0.85rem; }
 
     /* Summary Cards */
     .summary-row {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-bottom: var(--spacing-lg);
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
     }
 
     .summary-card {
-      background: var(--card-bg);
-      border-radius: 14px;
-      padding: 16px;
-    }
-
-    .summary-card.income {
-      border-left: 3px solid var(--accent-mint);
-    }
-
-    .summary-card.expense {
-      border-left: 3px solid #E74C3C;
-    }
-
-    .summary-card.balance {
-      grid-column: span 2;
-      border-left: 3px solid var(--accent-yellow);
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      padding: 14px;
+      border: 1px solid rgba(255,255,255,0.1);
     }
 
     .summary-label {
       font-size: 0.7rem;
-      color: var(--text-gray);
+      color: #888;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       margin-bottom: 4px;
     }
 
     .summary-value {
-      font-size: 1.4rem;
+      font-size: 1.1rem;
       font-weight: 700;
     }
 
-    .summary-value.green { color: var(--accent-mint); }
+    .summary-value.green { color: #8AE98D; }
     .summary-value.red { color: #E74C3C; }
-    .summary-value.yellow { color: var(--accent-yellow); }
+    .summary-value.yellow { color: #F7C846; }
 
-    /* Category Filter Pills */
+    /* Tabs */
+    .tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+    .tab-btn {
+      flex: 1;
+      padding: 12px 8px;
+      background: rgba(255,255,255,0.05);
+      border: none;
+      border-radius: 10px;
+      color: #888;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .tab-btn.active { background: #F7C846; color: #0E121A; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Category Filter */
     .category-filter {
       display: flex;
       gap: 8px;
       overflow-x: auto;
       padding-bottom: 12px;
-      margin-bottom: var(--spacing-md);
+      margin-bottom: 16px;
       scrollbar-width: none;
-      -ms-overflow-style: none;
     }
-
-    .category-filter::-webkit-scrollbar {
-      display: none;
-    }
+    .category-filter::-webkit-scrollbar { display: none; }
 
     .filter-pill {
       flex-shrink: 0;
@@ -116,50 +117,32 @@
       border: 1px solid rgba(255,255,255,0.1);
       border-radius: 20px;
       font-size: 0.8rem;
-      color: var(--text-gray);
+      color: #888;
       cursor: pointer;
       transition: all 0.2s;
       font-family: inherit;
     }
-
-    .filter-pill:hover {
-      background: rgba(255,255,255,0.1);
-    }
-
     .filter-pill.active {
-      background: var(--accent-yellow);
-      border-color: var(--accent-yellow);
-      color: var(--bg-dark);
+      background: #F7C846;
+      border-color: #F7C846;
+      color: #0E121A;
       font-weight: 600;
     }
 
-    /* Transactions List */
-    .transactions-section {
-      margin-bottom: var(--spacing-md);
-    }
-
+    /* Transaction List */
     .section-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: var(--spacing-sm);
+      margin-bottom: 12px;
     }
+    .section-title { font-size: 0.85rem; font-weight: 600; color: #888; }
 
-    .section-title {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--text-gray);
-    }
-
-    .transaction-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+    .transaction-list { display: flex; flex-direction: column; gap: 8px; }
 
     .transaction-item {
       position: relative;
-      background: var(--card-bg);
+      background: rgba(255,255,255,0.05);
       border-radius: 12px;
       overflow: hidden;
     }
@@ -170,21 +153,18 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      background: var(--card-bg);
+      background: inherit;
       transition: transform 0.15s ease-out;
       z-index: 2;
     }
 
     .swipe-delete {
       position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
+      top: 0; right: 0; bottom: 0;
       width: 100%;
       background: #E74C3C;
       z-index: 1;
       opacity: 0;
-      transition: opacity 0.15s ease-out;
       display: flex;
       align-items: center;
       justify-content: flex-end;
@@ -204,11 +184,7 @@
       flex-shrink: 0;
     }
 
-    .transaction-details {
-      flex: 1;
-      min-width: 0;
-    }
-
+    .transaction-details { flex: 1; min-width: 0; }
     .transaction-desc {
       font-size: 0.9rem;
       font-weight: 500;
@@ -217,41 +193,274 @@
       text-overflow: ellipsis;
       margin-bottom: 2px;
     }
+    .transaction-meta { font-size: 0.75rem; color: #888; display: flex; align-items: center; gap: 8px; }
+    .transaction-category { padding: 2px 6px; background: rgba(255,255,255,0.1); border-radius: 4px; }
+    .transaction-amount { font-size: 1rem; font-weight: 600; text-align: right; }
+    .transaction-amount.income { color: #8AE98D; }
+    .transaction-amount.expense { color: #E74C3C; }
 
-    .transaction-meta {
+    .date-header {
       font-size: 0.75rem;
-      color: var(--text-gray);
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 16px 0 8px;
+      padding-left: 4px;
+    }
+    .date-header:first-child { margin-top: 0; }
+
+    /* Funds */
+    .funds-grid { display: flex; flex-direction: column; gap: 12px; }
+
+    .fund-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .fund-card:hover { border-color: rgba(255,255,255,0.2); }
+
+    .fund-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .fund-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+    }
+    .fund-info { flex: 1; }
+    .fund-name { font-weight: 600; font-size: 1rem; margin-bottom: 2px; }
+    .fund-meta { font-size: 0.8rem; color: #888; }
+
+    .fund-progress { margin-bottom: 12px; }
+    .progress-bar {
+      height: 8px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.3s;
+    }
+    .progress-stats {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: #888;
+    }
+    .progress-current { font-weight: 600; color: #8AE98D; }
+
+    .fund-actions { display: flex; gap: 8px; }
+    .fund-btn {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .fund-btn.add { background: #8AE98D; color: #0E121A; }
+    .fund-btn.withdraw { background: rgba(255,255,255,0.1); color: #fff; }
+
+    .add-fund-btn {
+      width: 100%;
+      padding: 16px;
+      background: rgba(247,200,70,0.1);
+      border: 2px dashed rgba(247,200,70,0.3);
+      border-radius: 16px;
+      color: #F7C846;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    /* AI Chat */
+    .chat-container {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 280px);
+      min-height: 400px;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .message {
+      max-width: 85%;
+      padding: 12px 16px;
+      border-radius: 16px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .ai-message {
+      background: rgba(255,255,255,0.08);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+
+    .user-message {
+      background: rgba(247,200,70,0.2);
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+
+    .message-time {
+      font-size: 0.7rem;
+      color: #666;
+      margin-top: 4px;
+    }
+
+    .typing-indicator {
+      display: flex;
+      gap: 4px;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 16px;
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+    .typing-dot {
+      width: 8px;
+      height: 8px;
+      background: #888;
+      border-radius: 50%;
+      animation: bounce 1.4s infinite ease-in-out both;
+    }
+    .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+    .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+    @keyframes bounce {
+      0%, 80%, 100% { transform: scale(0); }
+      40% { transform: scale(1); }
+    }
+
+    .chat-input-area {
+      padding: 12px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      gap: 8px;
+    }
+
+    .chat-input {
+      flex: 1;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 24px;
+      color: #fff;
+      font-size: 0.9rem;
+      font-family: inherit;
+    }
+    .chat-input:focus { outline: none; border-color: #F7C846; }
+    .chat-input::placeholder { color: #666; }
+
+    .chat-send {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #F7C846;
+      border: none;
+      color: #0E121A;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+    .chat-send:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* API Setup */
+    .api-setup {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .api-setup-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 12px;
       display: flex;
       align-items: center;
       gap: 8px;
     }
-
-    .transaction-category {
-      padding: 2px 6px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 4px;
+    .api-row { display: flex; gap: 10px; margin-top: 12px; }
+    .api-btn {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
     }
+    .api-btn.save { background: #8AE98D; color: #0E121A; }
+    .api-btn.clear { background: rgba(255,255,255,0.1); color: #fff; }
 
-    .transaction-amount {
-      font-size: 1rem;
+    /* Fund Action Buttons from AI */
+    .ai-fund-suggestion {
+      margin-top: 12px;
+      padding: 12px;
+      background: rgba(138,233,141,0.1);
+      border: 1px solid rgba(138,233,141,0.3);
+      border-radius: 12px;
+    }
+    .ai-fund-suggestion .fund-title {
       font-weight: 600;
-      text-align: right;
+      margin-bottom: 4px;
+      color: #8AE98D;
+    }
+    .ai-fund-suggestion .fund-desc {
+      font-size: 0.85rem;
+      color: #aaa;
+      margin-bottom: 10px;
+    }
+    .create-fund-btn {
+      width: 100%;
+      padding: 10px;
+      background: #8AE98D;
+      border: none;
+      border-radius: 8px;
+      color: #0E121A;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
     }
 
-    .transaction-amount.income { color: var(--accent-mint); }
-    .transaction-amount.expense { color: #E74C3C; }
-
+    /* Empty State */
     .empty-state {
       text-align: center;
-      padding: var(--spacing-xl);
-      color: var(--text-gray);
+      padding: 40px 20px;
+      color: #888;
     }
-
-    .empty-icon {
-      font-size: 3rem;
-      margin-bottom: 12px;
-      opacity: 0.5;
-    }
+    .empty-icon { font-size: 3rem; margin-bottom: 12px; opacity: 0.5; }
 
     /* FAB */
     .fab {
@@ -261,51 +470,36 @@
       width: 56px;
       height: 56px;
       border-radius: 50%;
-      background: var(--accent-yellow);
-      color: var(--bg-dark);
+      background: #F7C846;
+      color: #0E121A;
       border: none;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       box-shadow: 0 4px 12px rgba(247, 200, 70, 0.4);
-      transition: all 0.2s;
       z-index: 100;
+      font-size: 1.5rem;
     }
 
-    .fab:hover {
-      transform: scale(1.1);
-    }
-
-    .fab:active {
-      transform: scale(0.95);
-    }
-
-    /* Modal Styles */
+    /* Modal */
     .modal {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.85);
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.85);
       display: flex;
       align-items: flex-end;
       justify-content: center;
       z-index: 200;
-      padding: 0;
     }
-
-    .modal.hidden {
-      display: none;
-    }
+    .modal.hidden { display: none; }
 
     .modal-content {
       width: 100%;
       max-width: 500px;
-      background: var(--card-bg);
+      background: #1a1f2e;
       border-radius: 20px 20px 0 0;
-      padding: var(--spacing-lg);
+      padding: 24px;
       max-height: 90vh;
       overflow-y: auto;
     }
@@ -314,97 +508,60 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: var(--spacing-lg);
+      margin-bottom: 20px;
     }
-
-    .modal-title {
-      font-size: 1.25rem;
-      font-weight: 700;
-    }
-
+    .modal-title { font-size: 1.25rem; font-weight: 700; }
     .modal-close {
       background: none;
       border: none;
-      color: var(--text-gray);
+      color: #888;
       font-size: 1.5rem;
       cursor: pointer;
-      padding: 4px;
     }
 
-    /* Type Toggle */
-    .type-toggle {
-      display: flex;
-      gap: 8px;
-      margin-bottom: var(--spacing-md);
-    }
-
+    .type-toggle { display: flex; gap: 8px; margin-bottom: 16px; }
     .type-btn {
       flex: 1;
       padding: 12px;
       border: 2px solid rgba(255,255,255,0.1);
       border-radius: 10px;
       background: transparent;
-      color: var(--text-gray);
+      color: #888;
       font-size: 0.9rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s;
       font-family: inherit;
     }
+    .type-btn.expense.active { border-color: #E74C3C; background: rgba(231,76,60,0.15); color: #E74C3C; }
+    .type-btn.income.active { border-color: #8AE98D; background: rgba(138,233,141,0.15); color: #8AE98D; }
 
-    .type-btn.expense.active {
-      border-color: #E74C3C;
-      background: rgba(231, 76, 60, 0.15);
-      color: #E74C3C;
-    }
-
-    .type-btn.income.active {
-      border-color: var(--accent-mint);
-      background: rgba(138, 233, 141, 0.15);
-      color: var(--accent-mint);
-    }
-
-    /* Form Inputs */
-    .form-group {
-      margin-bottom: var(--spacing-md);
-    }
-
+    .form-group { margin-bottom: 16px; }
     .form-label {
       display: block;
       font-size: 0.8rem;
-      color: var(--text-gray);
+      color: #888;
       margin-bottom: 8px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
-
     .form-input {
       width: 100%;
       padding: 14px 16px;
       background: rgba(255,255,255,0.05);
       border: 1px solid rgba(255,255,255,0.1);
       border-radius: 10px;
-      color: var(--text-white);
+      color: #fff;
       font-size: 1rem;
       font-family: inherit;
     }
+    .form-input:focus { outline: none; border-color: #F7C846; }
+    .form-input::placeholder { color: #666; }
 
-    .form-input:focus {
-      outline: none;
-      border-color: var(--accent-yellow);
-    }
-
-    .form-input::placeholder {
-      color: var(--text-gray);
-    }
-
-    /* Category Grid */
     .category-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 8px;
     }
-
     .category-btn {
       display: flex;
       flex-direction: column;
@@ -415,227 +572,259 @@
       border: 2px solid transparent;
       border-radius: 10px;
       cursor: pointer;
-      transition: all 0.2s;
     }
+    .category-btn.active { border-color: #F7C846; background: rgba(247,200,70,0.15); }
+    .category-btn .emoji { font-size: 1.4rem; }
+    .category-btn .label { font-size: 0.65rem; color: #888; }
+    .category-btn.active .label { color: #F7C846; }
 
-    .category-btn:hover {
-      background: rgba(255,255,255,0.1);
-    }
-
-    .category-btn.active {
-      border-color: var(--accent-yellow);
-      background: rgba(247, 200, 70, 0.15);
-    }
-
-    .category-btn .emoji {
-      font-size: 1.4rem;
-    }
-
-    .category-btn .label {
-      font-size: 0.65rem;
-      color: var(--text-gray);
-      text-align: center;
-    }
-
-    .category-btn.active .label {
-      color: var(--accent-yellow);
-    }
-
-    /* Submit Button */
     .submit-btn {
       width: 100%;
       padding: 16px;
-      background: var(--accent-yellow);
+      background: #F7C846;
       border: none;
       border-radius: 12px;
-      color: var(--bg-dark);
+      color: #0E121A;
       font-size: 1rem;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.2s;
       font-family: inherit;
-      margin-top: var(--spacing-md);
+      margin-top: 16px;
     }
 
-    .submit-btn:hover {
-      opacity: 0.9;
+    .emoji-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
     }
+    .emoji-btn {
+      padding: 12px;
+      background: rgba(255,255,255,0.05);
+      border: 2px solid transparent;
+      border-radius: 10px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      text-align: center;
+    }
+    .emoji-btn.active { border-color: #F7C846; background: rgba(247,200,70,0.15); }
 
-    .submit-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
     }
+    .color-btn {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 10px;
+      border: 3px solid transparent;
+      cursor: pointer;
+    }
+    .color-btn.active { border-color: #fff; }
 
-    /* Date group header */
-    .date-header {
-      font-size: 0.75rem;
-      color: var(--text-gray);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin: var(--spacing-md) 0 var(--spacing-sm);
-      padding-left: 4px;
+    /* Bottom nav */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #0E121A;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 8px 0 20px;
+      z-index: 50;
     }
+    body.light-theme .bottom-nav { background: #fff; border-color: rgba(0,0,0,0.1); }
 
-    .date-header:first-child {
-      margin-top: 0;
+    .nav-items {
+      display: flex;
+      justify-content: space-around;
+      list-style: none;
+      max-width: 500px;
+      margin: 0 auto;
     }
+    .nav-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #888;
+      padding: 8px 16px;
+    }
+    .nav-link.active { color: #F7C846; }
+    .nav-icon { font-size: 1.3rem; margin-bottom: 4px; }
+    .nav-label { font-size: 0.7rem; }
   </style>
 </head>
 <body>
-  <div class="app-container">
-    <div class="page-content finance-container">
-
-      <a href="../index.html" style="display: inline-flex; align-items: center; gap: 8px; color: var(--text-gray); text-decoration: none; font-size: 0.9rem;">
-        <span>←</span> Back
-      </a>
-
-      <div class="finance-header">
-        <h1>Finance</h1>
-        <p class="subtitle">Track your income & expenses</p>
-      </div>
-
-      <!-- Summary Cards -->
-      <div class="summary-row">
-        <div class="summary-card income">
-          <div class="summary-label">Income</div>
-          <div class="summary-value green" id="totalIncome">0</div>
-        </div>
-        <div class="summary-card expense">
-          <div class="summary-label">Expenses</div>
-          <div class="summary-value red" id="totalExpense">0</div>
-        </div>
-        <div class="summary-card balance">
-          <div class="summary-label">Balance</div>
-          <div class="summary-value yellow" id="totalBalance">0</div>
-        </div>
-      </div>
-
-      <!-- Category Filter -->
-      <div class="category-filter" id="categoryFilter">
-        <button class="filter-pill active" data-filter="all">All</button>
-      </div>
-
-      <!-- Transactions -->
-      <div class="transactions-section">
-        <div class="section-header">
-          <span class="section-title">Transactions</span>
-          <span class="section-title" id="transactionCount">0 items</span>
-        </div>
-        <div class="transaction-list" id="transactionList">
-          <div class="empty-state">
-            <div class="empty-icon">💰</div>
-            <p>No transactions yet</p>
-            <p style="font-size: 0.8rem; margin-top: 4px;">Tap + to add your first one</p>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Bottom Navigation -->
-    <nav class="bottom-nav">
-      <ul class="nav-items">
-        <li class="nav-item">
-          <a href="../index.html" class="nav-link">
-            <span class="nav-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                <polyline points="9,22 9,12 15,12 15,22"/>
-              </svg>
-            </span>
-            <span class="nav-label">Home</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="summary.html" class="nav-link active">
-            <span class="nav-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="12" y1="1" x2="12" y2="23"/>
-                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-              </svg>
-            </span>
-            <span class="nav-label">Finance</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="../fitness/index.html" class="nav-link">
-            <span class="nav-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M6.5 6.5m-2.5 0a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0 -5 0"/>
-                <path d="M3 12h4l3 8 4-16 3 8h4"/>
-              </svg>
-            </span>
-            <span class="nav-label">Fitness</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="../research/index.html" class="nav-link">
-            <span class="nav-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8"/>
-                <path d="M21 21l-4.35-4.35"/>
-              </svg>
-            </span>
-            <span class="nav-label">Research</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
+  <div class="header">
+    <h1>💰 Finance</h1>
+    <p class="subtitle">Track, save & plan your money</p>
   </div>
 
-  <!-- FAB Button -->
-  <button class="fab" onclick="openModal()">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-      <line x1="12" y1="5" x2="12" y2="19"/>
-      <line x1="5" y1="12" x2="19" y2="12"/>
-    </svg>
-  </button>
+  <!-- Summary Cards -->
+  <div class="summary-row">
+    <div class="summary-card">
+      <div class="summary-label">Income</div>
+      <div class="summary-value green" id="totalIncome">0</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-label">Expenses</div>
+      <div class="summary-value red" id="totalExpense">0</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-label">Balance</div>
+      <div class="summary-value yellow" id="totalBalance">0</div>
+    </div>
+  </div>
 
-  <!-- Add Transaction Modal -->
-  <div id="addModal" class="modal hidden" onclick="closeModal(event)">
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('transactions')">Transactions</button>
+    <button class="tab-btn" onclick="switchTab('funds')">Funds</button>
+    <button class="tab-btn" onclick="switchTab('advisor')">AI Advisor</button>
+  </div>
+
+  <!-- Transactions Tab -->
+  <div id="transactions-tab" class="tab-content active">
+    <div class="category-filter" id="categoryFilter">
+      <button class="filter-pill active" data-filter="all">All</button>
+    </div>
+    <div class="section-header">
+      <span class="section-title">Recent Transactions</span>
+      <span class="section-title" id="transactionCount">0 items</span>
+    </div>
+    <div class="transaction-list" id="transactionList">
+      <div class="empty-state">
+        <div class="empty-icon">💸</div>
+        <p>No transactions yet</p>
+        <p style="font-size: 0.8rem; margin-top: 4px;">Tap + to add your first one</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Funds Tab -->
+  <div id="funds-tab" class="tab-content">
+    <div class="section-header">
+      <span class="section-title">Your Savings Goals</span>
+      <span class="section-title" id="fundsTotal">0 saved</span>
+    </div>
+    <div class="funds-grid" id="fundsList"></div>
+    <button class="add-fund-btn" onclick="openFundModal()">
+      <span>+</span> Create New Fund
+    </button>
+  </div>
+
+  <!-- AI Advisor Tab -->
+  <div id="advisor-tab" class="tab-content">
+    <div id="api-notice" class="api-setup" style="display: none;">
+      <div class="api-setup-title">🔑 API Key Required</div>
+      <p style="font-size: 0.85rem; color: #888; margin-bottom: 12px;">
+        Add your Anthropic API key to chat with your AI Financial Advisor.
+      </p>
+      <input type="password" class="form-input" id="api-key-input" placeholder="sk-ant-api...">
+      <div class="api-row">
+        <button class="api-btn save" onclick="saveApiKey()">Save Key</button>
+        <button class="api-btn clear" onclick="clearApiKey()">Clear</button>
+      </div>
+    </div>
+
+    <div class="chat-container" id="chat-container">
+      <div class="chat-messages" id="chat-messages"></div>
+      <div class="chat-input-area">
+        <input type="text" class="chat-input" id="chat-input" placeholder="Ask about budgeting, saving, investing...">
+        <button class="chat-send" id="chat-send" onclick="sendMessage()">➤</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAB for Transactions -->
+  <button class="fab" id="fab" onclick="openTransactionModal()">+</button>
+
+  <!-- Transaction Modal -->
+  <div id="transactionModal" class="modal hidden" onclick="closeTransactionModal(event)">
     <div class="modal-content" onclick="event.stopPropagation()">
       <div class="modal-header">
         <span class="modal-title">Add Transaction</span>
-        <button class="modal-close" onclick="closeModal()">&times;</button>
+        <button class="modal-close" onclick="closeTransactionModal()">&times;</button>
       </div>
-
-      <!-- Type Toggle -->
       <div class="type-toggle">
-        <button class="type-btn expense active" onclick="setType('expense')">
-          Expense
-        </button>
-        <button class="type-btn income" onclick="setType('income')">
-          Income
-        </button>
+        <button class="type-btn expense active" onclick="setType('expense')">Expense</button>
+        <button class="type-btn income" onclick="setType('income')">Income</button>
       </div>
-
-      <!-- Amount -->
       <div class="form-group">
         <label class="form-label">Amount</label>
         <input type="number" id="amountInput" class="form-input" placeholder="0.00" step="0.01" inputmode="decimal">
       </div>
-
-      <!-- Description -->
       <div class="form-group">
         <label class="form-label">Description</label>
         <input type="text" id="descInput" class="form-input" placeholder="What was this for?">
       </div>
-
-      <!-- Category -->
       <div class="form-group">
         <label class="form-label">Category</label>
-        <div class="category-grid" id="categoryGrid">
-          <!-- Categories will be rendered here -->
-        </div>
+        <div class="category-grid" id="categoryGrid"></div>
       </div>
-
       <button class="submit-btn" onclick="addTransaction()">Add Transaction</button>
     </div>
   </div>
 
+  <!-- Fund Modal -->
+  <div id="fundModal" class="modal hidden" onclick="closeFundModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <span class="modal-title" id="fundModalTitle">Create Fund</span>
+        <button class="modal-close" onclick="closeFundModal()">&times;</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Fund Name</label>
+        <input type="text" id="fundNameInput" class="form-input" placeholder="e.g., Emergency Fund">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Target Amount</label>
+        <input type="number" id="fundTargetInput" class="form-input" placeholder="10000" step="100" inputmode="decimal">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Icon</label>
+        <div class="emoji-grid" id="emojiGrid"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Color</label>
+        <div class="color-grid" id="colorGrid"></div>
+      </div>
+      <button class="submit-btn" onclick="saveFund()">Create Fund</button>
+    </div>
+  </div>
+
+  <!-- Add to Fund Modal -->
+  <div id="addToFundModal" class="modal hidden" onclick="closeAddToFundModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <span class="modal-title" id="addToFundTitle">Add to Fund</span>
+        <button class="modal-close" onclick="closeAddToFundModal()">&times;</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Amount</label>
+        <input type="number" id="addToFundAmount" class="form-input" placeholder="0.00" step="0.01" inputmode="decimal">
+      </div>
+      <div class="type-toggle">
+        <button class="type-btn income active" id="fundAddBtn" onclick="setFundAction('add')">Add</button>
+        <button class="type-btn expense" id="fundWithdrawBtn" onclick="setFundAction('withdraw')">Withdraw</button>
+      </div>
+      <button class="submit-btn" onclick="updateFundAmount()">Confirm</button>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <ul class="nav-items">
+      <li><a href="../index.html" class="nav-link"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></a></li>
+      <li><a href="summary.html" class="nav-link active"><span class="nav-icon">💰</span><span class="nav-label">Finance</span></a></li>
+    </ul>
+  </nav>
+
   <script src="../scripts/memory.js"></script>
   <script>
-    // Categories with emojis and colors
+    // Categories
     const categories = {
       expense: [
         { id: 'food', emoji: '🍔', label: 'Food', color: '#ef5350' },
@@ -659,117 +848,125 @@
       ]
     };
 
+    const fundEmojis = ['🛡️', '📈', '🎯', '🏠', '✈️', '🚗', '💍', '📚', '💼', '🎮', '🏥', '👶'];
+    const fundColors = ['#8AE98D', '#F7C846', '#42a5f5', '#ab47bc', '#ef5350', '#ff7043'];
+
     let currentType = 'expense';
     let selectedCategory = null;
     let currentFilter = 'all';
+    let selectedEmoji = '🛡️';
+    let selectedColor = '#8AE98D';
+    let editingFundId = null;
+    let fundAction = 'add';
+    let currentFundId = null;
 
-    // Get transactions from memory
-    function getTransactions() {
-      return Memory.get('finance', 'transactions') || [];
+    // Initialize
+    function init() {
+      loadTheme();
+      renderAll();
+      checkApiKey();
+      loadChatHistory();
+      renderEmojiGrid();
+      renderColorGrid();
+
+      document.getElementById('chat-input').addEventListener('keypress', e => {
+        if (e.key === 'Enter') sendMessage();
+      });
+      document.getElementById('descInput').addEventListener('keypress', e => {
+        if (e.key === 'Enter') addTransaction();
+      });
     }
 
-    function saveTransactions(transactions) {
-      Memory.set('finance', 'transactions', transactions);
+    function loadTheme() {
+      const savedTheme = Memory.get('settings', 'theme');
+      if (savedTheme === 'light') document.body.classList.add('light-theme');
     }
 
-    // Format currency
+    // Tab switching
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+        btn.classList.remove('active');
+        if ((tab === 'transactions' && i === 0) || (tab === 'funds' && i === 1) || (tab === 'advisor' && i === 2)) {
+          btn.classList.add('active');
+        }
+      });
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      document.getElementById(tab + '-tab').classList.add('active');
+
+      // Show/hide FAB
+      document.getElementById('fab').style.display = tab === 'transactions' ? 'flex' : 'none';
+    }
+
+    // Transactions
+    function getTransactions() { return Memory.get('finance', 'transactions') || []; }
+    function saveTransactions(t) { Memory.set('finance', 'transactions', t); }
+
     function formatCurrency(amount) {
-      return new Intl.NumberFormat('en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      }).format(amount);
+      return new Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount);
     }
 
-    // Format date
     function formatDate(dateStr) {
       const date = new Date(dateStr);
       const today = new Date();
       const yesterday = new Date(today);
       yesterday.setDate(yesterday.getDate() - 1);
-
       if (date.toDateString() === today.toDateString()) return 'Today';
       if (date.toDateString() === yesterday.toDateString()) return 'Yesterday';
-
       return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     }
 
-    // Get category info
     function getCategoryInfo(type, categoryId) {
       const cats = categories[type] || categories.expense;
       return cats.find(c => c.id === categoryId) || cats.find(c => c.id === 'other');
     }
 
-    // Calculate totals
     function calculateTotals() {
       const transactions = getTransactions();
       let income = 0, expense = 0;
-
       transactions.forEach(t => {
         if (t.type === 'income') income += t.amount;
         else expense += t.amount;
       });
-
       document.getElementById('totalIncome').textContent = formatCurrency(income);
       document.getElementById('totalExpense').textContent = formatCurrency(expense);
       document.getElementById('totalBalance').textContent = formatCurrency(income - expense);
     }
 
-    // Render category filters
     function renderCategoryFilters() {
       const container = document.getElementById('categoryFilter');
       const transactions = getTransactions();
-
-      // Get unique categories
       const usedCategories = new Set();
       transactions.forEach(t => {
         const cat = getCategoryInfo(t.type, t.category);
-        usedCategories.add(JSON.stringify({ id: t.category, type: t.type, emoji: cat.emoji, label: cat.label }));
+        usedCategories.add(JSON.stringify({ id: t.category, emoji: cat.emoji, label: cat.label }));
       });
 
-      let html = '<button class="filter-pill ' + (currentFilter === 'all' ? 'active' : '') + '" data-filter="all" onclick="setFilter(\'all\')">All</button>';
-
+      let html = `<button class="filter-pill ${currentFilter === 'all' ? 'active' : ''}" onclick="setFilter('all')">All</button>`;
       usedCategories.forEach(catStr => {
         const cat = JSON.parse(catStr);
-        html += `<button class="filter-pill ${currentFilter === cat.id ? 'active' : ''}" data-filter="${cat.id}" onclick="setFilter('${cat.id}')">${cat.emoji} ${cat.label}</button>`;
+        html += `<button class="filter-pill ${currentFilter === cat.id ? 'active' : ''}" onclick="setFilter('${cat.id}')">${cat.emoji} ${cat.label}</button>`;
       });
-
       container.innerHTML = html;
     }
 
-    // Set filter
     function setFilter(filter) {
       currentFilter = filter;
       renderCategoryFilters();
       renderTransactions();
     }
 
-    // Render transactions
     function renderTransactions() {
       const container = document.getElementById('transactionList');
       let transactions = getTransactions();
-
-      // Apply filter
-      if (currentFilter !== 'all') {
-        transactions = transactions.filter(t => t.category === currentFilter);
-      }
-
-      // Sort by date (newest first)
+      if (currentFilter !== 'all') transactions = transactions.filter(t => t.category === currentFilter);
       transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
-
       document.getElementById('transactionCount').textContent = `${transactions.length} item${transactions.length !== 1 ? 's' : ''}`;
 
       if (transactions.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-icon">💰</div>
-            <p>No transactions yet</p>
-            <p style="font-size: 0.8rem; margin-top: 4px;">Tap + to add your first one</p>
-          </div>
-        `;
+        container.innerHTML = `<div class="empty-state"><div class="empty-icon">💸</div><p>No transactions yet</p></div>`;
         return;
       }
 
-      // Group by date
       const grouped = {};
       transactions.forEach(t => {
         const dateKey = formatDate(t.date);
@@ -785,28 +982,17 @@
           html += `
             <div class="transaction-item" data-id="${t.id}">
               <div class="swipe-delete">Delete</div>
-              <div class="transaction-inner"
-                   ontouchstart="handleSwipeStart(event)"
-                   ontouchmove="handleSwipeMove(event)"
-                   ontouchend="handleSwipeEnd(event)">
-                <div class="transaction-icon" style="background: ${cat.color}20;">
-                  ${cat.emoji}
-                </div>
+              <div class="transaction-inner" ontouchstart="handleSwipeStart(event)" ontouchmove="handleSwipeMove(event)" ontouchend="handleSwipeEnd(event)">
+                <div class="transaction-icon" style="background: ${cat.color}20;">${cat.emoji}</div>
                 <div class="transaction-details">
                   <div class="transaction-desc">${escapeHtml(t.description)}</div>
-                  <div class="transaction-meta">
-                    <span class="transaction-category">${cat.label}</span>
-                  </div>
+                  <div class="transaction-meta"><span class="transaction-category">${cat.label}</span></div>
                 </div>
-                <div class="transaction-amount ${t.type}">
-                  ${t.type === 'income' ? '+' : '-'}${formatCurrency(t.amount)}
-                </div>
+                <div class="transaction-amount ${t.type}">${t.type === 'income' ? '+' : '-'}${formatCurrency(t.amount)}</div>
               </div>
-            </div>
-          `;
+            </div>`;
         });
       });
-
       container.innerHTML = html;
     }
 
@@ -817,70 +1003,41 @@
     }
 
     // Swipe handling
-    let swipeStartX = 0;
-    let swipeCurrentX = 0;
-    let swipingItem = null;
-    let swipingInner = null;
+    let swipeStartX = 0, swipeCurrentX = 0, swipingItem = null, swipingInner = null;
 
     function handleSwipeStart(e) {
       swipeStartX = e.touches[0].clientX;
-      swipeCurrentX = swipeStartX;
       swipingInner = e.currentTarget;
       swipingItem = swipingInner.closest('.transaction-item');
     }
 
     function handleSwipeMove(e) {
-      if (!swipingInner || !swipingItem) return;
-
+      if (!swipingInner) return;
       swipeCurrentX = e.touches[0].clientX;
       const diff = swipeCurrentX - swipeStartX;
-
-      // Only allow left swipe (negative diff)
       if (diff < 0) {
-        const maxSwipe = 100;
-        let clampedDiff = Math.max(diff, -maxSwipe);
-
-        swipingInner.style.transform = `translateX(${clampedDiff}px)`;
-
-        const deleteBg = swipingItem.querySelector('.swipe-delete');
-        deleteBg.style.opacity = Math.min(1, Math.abs(diff) / 60);
+        swipingInner.style.transform = `translateX(${Math.max(diff, -100)}px)`;
+        swipingItem.querySelector('.swipe-delete').style.opacity = Math.min(1, Math.abs(diff) / 60);
       }
     }
 
     function handleSwipeEnd(e) {
-      if (!swipingInner || !swipingItem) return;
-
+      if (!swipingInner) return;
       const diff = swipeCurrentX - swipeStartX;
-      const threshold = 80;
-
-      if (diff < -threshold) {
-        // Delete action
+      if (diff < -80) {
         swipingItem.style.transition = 'transform 0.3s, opacity 0.3s';
         swipingItem.style.transform = 'translateX(-100%)';
         swipingItem.style.opacity = '0';
-
         const id = swipingItem.dataset.id;
-        setTimeout(() => {
-          deleteTransaction(id);
-        }, 300);
+        setTimeout(() => deleteTransaction(id), 300);
       } else {
-        // Reset
-        swipingInner.style.transition = 'transform 0.2s ease-out';
         swipingInner.style.transform = 'translateX(0)';
-
-        const deleteBg = swipingItem.querySelector('.swipe-delete');
-        deleteBg.style.opacity = 0;
-
-        setTimeout(() => {
-          if (swipingInner) swipingInner.style.transition = '';
-        }, 200);
+        swipingItem.querySelector('.swipe-delete').style.opacity = 0;
       }
-
       swipingItem = null;
       swipingInner = null;
     }
 
-    // Delete transaction
     function deleteTransaction(id) {
       const transactions = getTransactions();
       const index = transactions.findIndex(t => t.id === id);
@@ -891,21 +1048,21 @@
       }
     }
 
-    // Modal functions
-    function openModal() {
-      document.getElementById('addModal').classList.remove('hidden');
+    // Transaction Modal
+    function openTransactionModal() {
+      document.getElementById('transactionModal').classList.remove('hidden');
       renderCategoryGrid();
       document.getElementById('amountInput').focus();
     }
 
-    function closeModal(e) {
+    function closeTransactionModal(e) {
       if (!e || e.target === e.currentTarget) {
-        document.getElementById('addModal').classList.add('hidden');
-        resetForm();
+        document.getElementById('transactionModal').classList.add('hidden');
+        resetTransactionForm();
       }
     }
 
-    function resetForm() {
+    function resetTransactionForm() {
       document.getElementById('amountInput').value = '';
       document.getElementById('descInput').value = '';
       selectedCategory = null;
@@ -915,21 +1072,16 @@
     function setType(type) {
       currentType = type;
       selectedCategory = null;
-
       document.querySelectorAll('.type-btn').forEach(btn => {
         btn.classList.remove('active');
-        if (btn.classList.contains(type)) {
-          btn.classList.add('active');
-        }
+        if (btn.classList.contains(type)) btn.classList.add('active');
       });
-
       renderCategoryGrid();
     }
 
     function renderCategoryGrid() {
       const container = document.getElementById('categoryGrid');
       const cats = categories[currentType];
-
       container.innerHTML = cats.map(cat => `
         <button class="category-btn ${selectedCategory === cat.id ? 'active' : ''}" onclick="selectCategory('${cat.id}')">
           <span class="emoji">${cat.emoji}</span>
@@ -946,61 +1098,358 @@
     function addTransaction() {
       const amount = parseFloat(document.getElementById('amountInput').value);
       const description = document.getElementById('descInput').value.trim();
-
-      if (!amount || amount <= 0) {
-        document.getElementById('amountInput').focus();
-        return;
-      }
-
-      if (!description) {
-        document.getElementById('descInput').focus();
-        return;
-      }
-
-      if (!selectedCategory) {
-        selectedCategory = 'other';
-      }
+      if (!amount || amount <= 0 || !description) return;
+      if (!selectedCategory) selectedCategory = 'other';
 
       const transactions = getTransactions();
       transactions.push({
         id: Date.now().toString(),
         type: currentType,
-        amount: amount,
-        description: description,
+        amount,
+        description,
         category: selectedCategory,
         date: new Date().toISOString()
       });
-
       saveTransactions(transactions);
-      closeModal();
+      closeTransactionModal();
       renderAll();
+    }
+
+    // Funds
+    function getFunds() { return Memory.get('finance', 'funds') || []; }
+    function saveFunds(f) { Memory.set('finance', 'funds', f); }
+
+    function renderFunds() {
+      const container = document.getElementById('fundsList');
+      const funds = getFunds();
+
+      const totalSaved = funds.reduce((sum, f) => sum + (f.current || 0), 0);
+      document.getElementById('fundsTotal').textContent = formatCurrency(totalSaved) + ' saved';
+
+      if (funds.length === 0) {
+        container.innerHTML = `<div class="empty-state"><div class="empty-icon">🎯</div><p>No funds yet</p><p style="font-size:0.8rem;margin-top:4px;">Create your first savings goal!</p></div>`;
+        return;
+      }
+
+      container.innerHTML = funds.map(fund => {
+        const progress = fund.target > 0 ? Math.min(100, (fund.current / fund.target) * 100) : 0;
+        return `
+          <div class="fund-card" data-id="${fund.id}">
+            <div class="fund-header">
+              <div class="fund-icon" style="background: ${fund.color}20;">${fund.emoji}</div>
+              <div class="fund-info">
+                <div class="fund-name">${escapeHtml(fund.name)}</div>
+                <div class="fund-meta">${progress.toFixed(0)}% complete</div>
+              </div>
+            </div>
+            <div class="fund-progress">
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: ${progress}%; background: ${fund.color};"></div>
+              </div>
+              <div class="progress-stats">
+                <span class="progress-current">${formatCurrency(fund.current || 0)}</span>
+                <span>of ${formatCurrency(fund.target)}</span>
+              </div>
+            </div>
+            <div class="fund-actions">
+              <button class="fund-btn add" onclick="openAddToFund('${fund.id}', 'add')">+ Add</button>
+              <button class="fund-btn withdraw" onclick="openAddToFund('${fund.id}', 'withdraw')">- Withdraw</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderEmojiGrid() {
+      document.getElementById('emojiGrid').innerHTML = fundEmojis.map(e =>
+        `<button class="emoji-btn ${selectedEmoji === e ? 'active' : ''}" onclick="selectEmoji('${e}')">${e}</button>`
+      ).join('');
+    }
+
+    function renderColorGrid() {
+      document.getElementById('colorGrid').innerHTML = fundColors.map(c =>
+        `<button class="color-btn ${selectedColor === c ? 'active' : ''}" style="background: ${c};" onclick="selectColor('${c}')"></button>`
+      ).join('');
+    }
+
+    function selectEmoji(e) { selectedEmoji = e; renderEmojiGrid(); }
+    function selectColor(c) { selectedColor = c; renderColorGrid(); }
+
+    function openFundModal(fundId = null) {
+      editingFundId = fundId;
+      if (fundId) {
+        const fund = getFunds().find(f => f.id === fundId);
+        if (fund) {
+          document.getElementById('fundModalTitle').textContent = 'Edit Fund';
+          document.getElementById('fundNameInput').value = fund.name;
+          document.getElementById('fundTargetInput').value = fund.target;
+          selectedEmoji = fund.emoji;
+          selectedColor = fund.color;
+        }
+      } else {
+        document.getElementById('fundModalTitle').textContent = 'Create Fund';
+        document.getElementById('fundNameInput').value = '';
+        document.getElementById('fundTargetInput').value = '';
+        selectedEmoji = '🛡️';
+        selectedColor = '#8AE98D';
+      }
+      renderEmojiGrid();
+      renderColorGrid();
+      document.getElementById('fundModal').classList.remove('hidden');
+    }
+
+    function closeFundModal(e) {
+      if (!e || e.target === e.currentTarget) {
+        document.getElementById('fundModal').classList.add('hidden');
+        editingFundId = null;
+      }
+    }
+
+    function saveFund() {
+      const name = document.getElementById('fundNameInput').value.trim();
+      const target = parseFloat(document.getElementById('fundTargetInput').value);
+      if (!name || !target) return;
+
+      const funds = getFunds();
+      if (editingFundId) {
+        const fund = funds.find(f => f.id === editingFundId);
+        if (fund) {
+          fund.name = name;
+          fund.target = target;
+          fund.emoji = selectedEmoji;
+          fund.color = selectedColor;
+        }
+      } else {
+        funds.push({
+          id: Date.now().toString(),
+          name,
+          target,
+          current: 0,
+          emoji: selectedEmoji,
+          color: selectedColor,
+          createdAt: new Date().toISOString()
+        });
+      }
+      saveFunds(funds);
+      closeFundModal();
+      renderFunds();
+    }
+
+    function openAddToFund(fundId, action) {
+      currentFundId = fundId;
+      fundAction = action;
+      const fund = getFunds().find(f => f.id === fundId);
+      document.getElementById('addToFundTitle').textContent = action === 'add' ? `Add to ${fund.name}` : `Withdraw from ${fund.name}`;
+      document.getElementById('addToFundAmount').value = '';
+      setFundAction(action);
+      document.getElementById('addToFundModal').classList.remove('hidden');
+    }
+
+    function closeAddToFundModal(e) {
+      if (!e || e.target === e.currentTarget) {
+        document.getElementById('addToFundModal').classList.add('hidden');
+      }
+    }
+
+    function setFundAction(action) {
+      fundAction = action;
+      document.getElementById('fundAddBtn').classList.toggle('active', action === 'add');
+      document.getElementById('fundWithdrawBtn').classList.toggle('active', action === 'withdraw');
+    }
+
+    function updateFundAmount() {
+      const amount = parseFloat(document.getElementById('addToFundAmount').value);
+      if (!amount || amount <= 0) return;
+
+      const funds = getFunds();
+      const fund = funds.find(f => f.id === currentFundId);
+      if (fund) {
+        if (fundAction === 'add') {
+          fund.current = (fund.current || 0) + amount;
+        } else {
+          fund.current = Math.max(0, (fund.current || 0) - amount);
+        }
+        saveFunds(funds);
+      }
+      closeAddToFundModal();
+      renderFunds();
+    }
+
+    // Create fund from AI suggestion
+    function createFundFromAI(name, target, emoji, color) {
+      const funds = getFunds();
+      funds.push({
+        id: Date.now().toString(),
+        name,
+        target,
+        current: 0,
+        emoji,
+        color,
+        createdAt: new Date().toISOString()
+      });
+      saveFunds(funds);
+      renderFunds();
+      switchTab('funds');
+    }
+
+    // AI Chat
+    function checkApiKey() {
+      const apiKey = Memory.get('settings', 'anthropic_api_key');
+      document.getElementById('api-notice').style.display = apiKey ? 'none' : 'block';
+      document.getElementById('chat-container').style.display = apiKey ? 'flex' : 'none';
+    }
+
+    function saveApiKey() {
+      const key = document.getElementById('api-key-input').value.trim();
+      if (!key) return;
+      Memory.set('settings', 'anthropic_api_key', key);
+      document.getElementById('api-key-input').value = '';
+      checkApiKey();
+      loadChatHistory();
+    }
+
+    function clearApiKey() {
+      Memory.set('settings', 'anthropic_api_key', null);
+      checkApiKey();
+    }
+
+    function getChatHistory() { return Memory.get('finance', 'chatHistory') || []; }
+    function saveChatHistory(h) { Memory.set('finance', 'chatHistory', h); }
+
+    function loadChatHistory() {
+      const history = getChatHistory();
+      const container = document.getElementById('chat-messages');
+
+      if (history.length === 0) {
+        container.innerHTML = `
+          <div class="ai-message">
+            <strong>👋 Hi! I'm your AI Financial Advisor.</strong><br><br>
+            I can help you with:<br>
+            • Planning your financial goals<br>
+            • Creating savings funds<br>
+            • Budgeting advice<br>
+            • Investment basics<br><br>
+            What would you like to work on today?
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = history.map(m => `
+        <div class="${m.role === 'user' ? 'user-message' : 'ai-message'} message">
+          ${m.content}
+        </div>
+      `).join('');
+      container.scrollTop = container.scrollHeight;
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById('chat-input');
+      const message = input.value.trim();
+      if (!message) return;
+
+      const apiKey = Memory.get('settings', 'anthropic_api_key');
+      if (!apiKey) {
+        checkApiKey();
+        return;
+      }
+
+      // Add user message
+      const history = getChatHistory();
+      history.push({ role: 'user', content: message });
+      saveChatHistory(history);
+
+      input.value = '';
+      loadChatHistory();
+
+      // Show typing indicator
+      const container = document.getElementById('chat-messages');
+      container.innerHTML += `<div class="typing-indicator" id="typing"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
+      container.scrollTop = container.scrollHeight;
+
+      // Get financial context
+      const transactions = getTransactions();
+      const funds = getFunds();
+      let income = 0, expense = 0;
+      transactions.forEach(t => {
+        if (t.type === 'income') income += t.amount;
+        else expense += t.amount;
+      });
+
+      const systemPrompt = `You are a friendly, personalized AI Financial Advisor. You help users plan their finances, create savings goals, and give practical advice.
+
+USER'S FINANCIAL CONTEXT:
+- Total Income: ${formatCurrency(income)}
+- Total Expenses: ${formatCurrency(expense)}
+- Balance: ${formatCurrency(income - expense)}
+- Current Funds: ${funds.length > 0 ? funds.map(f => `${f.name}: ${formatCurrency(f.current)}/${formatCurrency(f.target)}`).join(', ') : 'None yet'}
+
+IMPORTANT CAPABILITIES:
+1. When the user wants to create a savings fund/goal, suggest one and include this EXACT format in your response:
+   [CREATE_FUND:name|target|emoji|color]
+   Example: [CREATE_FUND:Emergency Fund|50000|🛡️|#8AE98D]
+
+2. Available emojis: 🛡️ 📈 🎯 🏠 ✈️ 🚗 💍 📚 💼 🎮 🏥 👶
+3. Available colors: #8AE98D (green), #F7C846 (yellow), #42a5f5 (blue), #ab47bc (purple), #ef5350 (red), #ff7043 (orange)
+
+Be conversational, encouraging, and practical. Give specific, actionable advice based on their numbers.`;
+
+      const messages = history.map(m => ({ role: m.role, content: m.content }));
+
+      try {
+        const response = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': apiKey,
+            'anthropic-version': '2023-06-01',
+            'anthropic-dangerous-direct-browser-access': 'true'
+          },
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-20250514',
+            max_tokens: 1000,
+            system: systemPrompt,
+            messages
+          })
+        });
+
+        if (!response.ok) throw new Error(`API error: ${response.status}`);
+
+        const data = await response.json();
+        let aiResponse = data.content[0].text;
+
+        // Check for fund creation command
+        const fundMatch = aiResponse.match(/\[CREATE_FUND:(.+?)\|(\d+)\|(.+?)\|(.+?)\]/);
+        if (fundMatch) {
+          const [, name, target, emoji, color] = fundMatch;
+          aiResponse = aiResponse.replace(/\[CREATE_FUND:.+?\]/, '');
+          aiResponse += `<div class="ai-fund-suggestion">
+            <div class="fund-title">${emoji} ${name}</div>
+            <div class="fund-desc">Target: ${formatCurrency(parseFloat(target))}</div>
+            <button class="create-fund-btn" onclick="createFundFromAI('${name}', ${target}, '${emoji}', '${color}')">✓ Create This Fund</button>
+          </div>`;
+        }
+
+        history.push({ role: 'assistant', content: aiResponse });
+        saveChatHistory(history);
+
+      } catch (error) {
+        history.push({ role: 'assistant', content: `Sorry, I encountered an error: ${error.message}. Please check your API key.` });
+        saveChatHistory(history);
+      }
+
+      loadChatHistory();
     }
 
     function renderAll() {
       calculateTotals();
       renderCategoryFilters();
       renderTransactions();
+      renderFunds();
     }
 
-    // Load theme
-    function loadTheme() {
-      const savedTheme = Memory.get('settings', 'theme');
-      if (savedTheme === 'light') {
-        document.body.classList.add('light-theme');
-      }
-    }
-
-    // Initialize
-    document.addEventListener('DOMContentLoaded', () => {
-      loadTheme();
-      Memory.setLastVisited('finance');
-      renderAll();
-
-      // Enter key to submit
-      document.getElementById('descInput').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') addTransaction();
-      });
-    });
+    // Init
+    document.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
 </html>

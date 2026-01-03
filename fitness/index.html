@@ -18,502 +18,314 @@
             transition: background 0.3s, color 0.3s;
         }
 
-        body.light-theme {
-            background: #F5F5F7;
-            color: #1a1a1a;
-        }
-
+        body.light-theme { background: #F5F5F7; color: #1a1a1a; }
         body.light-theme .back-link { color: #666; }
         body.light-theme .subtitle { color: #666; }
         body.light-theme .tab-btn { background: rgba(0,0,0,0.05); color: #666; }
         body.light-theme .tab-btn.active { background: #F7C846; color: #0E121A; }
-        body.light-theme .today-mix { background: #fff; border-color: rgba(0,0,0,0.1); }
-        body.light-theme .mix-workout { background: rgba(0,0,0,0.03); }
-        body.light-theme .shuffle-btn { background: rgba(0,0,0,0.08); color: #333; }
-        body.light-theme .section-title { color: #666; }
-        body.light-theme .workout-card { background: #fff; border: 1px solid rgba(0,0,0,0.08); }
-        body.light-theme .workout-card:hover { background: #fafafa; }
-        body.light-theme .workout-desc { color: #666; }
-        body.light-theme .build-mix { background: #fff; border: 1px solid rgba(0,0,0,0.08); }
-        body.light-theme .selected-item { border-color: rgba(0,0,0,0.1); }
+        body.light-theme .trainer-card { background: #fff; border-color: rgba(0,0,0,0.1); }
+        body.light-theme .workout-detail { background: #fff; }
+        body.light-theme .exercise-card { background: rgba(0,0,0,0.03); }
+        body.light-theme .exercise-name { color: #1a1a1a; }
+        body.light-theme .exercise-meta { color: #666; }
+        body.light-theme .pref-card { background: #fff; border-color: rgba(0,0,0,0.1); }
+        body.light-theme .pref-option { background: rgba(0,0,0,0.03); border-color: rgba(0,0,0,0.1); color: #333; }
         body.light-theme .history-item { background: #fff; border: 1px solid rgba(0,0,0,0.08); }
         body.light-theme .history-date { color: #666; }
-        body.light-theme .history-total { color: #666; }
         body.light-theme .modal-content { background: #fff; }
-        body.light-theme .modal-meta { color: #666; }
-        body.light-theme .modal-btn.secondary { background: rgba(0,0,0,0.08); color: #333; }
+        body.light-theme .rest-text { color: #666; }
+        body.light-theme .api-input { background: #f5f5f5; color: #333; border-color: rgba(0,0,0,0.15); }
 
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: #888;
-            text-decoration: none;
-            font-size: 0.9rem;
-            margin-bottom: 20px;
-        }
+        .back-link { display: inline-flex; align-items: center; gap: 8px; color: #888; text-decoration: none; font-size: 0.9rem; margin-bottom: 20px; }
+        h1 { font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
+        .subtitle { color: #888; margin-bottom: 24px; }
 
-        h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
+        .tabs { display: flex; gap: 8px; margin-bottom: 24px; }
+        .tab-btn { flex: 1; padding: 12px; background: rgba(255,255,255,0.05); border: none; border-radius: 10px; color: #888; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+        .tab-btn.active { background: #F7C846; color: #0E121A; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
 
-        .subtitle {
-            color: #888;
-            margin-bottom: 30px;
-        }
+        .trainer-card { background: linear-gradient(135deg, #1a1f2e 0%, #0E121A 100%); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 24px; margin-bottom: 20px; }
+        .trainer-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+        .trainer-avatar { width: 50px; height: 50px; background: linear-gradient(135deg, #F7C846 0%, #ff9500 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        .trainer-info h3 { font-size: 1rem; font-weight: 600; }
+        .trainer-info p { font-size: 0.8rem; color: #888; }
+        .trainer-message { font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px; min-height: 60px; }
+        .generate-btn { width: 100%; padding: 16px; background: #F7C846; border: none; border-radius: 12px; color: #0E121A; font-size: 1rem; font-weight: 600; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .generate-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-        /* Tabs */
-        .tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 24px;
-        }
+        .api-setup { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; margin-bottom: 20px; }
+        .api-setup-title { font-size: 0.9rem; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .api-setup-title .icon { font-size: 1.2rem; }
+        .api-input { width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff; font-size: 0.9rem; margin-bottom: 12px; font-family: inherit; }
+        .api-input::placeholder { color: #666; }
+        .api-row { display: flex; gap: 10px; }
+        .api-btn { flex: 1; padding: 12px; border: none; border-radius: 10px; font-size: 0.85rem; font-weight: 500; cursor: pointer; font-family: inherit; }
+        .api-btn.save { background: #8AE98D; color: #0E121A; }
+        .api-btn.clear { background: rgba(255,255,255,0.1); color: #fff; }
+        .api-status { font-size: 0.8rem; color: #8AE98D; margin-top: 10px; display: flex; align-items: center; gap: 6px; }
+        .api-status.error { color: #ff6b6b; }
 
-        .tab-btn {
-            flex: 1;
-            padding: 12px;
-            background: rgba(255,255,255,0.05);
-            border: none;
-            border-radius: 10px;
-            color: #888;
-            font-size: 0.9rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: inherit;
-        }
+        .pref-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; margin-bottom: 20px; }
+        .pref-title { font-size: 0.85rem; font-weight: 600; margin-bottom: 12px; color: #888; }
+        .pref-options { display: flex; flex-wrap: wrap; gap: 8px; }
+        .pref-option { padding: 10px 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; font-size: 0.85rem; color: #ccc; cursor: pointer; transition: all 0.2s; }
+        .pref-option.selected { background: rgba(247, 200, 70, 0.2); border-color: #F7C846; color: #F7C846; }
 
-        .tab-btn.active {
-            background: #F7C846;
-            color: #0E121A;
-        }
+        .workout-detail { background: rgba(255,255,255,0.03); border-radius: 20px; overflow: hidden; }
+        .workout-header { background: linear-gradient(135deg, #F7C846 0%, #ff9500 100%); padding: 24px; color: #0E121A; }
+        .workout-type { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; margin-bottom: 4px; }
+        .workout-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
+        .workout-meta { display: flex; gap: 16px; font-size: 0.85rem; }
+        .workout-body { padding: 20px; }
+        .section-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 12px; margin-top: 20px; }
+        .section-label:first-child { margin-top: 0; }
 
-        .tab-content {
-            display: none;
-        }
+        .exercise-card { background: rgba(255,255,255,0.05); border-radius: 12px; padding: 16px; margin-bottom: 10px; }
+        .exercise-header { display: flex; align-items: flex-start; margin-bottom: 8px; }
+        .exercise-number { width: 28px; height: 28px; background: rgba(247, 200, 70, 0.2); color: #F7C846; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 600; margin-right: 12px; flex-shrink: 0; }
+        .exercise-info { flex: 1; }
+        .exercise-name { font-weight: 600; font-size: 1rem; margin-bottom: 4px; }
+        .exercise-meta { font-size: 0.8rem; color: #888; }
+        .exercise-detail { font-size: 0.85rem; color: #aaa; margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1); }
 
-        .tab-content.active {
-            display: block;
-        }
+        .workout-actions { display: flex; gap: 12px; padding: 20px; padding-top: 0; }
+        .action-btn { flex: 1; padding: 14px; border: none; border-radius: 12px; font-size: 0.95rem; font-weight: 600; cursor: pointer; font-family: inherit; }
+        .action-btn.primary { background: #8AE98D; color: #0E121A; }
+        .action-btn.secondary { background: rgba(255,255,255,0.1); color: #fff; }
 
-        /* Today's Mix */
-        .today-mix {
-            background: linear-gradient(135deg, #1a1f2e 0%, #0E121A 100%);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 24px;
-        }
+        .history-item { background: rgba(255,255,255,0.05); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+        .history-date { font-size: 0.8rem; color: #888; margin-bottom: 8px; }
+        .history-title { font-weight: 600; margin-bottom: 8px; }
+        .history-exercises { font-size: 0.85rem; color: #aaa; }
+        .history-stats { display: flex; gap: 16px; margin-top: 10px; font-size: 0.8rem; }
+        .history-stat { color: #8AE98D; }
 
-        .mix-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
+        .empty-state { text-align: center; padding: 40px; color: #666; }
+        .empty-icon { font-size: 3rem; margin-bottom: 12px; }
 
-        .mix-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
+        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); z-index: 100; overflow-y: auto; padding: 20px; }
+        .modal.show { display: block; }
+        .modal-content { background: #1a1f2e; border-radius: 20px; max-width: 500px; margin: 0 auto; overflow: hidden; }
 
-        .shuffle-btn {
-            background: rgba(255,255,255,0.1);
-            border: none;
-            padding: 8px 14px;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 0.85rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+        .active-exercise { padding: 30px; text-align: center; }
+        .active-exercise-number { font-size: 0.85rem; color: #888; margin-bottom: 8px; }
+        .active-exercise-name { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
+        .active-exercise-detail { font-size: 1.1rem; color: #F7C846; margin-bottom: 8px; }
+        .active-exercise-tip { font-size: 0.9rem; color: #888; margin-top: 16px; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px; text-align: left; }
+        .timer-display { font-size: 4rem; font-weight: 700; color: #F7C846; margin: 30px 0; }
 
-        .mix-workout {
-            background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        .rest-overlay { background: linear-gradient(135deg, #1a3a1a 0%, #0E121A 100%); padding: 40px; text-align: center; }
+        .rest-text { font-size: 1.2rem; color: #8AE98D; margin-bottom: 10px; }
+        .next-up { font-size: 0.9rem; color: #888; margin-top: 20px; }
 
-        .mix-workout:last-child {
-            margin-bottom: 0;
-        }
+        .modal-actions { display: flex; gap: 12px; padding: 20px; }
+        .modal-btn { flex: 1; padding: 16px; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; font-family: inherit; }
+        .modal-btn.primary { background: #8AE98D; color: #0E121A; }
+        .modal-btn.secondary { background: rgba(255,255,255,0.1); color: #fff; }
+        .modal-btn.skip { background: rgba(255,255,255,0.05); color: #888; }
 
-        .mix-workout-info {
-            flex: 1;
-        }
+        .progress-bar { height: 4px; background: rgba(255,255,255,0.1); margin: 20px; border-radius: 2px; overflow: hidden; }
+        .progress-fill { height: 100%; background: #F7C846; transition: width 0.3s; }
 
-        .mix-workout-name {
-            font-weight: 500;
-            margin-bottom: 4px;
-        }
+        .loading { display: inline-flex; align-items: center; gap: 8px; }
+        .loading-dot { width: 8px; height: 8px; background: currentColor; border-radius: 50%; animation: bounce 1.4s infinite ease-in-out both; }
+        .loading-dot:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
 
-        .mix-workout-meta {
-            font-size: 0.8rem;
-            color: #888;
-        }
-
-        .mix-workout-time {
-            background: rgba(247, 200, 70, 0.2);
-            color: #F7C846;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .start-btn {
-            width: 100%;
-            padding: 16px;
-            background: #F7C846;
-            border: none;
-            border-radius: 12px;
-            color: #0E121A;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 16px;
-            font-family: inherit;
-        }
-
-        /* Workout Library */
-        .section-title {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 16px;
-            color: #888;
-        }
-
-        .workout-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        .workout-card {
-            background: rgba(255,255,255,0.05);
-            border-radius: 14px;
-            padding: 16px;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 2px solid transparent;
-        }
-
-        .workout-card:hover {
-            background: rgba(255,255,255,0.08);
-        }
-
-        .workout-card.selected {
-            border-color: #F7C846;
-            background: rgba(247, 200, 70, 0.1);
-        }
-
-        .workout-icon {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-
-        .workout-name {
-            font-weight: 600;
-            font-size: 0.95rem;
-            margin-bottom: 4px;
-        }
-
-        .workout-desc {
-            font-size: 0.8rem;
-            color: #888;
-            margin-bottom: 8px;
-        }
-
-        .workout-time {
-            font-size: 0.75rem;
-            color: #F7C846;
-            font-weight: 500;
-        }
-
-        /* Build Your Mix */
-        .build-mix {
-            background: rgba(255,255,255,0.05);
-            border-radius: 16px;
-            padding: 20px;
-            margin-top: 20px;
-        }
-
-        .build-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .build-title {
-            font-weight: 600;
-        }
-
-        .build-total {
-            color: #F7C846;
-            font-size: 0.9rem;
-        }
-
-        .selected-list {
-            margin-bottom: 12px;
-        }
-
-        .selected-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .selected-item:last-child {
-            border: none;
-        }
-
-        .remove-btn {
-            background: none;
-            border: none;
-            color: #888;
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
-
-        /* History */
-        .history-item {
-            background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 12px;
-        }
-
-        .history-date {
-            font-size: 0.8rem;
-            color: #888;
-            margin-bottom: 8px;
-        }
-
-        .history-workouts {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .history-tag {
-            background: rgba(138, 233, 141, 0.2);
-            color: #8AE98D;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-        }
-
-        .history-total {
-            margin-top: 8px;
-            font-size: 0.85rem;
-            color: #888;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: #666;
-        }
-
-        .empty-icon {
-            font-size: 3rem;
-            margin-bottom: 12px;
-        }
-
-        /* Active Workout Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.9);
-            z-index: 100;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .modal.show {
-            display: flex;
-        }
-
-        .modal-content {
-            background: #1a1f2e;
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 400px;
-            width: 100%;
-            text-align: center;
-        }
-
-        .modal-icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
-        }
-
-        .modal-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .modal-meta {
-            color: #888;
-            margin-bottom: 20px;
-        }
-
-        .modal-timer {
-            font-size: 3rem;
-            font-weight: 700;
-            color: #F7C846;
-            margin-bottom: 30px;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 12px;
-        }
-
-        .modal-btn {
-            flex: 1;
-            padding: 14px;
-            border: none;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            font-family: inherit;
-        }
-
-        .modal-btn.primary {
-            background: #8AE98D;
-            color: #0E121A;
-        }
-
-        .modal-btn.secondary {
-            background: rgba(255,255,255,0.1);
-            color: #fff;
-        }
+        .ai-badge { background: linear-gradient(135deg, #8B5CF6, #EC4899); padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; margin-left: 8px; }
     </style>
 </head>
 <body>
-    <a href="../index.html" class="back-link">
-        <span>←</span> Back to Daily Do
-    </a>
-
+    <a href="../index.html" class="back-link"><span>←</span> Back to Daily Do</a>
     <h1>Fitness</h1>
-    <p class="subtitle">Quick 20-30 min workouts you can mix</p>
+    <p class="subtitle">Your AI Personal Trainer <span class="ai-badge">Claude AI</span></p>
 
-    <!-- Tabs -->
     <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('workout')">Workout</button>
+        <button class="tab-btn active" onclick="switchTab('train')">Train</button>
         <button class="tab-btn" onclick="switchTab('history')">History</button>
+        <button class="tab-btn" onclick="switchTab('settings')">Settings</button>
     </div>
 
-    <!-- Workout Tab -->
-    <div id="workout-tab" class="tab-content active">
-        <!-- Today's Mix -->
-        <div class="today-mix" id="today-mix">
-            <div class="mix-header">
-                <span class="mix-title">Today's Mix</span>
-                <button class="shuffle-btn" onclick="shuffleMix()">
-                    🔀 Shuffle
-                </button>
+    <div id="train-tab" class="tab-content active">
+        <!-- API Key Required Notice -->
+        <div class="api-setup" id="api-notice" style="display: none;">
+            <div class="api-setup-title">
+                <span class="icon">🔑</span> API Key Required
             </div>
-            <div id="mix-workouts"></div>
-            <button class="start-btn" onclick="startWorkout()">Start Workout</button>
+            <p style="font-size: 0.85rem; color: #888; margin-bottom: 12px;">
+                Add your Anthropic API key in Settings to enable AI workout generation.
+            </p>
+            <button class="api-btn save" onclick="switchTab('settings'); document.querySelectorAll('.tab-btn')[2].classList.add('active'); document.querySelectorAll('.tab-btn')[0].classList.remove('active');">
+                Go to Settings
+            </button>
         </div>
 
-        <!-- Workout Library -->
-        <div class="section-title">Or build your own mix</div>
-        <div class="workout-grid" id="workout-grid"></div>
-
-        <!-- Build Your Mix -->
-        <div class="build-mix" id="build-mix" style="display: none;">
-            <div class="build-header">
-                <span class="build-title">Your Mix</span>
-                <span class="build-total" id="build-total">0 min</span>
+        <!-- Trainer Card -->
+        <div class="trainer-card" id="trainer-card">
+            <div class="trainer-header">
+                <div class="trainer-avatar">🏋️</div>
+                <div class="trainer-info">
+                    <h3>Coach AI</h3>
+                    <p>Powered by Claude</p>
+                </div>
             </div>
-            <div class="selected-list" id="selected-list"></div>
-            <button class="start-btn" onclick="startCustomWorkout()">Start This Mix</button>
+            <div class="trainer-message" id="trainer-message">
+                Ready to create your personalized workout! Select your preferences below and I'll design a complete routine with warm-up, main exercises, and cool-down.
+            </div>
+            <button class="generate-btn" id="generate-btn" onclick="generateWorkout()">
+                <span>⚡</span> Generate My Workout
+            </button>
         </div>
+
+        <div class="pref-card">
+            <div class="pref-title">Focus Area</div>
+            <div class="pref-options" id="focus-options">
+                <div class="pref-option selected" data-value="full body">Full Body</div>
+                <div class="pref-option" data-value="upper body">Upper Body</div>
+                <div class="pref-option" data-value="lower body">Lower Body</div>
+                <div class="pref-option" data-value="core">Core</div>
+                <div class="pref-option" data-value="cardio HIIT">Cardio</div>
+            </div>
+        </div>
+
+        <div class="pref-card">
+            <div class="pref-title">Duration</div>
+            <div class="pref-options" id="duration-options">
+                <div class="pref-option" data-value="15">15 min</div>
+                <div class="pref-option selected" data-value="25">25 min</div>
+                <div class="pref-option" data-value="40">40 min</div>
+            </div>
+        </div>
+
+        <div class="pref-card">
+            <div class="pref-title">Intensity</div>
+            <div class="pref-options" id="intensity-options">
+                <div class="pref-option" data-value="beginner-friendly, low impact">Beginner</div>
+                <div class="pref-option selected" data-value="moderate intensity">Moderate</div>
+                <div class="pref-option" data-value="high intensity, challenging">Intense</div>
+            </div>
+        </div>
+
+        <div class="pref-card">
+            <div class="pref-title">Equipment</div>
+            <div class="pref-options" id="equipment-options">
+                <div class="pref-option selected" data-value="no equipment, bodyweight only">No Equipment</div>
+                <div class="pref-option" data-value="dumbbells">Dumbbells</div>
+                <div class="pref-option" data-value="resistance bands">Bands</div>
+                <div class="pref-option" data-value="full gym">Full Gym</div>
+            </div>
+        </div>
+
+        <div id="workout-container" style="display: none;"></div>
     </div>
 
-    <!-- History Tab -->
     <div id="history-tab" class="tab-content">
         <div id="history-list"></div>
     </div>
 
-    <!-- Active Workout Modal -->
-    <div id="workout-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-icon" id="modal-icon">💪</div>
-            <div class="modal-title" id="modal-title">Workout</div>
-            <div class="modal-meta" id="modal-meta">25 min total</div>
-            <div class="modal-timer" id="modal-timer">00:00</div>
-            <div class="modal-actions">
-                <button class="modal-btn secondary" onclick="cancelWorkout()">Cancel</button>
-                <button class="modal-btn primary" onclick="completeWorkout()">Done!</button>
+    <div id="settings-tab" class="tab-content">
+        <div class="api-setup">
+            <div class="api-setup-title">
+                <span class="icon">🔑</span> Anthropic API Key
             </div>
+            <p style="font-size: 0.85rem; color: #888; margin-bottom: 12px;">
+                Your API key is stored locally and never sent anywhere except Anthropic's API.
+            </p>
+            <input type="password" class="api-input" id="api-key-input" placeholder="sk-ant-api...">
+            <div class="api-row">
+                <button class="api-btn save" onclick="saveApiKey()">Save Key</button>
+                <button class="api-btn clear" onclick="clearApiKey()">Clear</button>
+            </div>
+            <div class="api-status" id="api-status" style="display: none;"></div>
         </div>
+
+        <div class="pref-card">
+            <div class="pref-title">Get an API Key</div>
+            <p style="font-size: 0.85rem; color: #888; line-height: 1.5;">
+                1. Go to <a href="https://console.anthropic.com/" target="_blank" style="color: #F7C846;">console.anthropic.com</a><br>
+                2. Sign up or log in<br>
+                3. Go to API Keys section<br>
+                4. Create a new key and paste it above
+            </p>
+        </div>
+    </div>
+
+    <div id="workout-modal" class="modal">
+        <div class="modal-content" id="modal-body"></div>
     </div>
 
     <script src="../scripts/memory.js"></script>
     <script>
-        // Workout library - simple 20-30 min sessions
-        const workouts = [
-            { id: 'hiit', name: 'HIIT', icon: '🔥', desc: 'High intensity intervals', time: 20 },
-            { id: 'strength', name: 'Strength', icon: '💪', desc: 'Bodyweight or weights', time: 25 },
-            { id: 'cardio', name: 'Cardio', icon: '🏃', desc: 'Running, cycling, etc', time: 30 },
-            { id: 'core', name: 'Core', icon: '🎯', desc: 'Abs and stability', time: 15 },
-            { id: 'stretch', name: 'Stretch', icon: '🧘', desc: 'Flexibility & recovery', time: 15 },
-            { id: 'upper', name: 'Upper Body', icon: '🏋️', desc: 'Arms, chest, back', time: 25 },
-            { id: 'lower', name: 'Lower Body', icon: '🦵', desc: 'Legs and glutes', time: 25 },
-            { id: 'tabata', name: 'Tabata', icon: '⚡', desc: '20s on, 10s off', time: 20 },
-        ];
-
-        let selectedWorkouts = [];
-        let todaysMix = [];
-        let activeWorkout = null;
+        let currentWorkout = null;
+        let currentExerciseIndex = 0;
         let timerInterval = null;
-        let startTime = null;
+        let exerciseTime = 0;
+        let selectedFocus = 'full body';
+        let selectedDuration = 25;
+        let selectedIntensity = 'moderate intensity';
+        let selectedEquipment = 'no equipment, bodyweight only';
 
-        // Load theme from settings
+        function init() {
+            loadTheme();
+            setupPreferenceListeners();
+            renderHistory();
+            checkApiKey();
+        }
+
         function loadTheme() {
             if (typeof Memory !== 'undefined') {
                 const savedTheme = Memory.get('settings', 'theme');
-                if (savedTheme === 'light') {
-                    document.body.classList.add('light-theme');
-                }
+                if (savedTheme === 'light') document.body.classList.add('light-theme');
             }
         }
 
-        // Initialize
-        function init() {
-            loadTheme();
-            if (typeof Memory !== 'undefined') {
-                Memory.setLastVisited('fitness');
+        function checkApiKey() {
+            const apiKey = Memory.get('settings', 'anthropic_api_key');
+            if (!apiKey) {
+                document.getElementById('api-notice').style.display = 'block';
+                document.getElementById('trainer-card').style.display = 'none';
+                document.querySelectorAll('.pref-card').forEach(el => el.style.opacity = '0.5');
+            } else {
+                document.getElementById('api-notice').style.display = 'none';
+                document.getElementById('trainer-card').style.display = 'block';
+                document.querySelectorAll('.pref-card').forEach(el => el.style.opacity = '1');
             }
-            renderWorkoutGrid();
-            generateTodaysMix();
-            renderHistory();
         }
 
-        // Tab switching
+        function saveApiKey() {
+            const input = document.getElementById('api-key-input');
+            const key = input.value.trim();
+            if (!key) return;
+
+            Memory.set('settings', 'anthropic_api_key', key);
+            input.value = '';
+
+            const status = document.getElementById('api-status');
+            status.textContent = '✓ API key saved successfully!';
+            status.className = 'api-status';
+            status.style.display = 'flex';
+
+            checkApiKey();
+
+            setTimeout(() => {
+                switchTab('train');
+                document.querySelectorAll('.tab-btn')[0].classList.add('active');
+                document.querySelectorAll('.tab-btn')[2].classList.remove('active');
+            }, 1000);
+        }
+
+        function clearApiKey() {
+            Memory.set('settings', 'anthropic_api_key', null);
+            const status = document.getElementById('api-status');
+            status.textContent = '✓ API key cleared';
+            status.className = 'api-status';
+            status.style.display = 'flex';
+            checkApiKey();
+        }
+
         function switchTab(tab) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
@@ -521,203 +333,324 @@
             document.getElementById(tab + '-tab').classList.add('active');
         }
 
-        // Generate random mix for today (2-3 workouts, ~30-45 min)
-        function generateTodaysMix() {
-            const shuffled = [...workouts].sort(() => Math.random() - 0.5);
-            todaysMix = shuffled.slice(0, 2);
-            renderTodaysMix();
+        function setupPreferenceListeners() {
+            document.querySelectorAll('.pref-options').forEach(group => {
+                group.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('pref-option')) {
+                        group.querySelectorAll('.pref-option').forEach(opt => opt.classList.remove('selected'));
+                        e.target.classList.add('selected');
+                        const value = e.target.dataset.value;
+                        if (group.id === 'focus-options') selectedFocus = value;
+                        if (group.id === 'duration-options') selectedDuration = parseInt(value);
+                        if (group.id === 'intensity-options') selectedIntensity = value;
+                        if (group.id === 'equipment-options') selectedEquipment = value;
+                    }
+                });
+            });
         }
 
-        function shuffleMix() {
-            generateTodaysMix();
+        async function generateWorkout() {
+            const apiKey = Memory.get('settings', 'anthropic_api_key');
+            if (!apiKey) {
+                checkApiKey();
+                return;
+            }
+
+            const btn = document.getElementById('generate-btn');
+            const message = document.getElementById('trainer-message');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"><span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span></span> Generating...';
+            message.textContent = "Designing your personalized workout...";
+
+            const prompt = `You are an expert personal trainer. Create a detailed ${selectedDuration}-minute ${selectedFocus} workout that is ${selectedIntensity} using ${selectedEquipment}.
+
+Return ONLY valid JSON in this exact format (no markdown, no explanation):
+{
+  "title": "Workout name",
+  "warmup": [
+    {"name": "Exercise name", "duration": "30 sec", "tip": "Form tip"}
+  ],
+  "main": [
+    {"name": "Exercise name", "sets": 3, "reps": "10-12", "rest": 45, "tip": "Form tip"}
+  ],
+  "cooldown": [
+    {"name": "Exercise name", "duration": "30 sec", "tip": "Form tip"}
+  ]
+}
+
+Requirements:
+- Warmup: 3 dynamic exercises (2-3 min total)
+- Main: ${selectedDuration <= 15 ? '4' : selectedDuration <= 25 ? '5-6' : '7-8'} exercises with sets, reps, and rest periods
+- Cooldown: 3 stretches (2-3 min total)
+- Each exercise must have a helpful form tip
+- Make it creative and effective for the goals`;
+
+            try {
+                const response = await fetch('https://api.anthropic.com/v1/messages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': apiKey,
+                        'anthropic-version': '2023-06-01',
+                        'anthropic-dangerous-direct-browser-access': 'true'
+                    },
+                    body: JSON.stringify({
+                        model: 'claude-sonnet-4-20250514',
+                        max_tokens: 1500,
+                        messages: [{ role: 'user', content: prompt }]
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const content = data.content[0].text;
+
+                // Parse JSON from response
+                const jsonMatch = content.match(/\{[\s\S]*\}/);
+                if (!jsonMatch) throw new Error('Invalid response format');
+
+                const workout = JSON.parse(jsonMatch[0]);
+                workout.type = selectedFocus;
+                workout.duration = selectedDuration;
+                workout.intensity = selectedIntensity;
+                workout.equipment = selectedEquipment;
+
+                currentWorkout = workout;
+                renderWorkout(workout);
+                message.textContent = `Your personalized ${selectedFocus} workout is ready! 💪`;
+
+            } catch (error) {
+                console.error('Error:', error);
+                message.textContent = `Error: ${error.message}. Please check your API key.`;
+                document.getElementById('api-status').textContent = '✗ ' + error.message;
+                document.getElementById('api-status').className = 'api-status error';
+                document.getElementById('api-status').style.display = 'flex';
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = '<span>🔄</span> Generate New Workout';
         }
 
-        function renderTodaysMix() {
-            const container = document.getElementById('mix-workouts');
-            const totalTime = todaysMix.reduce((sum, w) => sum + w.time, 0);
+        function renderWorkout(workout) {
+            const container = document.getElementById('workout-container');
+            let exerciseNumber = 1;
 
-            container.innerHTML = todaysMix.map(w => `
-                <div class="mix-workout">
-                    <div class="mix-workout-info">
-                        <div class="mix-workout-name">${w.icon} ${w.name}</div>
-                        <div class="mix-workout-meta">${w.desc}</div>
+            container.innerHTML = `
+                <div class="workout-detail">
+                    <div class="workout-header">
+                        <div class="workout-type">${workout.intensity} • ${workout.equipment}</div>
+                        <div class="workout-title">${workout.title}</div>
+                        <div class="workout-meta"><span>⏱️ ${workout.duration} min</span><span>💪 ${workout.main.length} exercises</span></div>
                     </div>
-                    <span class="mix-workout-time">${w.time} min</span>
+                    <div class="workout-body">
+                        <div class="section-label">🔥 Warm-Up</div>
+                        ${workout.warmup.map(ex => `
+                            <div class="exercise-card">
+                                <div class="exercise-header">
+                                    <div class="exercise-number">${exerciseNumber++}</div>
+                                    <div class="exercise-info">
+                                        <div class="exercise-name">${ex.name}</div>
+                                        <div class="exercise-meta">${ex.duration}</div>
+                                    </div>
+                                </div>
+                                <div class="exercise-detail">💡 ${ex.tip}</div>
+                            </div>
+                        `).join('')}
+                        <div class="section-label">💪 Main Workout</div>
+                        ${workout.main.map(ex => `
+                            <div class="exercise-card">
+                                <div class="exercise-header">
+                                    <div class="exercise-number">${exerciseNumber++}</div>
+                                    <div class="exercise-info">
+                                        <div class="exercise-name">${ex.name}</div>
+                                        <div class="exercise-meta">${ex.sets} sets × ${ex.reps} reps • ${ex.rest}s rest</div>
+                                    </div>
+                                </div>
+                                <div class="exercise-detail">💡 ${ex.tip}</div>
+                            </div>
+                        `).join('')}
+                        <div class="section-label">🧘 Cool-Down</div>
+                        ${workout.cooldown.map(ex => `
+                            <div class="exercise-card">
+                                <div class="exercise-header">
+                                    <div class="exercise-number">${exerciseNumber++}</div>
+                                    <div class="exercise-info">
+                                        <div class="exercise-name">${ex.name}</div>
+                                        <div class="exercise-meta">${ex.duration}</div>
+                                    </div>
+                                </div>
+                                <div class="exercise-detail">💡 ${ex.tip}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="workout-actions">
+                        <button class="action-btn secondary" onclick="generateWorkout()">🔄 New</button>
+                        <button class="action-btn primary" onclick="startWorkout()">▶️ Start Workout</button>
+                    </div>
                 </div>
-            `).join('') + `
-                <div style="text-align: center; color: #888; font-size: 0.85rem; margin-top: 12px;">
-                    Total: ${totalTime} min
+            `;
+            container.style.display = 'block';
+            container.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function startWorkout() {
+            if (!currentWorkout) return;
+            currentExerciseIndex = 0;
+            const allExercises = [
+                ...currentWorkout.warmup.map(e => ({ ...e, phase: 'warmup' })),
+                ...currentWorkout.main.map(e => ({ ...e, phase: 'main' })),
+                ...currentWorkout.cooldown.map(e => ({ ...e, phase: 'cooldown' }))
+            ];
+            currentWorkout.allExercises = allExercises;
+            document.getElementById('workout-modal').classList.add('show');
+            showExercise(0);
+        }
+
+        function showExercise(index) {
+            const exercises = currentWorkout.allExercises;
+            if (index >= exercises.length) { completeWorkout(); return; }
+
+            const ex = exercises[index];
+            const progress = ((index + 1) / exercises.length) * 100;
+            const phaseLabel = ex.phase === 'warmup' ? '🔥 Warm-Up' : ex.phase === 'main' ? '💪 Main' : '🧘 Cool-Down';
+
+            document.getElementById('modal-body').innerHTML = `
+                <div class="progress-bar"><div class="progress-fill" style="width: ${progress}%"></div></div>
+                <div class="active-exercise">
+                    <div class="active-exercise-number">${phaseLabel} • Exercise ${index + 1} of ${exercises.length}</div>
+                    <div class="active-exercise-name">${ex.name}</div>
+                    <div class="active-exercise-detail">${ex.sets ? `${ex.sets} sets × ${ex.reps}` : ex.duration}</div>
+                    <div class="timer-display" id="timer">00:00</div>
+                    <div class="active-exercise-tip">💡 ${ex.tip}</div>
+                </div>
+                <div class="modal-actions">
+                    <button class="modal-btn secondary" onclick="cancelWorkout()">✕ End</button>
+                    <button class="modal-btn primary" onclick="nextExercise()">✓ Done</button>
+                </div>
+            `;
+            startTimer();
+        }
+
+        function showRest(restTime, nextExercise) {
+            clearInterval(timerInterval);
+            let remaining = restTime;
+
+            document.getElementById('modal-body').innerHTML = `
+                <div class="rest-overlay">
+                    <div class="rest-text">Rest Time</div>
+                    <div class="timer-display" id="rest-timer">${remaining}</div>
+                    <div class="next-up">Next: ${nextExercise.name}</div>
+                </div>
+                <div class="modal-actions">
+                    <button class="modal-btn skip" onclick="skipRest()">Skip Rest</button>
+                </div>
+            `;
+
+            timerInterval = setInterval(() => {
+                remaining--;
+                const el = document.getElementById('rest-timer');
+                if (el) el.textContent = remaining;
+                if (remaining <= 0) { clearInterval(timerInterval); showExercise(currentExerciseIndex); }
+            }, 1000);
+        }
+
+        function nextExercise() {
+            clearInterval(timerInterval);
+            currentExerciseIndex++;
+            const exercises = currentWorkout.allExercises;
+            const prevEx = exercises[currentExerciseIndex - 1];
+            const nextEx = exercises[currentExerciseIndex];
+
+            if (prevEx && prevEx.rest && nextEx && nextEx.phase === 'main') {
+                showRest(prevEx.rest, nextEx);
+            } else {
+                showExercise(currentExerciseIndex);
+            }
+        }
+
+        function skipRest() { clearInterval(timerInterval); showExercise(currentExerciseIndex); }
+
+        function startTimer() {
+            exerciseTime = 0;
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                exerciseTime++;
+                const mins = Math.floor(exerciseTime / 60);
+                const secs = exerciseTime % 60;
+                const timerEl = document.getElementById('timer');
+                if (timerEl) timerEl.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function cancelWorkout() { clearInterval(timerInterval); document.getElementById('workout-modal').classList.remove('show'); }
+
+        function completeWorkout() {
+            clearInterval(timerInterval);
+
+            const history = Memory.get('fitness', 'history') || [];
+            history.unshift({
+                date: new Date().toISOString(),
+                title: currentWorkout.title,
+                type: currentWorkout.type,
+                intensity: currentWorkout.intensity,
+                duration: currentWorkout.duration,
+                exercises: currentWorkout.main.map(e => e.name)
+            });
+            Memory.set('fitness', 'history', history.slice(0, 50));
+
+            document.getElementById('modal-body').innerHTML = `
+                <div class="active-exercise" style="padding: 60px 30px;">
+                    <div style="font-size: 4rem; margin-bottom: 20px;">🎉</div>
+                    <div class="active-exercise-name">Workout Complete!</div>
+                    <div class="active-exercise-detail" style="color: #8AE98D;">${currentWorkout.title}</div>
+                    <div class="active-exercise-tip" style="margin-top: 30px; text-align: center;">
+                        Great job! You crushed ${currentWorkout.main.length} exercises in ~${currentWorkout.duration} min. 💪
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="modal-btn primary" onclick="closeCompletion()">Done</button>
                 </div>
             `;
         }
 
-        // Render workout grid
-        function renderWorkoutGrid() {
-            const grid = document.getElementById('workout-grid');
-            grid.innerHTML = workouts.map(w => `
-                <div class="workout-card ${selectedWorkouts.includes(w.id) ? 'selected' : ''}"
-                     onclick="toggleWorkout('${w.id}')">
-                    <div class="workout-icon">${w.icon}</div>
-                    <div class="workout-name">${w.name}</div>
-                    <div class="workout-desc">${w.desc}</div>
-                    <div class="workout-time">${w.time} min</div>
-                </div>
-            `).join('');
-        }
-
-        // Toggle workout selection
-        function toggleWorkout(id) {
-            const idx = selectedWorkouts.indexOf(id);
-            if (idx === -1) {
-                selectedWorkouts.push(id);
-            } else {
-                selectedWorkouts.splice(idx, 1);
-            }
-            renderWorkoutGrid();
-            renderBuildMix();
-        }
-
-        // Render build mix section
-        function renderBuildMix() {
-            const container = document.getElementById('build-mix');
-            const list = document.getElementById('selected-list');
-            const total = document.getElementById('build-total');
-
-            if (selectedWorkouts.length === 0) {
-                container.style.display = 'none';
-                return;
-            }
-
-            container.style.display = 'block';
-            const selected = selectedWorkouts.map(id => workouts.find(w => w.id === id));
-            const totalTime = selected.reduce((sum, w) => sum + w.time, 0);
-
-            total.textContent = totalTime + ' min';
-            list.innerHTML = selected.map(w => `
-                <div class="selected-item">
-                    <span>${w.icon} ${w.name} - ${w.time} min</span>
-                    <button class="remove-btn" onclick="toggleWorkout('${w.id}')">×</button>
-                </div>
-            `).join('');
-        }
-
-        // Start workout
-        function startWorkout() {
-            activeWorkout = todaysMix;
-            showWorkoutModal();
-        }
-
-        function startCustomWorkout() {
-            if (selectedWorkouts.length === 0) return;
-            activeWorkout = selectedWorkouts.map(id => workouts.find(w => w.id === id));
-            showWorkoutModal();
-        }
-
-        function showWorkoutModal() {
-            const modal = document.getElementById('workout-modal');
-            const totalTime = activeWorkout.reduce((sum, w) => sum + w.time, 0);
-            const names = activeWorkout.map(w => w.name).join(' + ');
-            const icons = activeWorkout.map(w => w.icon).join(' ');
-
-            document.getElementById('modal-icon').textContent = icons;
-            document.getElementById('modal-title').textContent = names;
-            document.getElementById('modal-meta').textContent = totalTime + ' min workout';
-
-            modal.classList.add('show');
-            startTimer();
-        }
-
-        function startTimer() {
-            startTime = Date.now();
-            timerInterval = setInterval(updateTimer, 1000);
-        }
-
-        function updateTimer() {
-            const elapsed = Math.floor((Date.now() - startTime) / 1000);
-            const mins = Math.floor(elapsed / 60);
-            const secs = elapsed % 60;
-            document.getElementById('modal-timer').textContent =
-                String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
-        }
-
-        function cancelWorkout() {
-            clearInterval(timerInterval);
+        function closeCompletion() {
             document.getElementById('workout-modal').classList.remove('show');
-            activeWorkout = null;
-        }
-
-        function completeWorkout() {
-            clearInterval(timerInterval);
-            const elapsed = Math.floor((Date.now() - startTime) / 1000);
-            const mins = Math.ceil(elapsed / 60);
-
-            // Save to history
-            const history = Memory.get('fitness', 'history') || [];
-            history.unshift({
-                date: new Date().toISOString(),
-                workouts: activeWorkout.map(w => w.name),
-                duration: mins,
-                icons: activeWorkout.map(w => w.icon)
-            });
-            Memory.set('fitness', 'history', history.slice(0, 30)); // Keep last 30
-
-            document.getElementById('workout-modal').classList.remove('show');
-            activeWorkout = null;
-
-            // Clear custom selection
-            selectedWorkouts = [];
-            renderWorkoutGrid();
-            renderBuildMix();
-
-            // Show history
+            renderHistory();
             switchTab('history');
             document.querySelectorAll('.tab-btn')[1].classList.add('active');
             document.querySelectorAll('.tab-btn')[0].classList.remove('active');
-            renderHistory();
         }
 
-        // Render history
         function renderHistory() {
             const history = Memory.get('fitness', 'history') || [];
             const container = document.getElementById('history-list');
 
             if (history.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-icon">📊</div>
-                        <p>No workouts yet.<br>Complete a workout to see it here!</p>
-                    </div>
-                `;
+                container.innerHTML = `<div class="empty-state"><div class="empty-icon">📊</div><p>No workouts yet.<br>Generate and complete a workout to see it here!</p></div>`;
                 return;
             }
 
             container.innerHTML = history.map(h => {
                 const date = new Date(h.date);
-                const dateStr = date.toLocaleDateString('en-US', {
-                    weekday: 'short',
-                    month: 'short',
-                    day: 'numeric'
-                });
-                const timeStr = date.toLocaleTimeString('en-US', {
-                    hour: 'numeric',
-                    minute: '2-digit'
-                });
-
+                const dateStr = date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+                const timeStr = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
                 return `
                     <div class="history-item">
                         <div class="history-date">${dateStr} at ${timeStr}</div>
-                        <div class="history-workouts">
-                            ${h.workouts.map((w, i) => `
-                                <span class="history-tag">${h.icons?.[i] || '💪'} ${w}</span>
-                            `).join('')}
+                        <div class="history-title">${h.title || h.type}</div>
+                        <div class="history-exercises">${h.exercises.join(' → ')}</div>
+                        <div class="history-stats">
+                            <span class="history-stat">⏱️ ${h.duration} min</span>
+                            <span class="history-stat">💪 ${h.exercises.length} exercises</span>
                         </div>
-                        <div class="history-total">${h.duration} min completed</div>
                     </div>
                 `;
             }).join('');
         }
 
-        // Initialize on load
         init();
     </script>
 </body>
