@@ -1,14 +1,11 @@
-const CACHE_NAME = 'dailydo-v15';
+const CACHE_NAME = 'finance-app-v1';
 const STATIC_ASSETS = [
   './',
   './index.html',
   './styles/app.css',
   './scripts/memory.js',
   './manifest.json',
-  './fitness/index.html',
   './finance/summary.html',
-  './linkedin/index.html',
-  './research/index.html',
   './icons/icon-192.png',
   './icons/icon-512.png'
 ];
@@ -43,7 +40,7 @@ self.addEventListener('fetch', (event) => {
   // Skip non-GET requests
   if (event.request.method !== 'GET') return;
 
-  // Skip external requests (like RSS feeds)
+  // Skip external requests (like API calls)
   if (!event.request.url.startsWith(self.location.origin)) {
     return;
   }
